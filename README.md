@@ -68,7 +68,7 @@ Due: 14 December 2012. Test final version in Lab (12 December 2012). Demo final 
     4. Integration Testing (4:00)
 * Secondary
     1. Music Visualizer (5:00)
-####Testable Requirements
+#### Testable Requirements
 * Display information collected in a visualizing manner
 * User Profile creation, modification, and deletion
 * Integration of tags and profiles

@@ -16,8 +16,8 @@ Project Deliverables
 
 ### Iteration I  
 Due: 09 November 2012. Demo iteration in Lab.  
-#### Goals
 
+#### Goals
 * Primary
     1. Initialize Project on GitHub (1:00)
     2. Implement basic map with Google API (1:00)
@@ -56,6 +56,7 @@ Due: 27 November 2012. Demo iteration in Lab.
 
 ### Iteration III  
 Due: 14 December 2012. Test final version in Lab (12 December 2012). Demo final product in class.  
+
 #### Goals
 * Primary
     1. Display information collected (2:00)
@@ -67,7 +68,8 @@ Due: 14 December 2012. Test final version in Lab (12 December 2012). Demo final 
         * Suggestions
     4. Integration Testing (4:00)
 * Secondary
-    1. Music Visualizer (5:00)
+    1. Music Visualizer (5:00)  
+
 #### Testable Requirements
 * Display information collected in a visualizing manner
 * User Profile creation, modification, and deletion

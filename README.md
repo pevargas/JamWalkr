@@ -14,10 +14,12 @@ Project Manager: Elizabeth White
 Project Deliverables
 --------------------
 
+***
+
 ### Iteration I  
 Due: 09 November 2012. Demo iteration in Lab.  
-#### Goals
 
+#### Goals
 * Primary
     1. Initialize Project on GitHub (1:00)
     2. Implement basic map with Google API (1:00)
@@ -32,6 +34,8 @@ Due: 09 November 2012. Demo iteration in Lab.
 * Map control (Pan, Zoom, etc.)
 * Interaction with the database
 * Demonstrate connection with Last.fm API
+
+***
 
 ### Iteration II  
 Due: 27 November 2012. Demo iteration in Lab.  
@@ -54,8 +58,11 @@ Due: 27 November 2012. Demo iteration in Lab.
 * Interact with the application and it’s interface
 * Send information to server.  
 
+***
+
 ### Iteration III  
 Due: 14 December 2012. Test final version in Lab (12 December 2012). Demo final product in class.  
+
 #### Goals
 * Primary
     1. Display information collected (2:00)
@@ -67,8 +74,20 @@ Due: 14 December 2012. Test final version in Lab (12 December 2012). Demo final 
         * Suggestions
     4. Integration Testing (4:00)
 * Secondary
-    1. Music Visualizer (5:00)
+    1. Music Visualizer (5:00)  
+
 #### Testable Requirements
 * Display information collected in a visualizing manner
 * User Profile creation, modification, and deletion
 * Integration of tags and profiles
+
+***
+
+Important API Keys
+------------------  
+
+### Last.fm  
+b15a0b92b58b210280fa88c5ae3bd038  
+
+### 8tracks.com  
+efaea88b3f74c64c06351f6e76674f65bcc23ea0  

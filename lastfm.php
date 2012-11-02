@@ -33,20 +33,11 @@
     <div class="row-fluid">
       <div class="span12">
 	<h1>Last.fm API</h1>
-
-	<?php
-	   $ch = curl_init();
-	   curl_setopt($ch, CURLOPT_URL, "http://www.colorado.edu/");
-	   curl_setopt($ch, CURLOPT_HEADER, true);
-	   curl_setopt($ch, CURLOPT_NOBODY, true);
-	   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	   $data = curl_exec($ch);
-	   curl_close($ch)
-	   echo $data;
-	?>
-	<?php echo "Blerg..."; ?>
-
-
+	<pre>
+	  <?php
+	     var_dump(curl_version());
+	  ?>
+	</pre>
       </div>
     </div>
   </div>

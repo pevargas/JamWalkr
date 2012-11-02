@@ -36,7 +36,6 @@
       </div>
       <div class="span9">
 	<h1>Main Content</h1>
-	<?php phpinfo(); ?>
       </div>
     </div>
   </div>

@@ -23,7 +23,7 @@
       <div class="container-fluid">
 	<a class="brand" href="./index.php">JamWalkr</a>
 	<ul class="nav">
-	  <li><a href="./lastfm.php"><i class="icon-music icon-white"></i></a></li>
+	  <li class="active"><a href="./lastfm.php"><i class="icon-music icon-white"></i></a></li>
 	</ul>
       </div>
     </div>
@@ -31,12 +31,22 @@
   
   <div class="container-fluid" style="margin-top: 50px;">
     <div class="row-fluid">
-      <div class="span3">
-	<h1>Sidebar</h1>
-      </div>
-      <div class="span9">
-	<h1>Main Content</h1>
-	<?php phpinfo(); ?>
+      <div class="span12">
+	<h1>Last.fm API</h1>
+
+	<?php
+	   $ch = curl_init();
+	   curl_setopt($ch, CURLOPT_URL, "http://www.colorado.edu/");
+	   curl_setopt($ch, CURLOPT_HEADER, true);
+	   curl_setopt($ch, CURLOPT_NOBODY, true);
+	   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	   $data = curl_exec($ch);
+	   curl_close($ch)
+	   echo $data;
+	?>
+	<?php echo "Blerg..."; ?>
+
+
       </div>
     </div>
   </div>

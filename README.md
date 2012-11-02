@@ -14,8 +14,6 @@ Project Manager: Elizabeth White
 Project Deliverables
 --------------------
 
-***
-
 ### Iteration I  
 Due: 09 November 2012. Demo iteration in Lab.  
 

@@ -15,7 +15,6 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -37,7 +36,8 @@
 	<h1>Last.fm API</h1>
 	<pre>
 	  <?php
-	     var_dump(curl_version());
+	     #var_dump(curl_version());
+	     include ('mitch.txt'); 
 	  ?>
 	</pre>
       </div>

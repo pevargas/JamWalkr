@@ -21,9 +21,11 @@
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container-fluid">
-	<a class="brand" href="./index.php">JamWalkr</a>
+	<a class="brand pull-left" href="./index.php">JamWalkr</a>
 	<ul class="nav">
-	  <li class="active"><a href="./lastfm.php"><i class="icon-music icon-white"></i></a></li>
+	  <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
+	  <li><a href="./music.php"><i class="icon-music icon-white"></i></a></li>
+	  <li class="active"><a href="./map.php"><i class="icon-road icon-white"></i></a></li>
 	</ul>
       </div>
     </div>
@@ -32,10 +34,10 @@
   <div class="container-fluid" style="margin-top: 50px;">
     <div class="row-fluid">
       <div class="span12">
-	<h1>Last.fm API</h1>
+	<h1>Google Maps API</h1>
 	<pre>
 	  <?php
-	     var_dump(curl_version());
+	     echo "[Put Map Here!]";
 	  ?>
 	</pre>
       </div>

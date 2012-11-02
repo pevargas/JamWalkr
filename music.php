@@ -23,8 +23,8 @@
       <div class="container-fluid">
 	<a class="brand pull-left" href="./index.php">JamWalkr</a>
 	<ul class="nav">
-	  <li class="active"><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
-	  <li><a href="./music.php"><i class="icon-music icon-white"></i></a></li>
+	  <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
+	  <li class="active"><a href="./music.php"><i class="icon-music icon-white"></i></a></li>
 	  <li><a href="./map.php"><i class="icon-road icon-white"></i></a></li>
 	</ul>
       </div>
@@ -33,11 +33,13 @@
   
   <div class="container-fluid" style="margin-top: 50px;">
     <div class="row-fluid">
-      <div class="span3">
-	<h1>Sidebar</h1>
-      </div>
-      <div class="span9">
-	<h1>Main Content</h1>
+      <div class="span12">
+	<h1>Last.fm API</h1>
+	<pre>
+	  <?php
+	     var_dump(curl_version());
+	  ?>
+	</pre>
       </div>
     </div>
   </div>

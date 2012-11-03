@@ -21,7 +21,7 @@
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container-fluid">
-	<a class="brand pull-left" href="./index.php">JamWalkr</a>
+	<a class="brand" href="./index.php">JamWalkr</a>
 	<ul class="nav">
 	  <li class="active"><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
 	  <li><a href="./music.php"><i class="icon-music icon-white"></i></a></li>
@@ -34,10 +34,23 @@
   <div class="container-fluid" style="margin-top: 50px;">
     <div class="row-fluid">
       <div class="span3">
-	<h1>Sidebar</h1>
+	<ul class="nav nav-pills nav-stacked">
+	  <li class="active"><a href="./index.php"><i class="icon-home"></i> Home</a></li>
+	  <li><a href="./music.php"><i class="icon-music"></i> Music APIs</a></li>
+	  <li><a href="./map.php"><i class="icon-road"></i> Google Map Apis</a></li>
+	</ul>
       </div>
       <div class="span9">
-	<h1>Main Content</h1>
+	<h1>JamWalkr</h1>
+	<p class="lead">The Music Tagging Project</p>
+
+	<p>For Deliverable I, select the tabs to the left. In this deliverable we should be able to:</p>
+	<ul>
+	  <li>Load and display a webpage</li>
+	  <li>Map Control (Pan, Zoom, etc.)</li>
+	  <li>Interact with the MySQL database</li>
+	  <li>Demonstrate connection with the Last.fm API and 8tracks API</li>
+	</ul>
       </div>
     </div>
   </div>

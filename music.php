@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <?php include("res/auth.php");
+          include("res/loadfunc.php"); ?>
 
     <!-- Le styles -->
     <link href="res/css/bootstrap.css" rel="stylesheet">
@@ -36,35 +38,43 @@
 	<ul class="nav nav-pills nav-stacked">
 	  <li><a href="./index.php"><i class="icon-home"></i> Home</a></li>
 	  <li class="active"><a href="./music.php"><i class="icon-music"></i> Music APIs</a></li>
-	  <li><a href="./map.php"><i class="icon-road"></i> Google Map Apis</a></li>
+	  <li><a href="./map.php"><i class="icon-road"></i> Google Map API</a></li>
 	</ul>
       </div>      <div class="span9">
 	<h1>Last.fm API</h1>
-	<pre>
-	  <?php
-	     #var_dump(curl_version());
-	     $curl = curl_init();
-	     // You can also set the URL you want to communicate with by doing this:
-	     // $curl = curl_init('http://localhost/echoservice');
-	     
-	     // We POST the data
-	     curl_setopt($curl, CURLOPT_POST, 1);
-	     // Set the url path we want to call
-	     curl_setopt($curl, CURLOPT_URL, 'http://localhost/JamWalkr/mitch.txt');  
-	     // Make it so the data coming back is put into a string
-	     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-	     // You can also bunch the above commands into an array if you choose using: curl_setopt_array
-	     
-	     // Insert Data
-	     curl_setopt($curl, CURLOPT_POSTFIELDS, '');
-	     // Send the request
-	     $result = curl_exec($curl);
-	     // Free up the resources $curl is using
-	     curl_close($curl);
-	     
-	     echo $result;
-	  ?>
-	</pre>
+	<?php
+	   # var_dump(curl_version());
+	   $lfmmethod = "chart.getTopArtists";
+	   $url = $lfmbase . "?method=" . $lfmmethod . $lfmkey;
+	   echo "<p class='lead'>" . $lfmmethod . "</p>";	   
+
+	   $response = download_page($url);
+	   $xml = new SimpleXMLElement($response);
+	
+	   $data = $xml->artists->artist; 
+	?>
+
+	<ul class="thumbnails">
+          <?php for ($i = 0; $i < sizeof($data); $i++) {  
+	    $name = (string) $data[$i]->name;
+	    $link = (string) $data[$i]->url;
+	    $img  = $data[$i]->children();
+	    $img  = (string) $img->image[3];
+	    
+	    echo "<a href='" . $link . "' target='_blank'>";
+            echo "<li class='span3'><div class='thumbnail'>";
+	    echo "<img src='" . $img . "' alt='" . $name . "'/>";
+	    echo "<div class='caption'>";
+            echo "<p>" . $name . "</p>";
+	    echo "</div></li></a>";
+	    
+	  } ?>
+	</ul>
+	<?php
+	   echo "<pre>";	  
+	   var_dump($xml);
+	   echo "</pre>";
+	   ?>
       </div>
     </div>
   </div>

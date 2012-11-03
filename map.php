@@ -37,7 +37,7 @@
 	<ul class="nav nav-pills nav-stacked">
 	  <li><a href="./index.php"><i class="icon-home"></i> Home</a></li>
 	  <li><a href="./music.php"><i class="icon-music"></i> Music APIs</a></li>
-	  <li class="active"><a href="./map.php"><i class="icon-road"></i> Google Map Apis</a></li>
+	  <li class="active"><a href="./map.php"><i class="icon-road"></i> Google Map API</a></li>
 	</ul>
       </div>      <div class="span9">
 	<h1>Google Maps API</h1>

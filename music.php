@@ -50,31 +50,22 @@
 
 	   $response = download_page($url);
 	   $xml = new SimpleXMLElement($response);
-	
+	   
 	   $data = $xml->artists->artist; 
-	?>
-
-	<ul class="thumbnails">
-          <?php for ($i = 0; $i < sizeof($data); $i++) {  
-	    $name = (string) $data[$i]->name;
-	    $link = (string) $data[$i]->url;
-	    $img  = $data[$i]->children();
-	    $img  = (string) $img->image[3];
+	   for ($i = 0; $i < sizeof($data); $i++) {  
+	     $name = (string) $data[$i]->name;
+	     $link = (string) $data[$i]->url;
+	     $img  = $data[$i]->children();
+	     $img  = (string) $img->image[3];
 	    
-	    echo "<a href='" . $link . "' target='_blank'>";
-            echo "<li class='span3'><div class='thumbnail'>";
-	    echo "<img src='" . $img . "' alt='" . $name . "'/>";
-	    echo "<div class='caption'>";
-            echo "<p>" . $name . "</p>";
-	    echo "</div></li></a>";
-	    
-	  } ?>
-	</ul>
-	<?php
-	   echo "<pre>";	  
-	   var_dump($xml);
-	   echo "</pre>";
-	   ?>
+	     echo "<div class='media'>";
+	     echo "<a href='" . $link . "' class='pull-left' target='_blank'>";
+             echo "<img src='" . $img . "' alt='" . $name . "' class='media-object thumbnail'/></a>";
+	     echo "<div class='media-body'>";
+	     echo "<h2 class='media-heading'>" . $name . "</h2>";
+	     echo "</div></div>";
+	  } 
+	  #echo "<pre>" . var_dump($xml) . "</pre>"; ?>
       </div>
     </div>
   </div>

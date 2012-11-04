@@ -24,8 +24,10 @@
 	<a class="brand" href="./index.php">JamWalkr</a>
 	<ul class="nav">
 	  <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
-	  <li><a href="./music.php"><i class="icon-music icon-white"></i></a></li>
-	  <li class="active"><a href="./map.php"><i class="icon-road icon-white"></i></a></li>
+	  <li><a href="./lfm.php"><i class="icon-music icon-white"></i></a></li>
+	  <li><a href="./8tracks.php"><i class="icon-headphones icon-white"></i></a></li>
+	  <li class="active"><a href="./map.php"><i class="icon-map-marker icon-white"></i></a></li>
+	  <li><a href="./database.php"><i class="icon-hdd icon-white"></i></a></li>
 	</ul>
       </div>
     </div>
@@ -36,10 +38,13 @@
       <div class="span3">
 	<ul class="nav nav-pills nav-stacked">
 	  <li><a href="./index.php"><i class="icon-home"></i> Home</a></li>
-	  <li><a href="./music.php"><i class="icon-music"></i> Music APIs</a></li>
-	  <li class="active"><a href="./map.php"><i class="icon-road"></i> Google Map API</a></li>
+	  <li><a href="./lfm.php"><i class="icon-music"></i> Last.fm API</a></li>
+	  <li><a href="./8tracks.php"><i class="icon-headphones"></i> 8Tracks API</a></li>
+	  <li class="active"><a href="./map.php"><i class="icon-map-marker"></i> Google Maps API</a></li>
+	  <li><a href="./database.php"><i class="icon-hdd"></i> MySQL Database</a></li>
 	</ul>
-      </div>      <div class="span9">
+      </div>
+      <div class="span9">
 	<h1>Google Maps API</h1>
 	<pre>
 	  <?php

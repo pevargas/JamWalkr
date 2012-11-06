@@ -1,37 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>JamWalkr</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <?php include("res/auth.php");
-          include("res/loadfunc.php"); ?>
-
-    <!-- Le styles -->
-    <link href="res/css/bootstrap.css" rel="stylesheet">
-    <link href="res/css/bootstrap-responsive.css" rel="stylesheet">
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
+  <?php include("res/auth.php");
+        include("res/loadfunc.php"); 
+	include("res/links.php") ?>
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
-      <div class="container-fluid">
-	<a class="brand" href="./index.php">JamWalkr</a>
-	<ul class="nav">
-	  <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
-	  <li><a href="./lfm.php"><i class="icon-music icon-white"></i></a></li>
-	  <li class="active"><a href="./8tracks.php"><i class="icon-headphones icon-white"></i></a></li>
-	  <li><a href="./map.php"><i class="icon-map-marker icon-white"></i></a></li>
-	  <li><a href="./database.php"><i class="icon-hdd icon-white"></i></a></li>
-	</ul>
-      </div>
+	<div class="container-fluid">
+	  <a class="brand" href="./index.php">JamWalkr</a>
+	  <ul class="nav">
+	    <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
+	    <li><a href="./lfm.php"><i class="icon-music icon-white"></i></a></li>
+	    <li class="active"><a href="./8tracks.php"><i class="icon-headphones icon-white"></i></a></li>
+	    <li><a href="./map.php"><i class="icon-map-marker icon-white"></i></a></li>
+	    <li><a href="./database.php"><i class="icon-hdd icon-white"></i></a></li>
+	  </ul>
+	</div>
     </div>
   </div>
   
@@ -49,28 +35,49 @@
       <div class="span9">
 	<h1>8Tracks API</h1>
 	<?php
+	   $purl = $etbase . "/sets/new.xml" . $etkey . "&api_version=2";
+	   echo "<p class='lead'>" . $purl . "</p>";
+
+	   $play  = get_page($purl);
+	   $pxml  = new SimpleXMLElement($play);
+	   if ($pxml->status != "200 OK") {
+	     echo "<div class='alert'>";
+             echo "<button type='button' class='close' data-dismiss='alert'>×</button>";
+	     echo "<strong>" . $pxml->status . "</strong>mWe done messed up...</div>";
+	   } else {
+  	     $token = $pxml->{'play-token'};
+	     echo "<p>" . $token . "</p>";
+	   }
+
 	   $etmethod = "/mixes.xml";
-	   $url = $etbase . $etmethod . $etkey;
-	   echo "<p class='lead'>" . $etmethod . "</p>";
+	   $etsort   = "&sort=popular";
+	   $mix      = $etbase . $etmethod . $etkey . $etsort;
+	   echo "<p class='lead'>" . $mix . "</p>";
 	   
-	   $response = get_page($url);
+	   $response = get_page($mix);
 	   $xml = new SimpleXMLElement($response);
 
-	   $data = $xml->mixes->mix;
-	   for ($i = 0; $i < sizeof($data); $i++) {
-             $name = (string) $data[$i]->name;
-             $desc = (string) $data[$i]->description;
-	     $img  = (string) $data[$i]->{'cover-urls'}->sq250;
-	     $link = (string) $data[$i]->path;
+	   if ($xml->status != "200 OK") {
+	     echo "<div class='alert'>";
+             echo "<button type='button' class='close' data-dismiss='alert'>×</button>";
+	     echo "<strong>" . $xml->status . "</strong> We done messed up...</div>";
+	   } else {
+	     $data = $xml->mixes->mix;
+	     for ($i = 0; $i < sizeof($data); $i++) {
+               $name = (string) $data[$i]->name;
+               $desc = (string) $data[$i]->description;
+	       $img  = (string) $data[$i]->{'cover-urls'}->sq250;
+	       $link = (string) $data[$i]->path;
+	       $tags = (string) $data[$i]->{'tag-list-cache'};
 
-             echo "<div class='media'>";
-	     echo "<a href='" . $etbase . $link . "' class='pull-left' target='_blank'>";
-             echo "<img src='" . $img . "' alt='" . $name . "' class='media-object thumbnail'/></a>";
-	     echo "<div class='media-body'>";
-	     echo "<h2 class='media-heading'>" . $name . "</h2>";
-	     echo "<p>" . $desc . "</p>";
-	     echo "</div></div>";
-
+               echo "<div class='media'>";
+	       echo "<a href='" . $etbase . $link . "' class='pull-left' target='_blank'>";
+               echo "<img src='" . $img . "' alt='" . $name . "' class='media-object thumbnail'/></a>";
+	       echo "<div class='media-body'>";
+	       echo "<h2 class='media-heading'>" . $name . "</h2>";
+	       echo "<p>" . $desc . "</p><p>" . $tags . "</p>";
+	       echo "</div></div>";
+             }
            }
 
 	   #echo "<pre>";
@@ -79,6 +86,5 @@
       </div>
     </div>
   </div>
-  <?php include ('res/js/scripts.js'); ?>
 </body>
 </html>

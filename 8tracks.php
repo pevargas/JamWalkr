@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <?php include("res/auth.php");
+          include("res/loadfunc.php"); ?>
 
     <!-- Le styles -->
     <link href="res/css/bootstrap.css" rel="stylesheet">
@@ -46,11 +48,34 @@
       </div>      
       <div class="span9">
 	<h1>8Tracks API</h1>
-	<pre>
-	  <?php
-	     echo "[Put 8tracks Here!]";
-	  ?>
-	</pre>
+	<?php
+	   $etmethod = "/mixes.xml";
+	   $url = $etbase . $etmethod . $etkey;
+	   echo "<p class='lead'>" . $etmethod . "</p>";
+	   
+	   $response = get_page($url);
+	   $xml = new SimpleXMLElement($response);
+
+	   $data = $xml->mixes->mix;
+	   for ($i = 0; $i < sizeof($data); $i++) {
+             $name = (string) $data[$i]->name;
+             $desc = (string) $data[$i]->description;
+	     $img  = (string) $data[$i]->{'cover-urls'}->sq250;
+	     $link = (string) $data[$i]->path;
+
+             echo "<div class='media'>";
+	     echo "<a href='" . $etbase . $link . "' class='pull-left' target='_blank'>";
+             echo "<img src='" . $img . "' alt='" . $name . "' class='media-object thumbnail'/></a>";
+	     echo "<div class='media-body'>";
+	     echo "<h2 class='media-heading'>" . $name . "</h2>";
+	     echo "<p>" . $desc . "</p>";
+	     echo "</div></div>";
+
+           }
+
+	   #echo "<pre>";
+	   #echo var_dump($img) . "</pre>";
+	?>
       </div>
     </div>
   </div>

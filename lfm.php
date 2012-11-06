@@ -24,7 +24,7 @@
       <div class="container-fluid">
 	<a class="brand" href="./index.php">JamWalkr</a>
 	<ul class="nav">
-	  <li><a href="./index.php"><i class="icon-home"></i></a></li>
+	  <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
 	  <li class="active"><a href="./lfm.php"><i class="icon-music icon-white"></i></a></li>
 	  <li><a href="./8tracks.php"><i class="icon-headphones icon-white"></i></a></li>
 	  <li><a href="./map.php"><i class="icon-map-marker icon-white"></i></a></li>
@@ -52,7 +52,7 @@
 	   $url = $lfmbase . "?method=" . $lfmmethod . $lfmkey;
 	   echo "<p class='lead'>" . $lfmmethod . "</p>";	   
 
-	   $response = download_page($url);
+	   $response = get_page($url);
 	   $xml = new SimpleXMLElement($response);
 	   
 	   $data = $xml->artists->artist; 

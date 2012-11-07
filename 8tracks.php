@@ -48,17 +48,17 @@
       <div class="span9">
 	<h1>8Tracks API</h1>
 	<?php
-	   $purl = $etbase . "/sets/new.xml" . $etkey . "&api_version=2";
-	   echo "<p class='lead'>" . $purl . "</p>";
+	   #$purl = $etbase . "/sets/new.xml" . $etkey . "&api_version=2";
+	   #echo "<p class='lead'>" . $purl . "</p>";
 
-	   $play  = get_page($purl);
-	   $pxml  = new SimpleXMLElement($play);
-	   if ($pxml->status != "200 OK") {
-	     echo "<div class='alert'>";
-             echo "<button type='button' class='close' data-dismiss='alert'>×</button>";
-	     echo "<strong>" . $pxml->status . "</strong> We done messed up...</div>";
-	   } else {
-  	     $token = $pxml->{'play-token'};
+	   #$play  = get_page($purl);
+	   #$pxml  = new SimpleXMLElement($play);
+	   #if ($pxml->status != "200 OK") {
+	    # echo "<div class='alert'>";
+            # echo "<button type='button' class='close' data-dismiss='alert'>×</button>";
+	    # echo "<strong>" . $pxml->status . "</strong> We done messed up...</div>";
+	   #} else {
+  	    # $token = $pxml->{'play-token'};
 	     #echo "<p>" . $token . "</p>";
 
 	     #echo "<p>" . $_REQUEST['pickthis'] . "</p>";
@@ -66,7 +66,7 @@
 	     #$purl = $etbase . "/sets/" . $token . "/play.xml" . $etkey;
 	     #$play = get_page($purl)
 
-	   }
+	   #}
 
 	   $etmethod = "/mixes.xml";
 	   $etsort   = "&sort=popular";
@@ -96,7 +96,7 @@
 	       echo "<div class='media-body'>";
 	       echo "<h2 class='media-heading'>" . $name . "</h2>";
 	       echo "<p>" . $desc . "</p><p>" . $tags . "</p>";
-	       echo "<input type='button' id='pickthis' value='" . $mid . "'/>";
+	       #echo "<input type='button' id='pickthis' value='" . $mid . "'/>";
 	       echo "</div></div>";
 
 

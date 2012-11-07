@@ -48,7 +48,7 @@
 	<h1>Google Maps API</h1>
 	<pre>
 	  <?php
-	     echo "Mitch is putting a map here";
+	     echo "[Put Map Here!]";
 	  ?>
 	</pre>
       </div>

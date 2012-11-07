@@ -46,11 +46,8 @@
       </div>
       <div class="span9">
 	<h1>Google Maps API</h1>
-	<pre>
-	  <?php
-	     echo "Mitch is putting a map here";
-	  ?>
-	</pre>
+	  <iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?ie=UTF8&amp;ll=40.015652,-105.263786&amp;spn=0.055217,0.110378&amp;t=m&amp;z=13&amp;output=embed"></iframe>
+	
       </div>
     </div>
   </div>

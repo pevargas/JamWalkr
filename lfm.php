@@ -50,7 +50,8 @@
 	     $img  = (string) $img->image[3];
 	    
 	     echo "<div class='media'>";
-	     echo "<a href='" . $link . "' class='pull-left' target='_blank'>";
+	     echo "<a href='" . $link . "' class='pull-left' target='_blank
+'>";
              echo "<img src='" . $img . "' alt='" . $name . "' class='media-object thumbnail'/></a>";
 	     echo "<div class='media-body'>";
 	     echo "<h2 class='media-heading'>" . $name . "</h2>";

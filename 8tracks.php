@@ -4,6 +4,19 @@
   <?php include("res/auth.php");
         include("res/loadfunc.php"); 
 	include("res/links.php") ?>
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"/>
+  <script type="text/javascript">
+    $("#pickthis").click(function() {
+      $.ajax({   
+        type:"POST",
+        url:"8tracks.php",
+        data:{fileid:pickthisid},
+        cache:false,
+      });
+    });​
+
+    </script>
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -43,16 +56,22 @@
 	   if ($pxml->status != "200 OK") {
 	     echo "<div class='alert'>";
              echo "<button type='button' class='close' data-dismiss='alert'>×</button>";
-	     echo "<strong>" . $pxml->status . "</strong>mWe done messed up...</div>";
+	     echo "<strong>" . $pxml->status . "</strong> We done messed up...</div>";
 	   } else {
   	     $token = $pxml->{'play-token'};
-	     echo "<p>" . $token . "</p>";
+	     #echo "<p>" . $token . "</p>";
+
+	     #echo "<p>" . $_REQUEST['pickthis'] . "</p>";
+	
+	     #$purl = $etbase . "/sets/" . $token . "/play.xml" . $etkey;
+	     #$play = get_page($purl)
+
 	   }
 
 	   $etmethod = "/mixes.xml";
 	   $etsort   = "&sort=popular";
 	   $mix      = $etbase . $etmethod . $etkey . $etsort;
-	   echo "<p class='lead'>" . $mix . "</p>";
+	   echo "<p class='lead'>" . $etmethod . "</p>";
 	   
 	   $response = get_page($mix);
 	   $xml = new SimpleXMLElement($response);
@@ -69,6 +88,7 @@
 	       $img  = (string) $data[$i]->{'cover-urls'}->sq250;
 	       $link = (string) $data[$i]->path;
 	       $tags = (string) $data[$i]->{'tag-list-cache'};
+	       $mid  = (string) $data[$i]->id;
 
                echo "<div class='media'>";
 	       echo "<a href='" . $etbase . $link . "' class='pull-left' target='_blank'>";
@@ -76,7 +96,10 @@
 	       echo "<div class='media-body'>";
 	       echo "<h2 class='media-heading'>" . $name . "</h2>";
 	       echo "<p>" . $desc . "</p><p>" . $tags . "</p>";
+	       echo "<input type='button' id='pickthis' value='" . $mid . "'/>";
 	       echo "</div></div>";
+
+
              }
            }
 

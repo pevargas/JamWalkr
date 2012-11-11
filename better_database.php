@@ -76,11 +76,17 @@
 	     //$query = "INSERT INTO Buildings VALUES ('', '$building_name', '$lat', '$long')";
 	     //mysql_query($query);
 
-
-	     $query = "SELECT * FROM Buildings";
+		
+		
+	     $query = "SELECT * FROM Buildings" or die(mysql_error());
+		 
+		 /*
+		 $query = "SELECT * FROM Buildings" WHERE $building_id= '$auto_increment' or die(mysql_error());
+		
+		 */
 	     $result = mysql_query($query);
-
-
+							
+		 	
 
 	     //Old
 	     # var_dump(curl_version());

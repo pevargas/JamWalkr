@@ -36,12 +36,11 @@
 	<h1>JamWalkr</h1>
 	<p class="lead">The Music Tagging Project</p>
 
-	<p>For Deliverable I, select the tabs to the left. In this deliverable we should be able to:</p>
+	<p>For Deliverable II, select the tabs to the left. In this deliverable we should be able to:</p>
 	<ul>
-	  <li>Load and display a webpage</li>
-	  <li>Map Control (Pan, Zoom, etc.)</li>
-	  <li>Interact with the MySQL database</li>
-	  <li>Demonstrate connection with the Last.fm API and 8tracks API</li>
+	  <li>View webpage on a desktop and mobile device from a url</li>
+    <li>Interact with the application and it’s interface</li>
+    <li>Send information to server.</li>
 	</ul>
       </div>
     </div>

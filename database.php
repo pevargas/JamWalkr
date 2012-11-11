@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <?php include("res/auth.php");
-        include("res/loadfunc.php"); 
-	include("res/links.php") ?>
+  <?php
+  	include("res/php/auth.php");
+    include("res/php/loadfunc.php"); 
+		include("res/php/links.php");
+	?>
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">

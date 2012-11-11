@@ -67,41 +67,8 @@
             $play = get_page($purl);
           }
 
-          $etmethod = "/mixes.xml";
-          $etsort   = "&sort=popular";
-          $mix      = $etbase . $etmethod . $etkey . $etsort;
-          echo "<p class='lead'>" . $etmethod . "</p>";
-      	   
-          $response = get_page($mix);
-          $xml = new SimpleXMLElement($response);
+          echo grab_mixes($etbase, $etkey);
 
-          if ($xml->status != "200 OK") {
-            echo "<div class='alert'>";
-            echo "<button type='button' class='close' data-dismiss='alert'>×</button>";
-            echo "<strong>" . $xml->status . "</strong> We done messed up...</div>";
-          } else {
-            $data = $xml->mixes->mix;
-            for ($i = 0; $i < sizeof($data); $i++) {
-              $name = (string) $data[$i]->name;
-              $desc = (string) $data[$i]->description;
-              $img  = (string) $data[$i]->{'cover-urls'}->sq250;
-              $link = (string) $data[$i]->path;
-              $tags = (string) $data[$i]->{'tag-list-cache'};
-              $mid  = (string) $data[$i]->id;
-
-              echo "<div class='media'>";
-              echo "<a href='" . $etbase . $link . "' class='pull-left' target='_blank'>";
-              echo "<img src='" . $img . "' alt='" . $name . "' class='media-object thumbnail'/></a>";
-              echo "<div class='media-body'>";
-              echo "<h2 class='media-heading'>" . $name . "</h2>";
-              echo "<p>" . $desc . "</p><p>" . $tags . "</p>";
-              echo "<submit type='button' id='pickthis' value='" . $mid . "'/>";
-              echo "</div></div>";
-            }
-          }
-
-          echo "<pre>";
-          echo var_dump($img) . "</pre>";
           ?>
       </div>
     </div>

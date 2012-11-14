@@ -42,6 +42,7 @@
 
 	  <?php
 	     
+	     //Set up database, if necessary
 	     mysql_connect(localhost,$username,$password);
 	     $con = mysql_connect(localhost,$username,$password);	     
 	     if (!$con) {
@@ -57,6 +58,10 @@
 	     
 	     @mysql_select_db($database) or die( "Unable to select database");
 	     
+
+	     //Tags table holds the different tags that have been added. The first entry is the id in the table, the second entry is the id of the building in the Buildings table
+	     //that the tag is being applied to, the third entry is the actual tag, and the fourth entry is an integer rating that tracks how many approves and disapproves users
+	     //have given the particular tag.
 	     $query="CREATE TABLE Tags (id int(6) PRIMARY KEY NOT NULL auto_increment, building_id int(6) NOT NULL, tag_name varchar(30) NOT NULL, rating int(6) NOT NULL)";
 	     mysql_query($query);
 
@@ -66,18 +71,20 @@
 	     //$query = "INSERT INTO Tags VALUES ('', '$building_id', '$tag_name', 0)";
 	     //mysql_query($query);
 
-	     $query="CREATE TABLE Buildings (id int(6) PRIMARY KEY NOT NULL auto_increment, building_name varchar(30) NOT NULL, lat double precision(13, 10) NOT NULL, long double precision(13, 10) NOT NULL )";
+	     //Buildings table tracks the different buildings that have been tagged. The first entry is the id in the table, the second entry is the name of the building, the
+	     //third entry is the latitude of the location, and the fourth entry is the longitude of the location.
+	     $query="CREATE TABLE Buildings (id int(6) PRIMARY KEY NOT NULL auto_increment, building_name varchar(30) NOT NULL, lat double precision(13, 10) NOT NULL, lon double precision(13, 10) NOT NULL )";
 	     mysql_query($query);
 	     
 	     //Adding to Buildings
 	     //$building_name = ;
 	     //$lat = ;
-	     //$long = ;
-	     //$query = "INSERT INTO Buildings VALUES ('', '$building_name', '$lat', '$long')";
+	     //$lon = ;
+	     //$query = "INSERT INTO Buildings VALUES ('', '$building_name', '$lat', '$lon')";
 	     //mysql_query($query);
 
 		
-		
+		//Getting information from the databases
 	     $query = "SELECT * FROM Buildings" or die(mysql_error());
 		 
 		 /*
@@ -86,7 +93,10 @@
 		 */
 	     $result = mysql_query($query);
 							
-		 	
+		 // recover ALL the things from this broad query
+	    $num=mysql_numrows($result); 
+
+
 
 	     //Old
 	     # var_dump(curl_version());
@@ -144,6 +154,8 @@
 	     <?php
 		++$i;
 		} 
+		//End old
+
 		?>
       </div>
     </div>

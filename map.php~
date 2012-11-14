@@ -1,46 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <?php
-    include("res/php/auth.php");
-    include("res/php/loadfunc.php"); 
-    include("res/php/links.php");
-  ?>
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-  <script>
-    var map;
-    function initialize() {
-      var mapOptions = {
-        zoom: 14,
-        center: new google.maps.LatLng(40.0150, -105.2700),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+  <?php include("res/auth.php");
+        include("res/loadfunc.php");
+	     include("res/links.php") ?>
+	 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<script>
+      var map;
+      function initialize() {
+        var mapOptions = {
+          zoom: 8,
+          center: new google.maps.LatLng(-34.397, 150.644),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById('map_canvas'),
+            mapOptions);
+      }
 
-      // On right click
-      google.maps.event.addListener(map, "rightclick", function(event) {
-        var lat = event.latLng.lat();
-        var lng = event.latLng.lng();
-        var myLatlng = new google.maps.LatLng(lat, lng);
-
-        // Create a marker at coords
-        var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          title:"ME AM MARKER. OOG OOG."
-        });
-      });
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-  </script>
-  <style>
-    #map_canvas {
-      margin: 0;
-      padding: 0;
-      height: 400px;
-      width: 500px;
-    }
-  </style>
+      google.maps.event.addDomListener(window, 'load', initialize);
+   </script>
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -70,8 +48,8 @@
 	</ul>
       </div>
       <div class="span9">
-    	  <h1>Google Maps API</h1>
-    	  <div id="map_canvas" width="500" height="500"></div>
+	      <h1>Google Maps API</h1>
+	      <div id="map_canvas" style="height 100"></div>
       </div>
     </div>
   </div>

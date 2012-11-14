@@ -84,6 +84,15 @@
 	     //mysql_query($query);
 
 		
+		mysql_close(); 
+	    
+	    
+	    // run initializer to set $username, $password, $database
+	    mysql_connect(localhost,$username,$password);
+		@mysql_select_db($database) or die( "Unable to select database");
+	    $query="SELECT * FROM Buildings";
+	    $result=mysql_query($query);
+
 		//Getting information from the databases
 	     $query = "SELECT * FROM Buildings" or die(mysql_error());
 		 

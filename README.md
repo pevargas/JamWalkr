@@ -92,7 +92,6 @@ efaea88b3f74c64c06351f6e76674f65bcc23ea0
 
 Web Server Information
 ----------------------  
-* Host: jamwalkr.zzl.org  
-* Port: 21  
-* User: jamwalkr_zzl
+* Host: jamwalkr.site11.com  
+* User: a9185905  
 * Password: You know what it is...  

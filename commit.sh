@@ -1,6 +1,6 @@
 #!/bin/bash
 
 clear
-sudo rm *~
+sudo git rm *~
 sudo git add .
 sudo git commit -a

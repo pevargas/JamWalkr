@@ -35,17 +35,18 @@
 	</ul>
       </div>      <div class="span9">
 	<h1>MySQL Database</h1>
-	  <!-- CHANGE USERNAME AND PASSWORD FOR NOW FOR LOCALHOST USE -->
+	  <!-- CHANGE USERNAME AND PASSWORD FOR NOW FOR USE -->
 	  <?php
-	     $username="root";
-	     $password="guest";
-	     $database="JamWalkr";
+	  	 $mysql_host = "mysql13.000webhost.com";
+	     $username="a9185905_smucker";
+	     $password="ProfessorWhite3308";
+	     $database="a9185905_jar";
 	     ?> 	  
 
 	  <?php
 	     
-	     mysql_connect(localhost,$username,$password);
-	     $con = mysql_connect(localhost,$username,$password);	     
+	     mysql_connect($mysql_host,$username,$password);
+	     $con = mysql_connect($mysql_host,$username,$password);	     
 	     if (!$con) {
 	       die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>");
 	     }
@@ -85,7 +86,7 @@
 	    mysql_close(); 
 	    
 	    // run initializer to set $username, $password, $database
-	    mysql_connect(localhost,$username,$password);
+	    mysql_connect($mysql_host,$username,$password);
 	    @mysql_select_db($database) or die( "Unable to select database");
 	    $query="SELECT * FROM Artists";
 	    $result=mysql_query($query);

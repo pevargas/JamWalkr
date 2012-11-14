@@ -6,18 +6,7 @@
     include("res/php/loadfunc.php"); 
     include("res/php/links.php");
   ?>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"/>
-  <script type="text/javascript">
-    $("#pickthis").click(function() {
-      $.ajax({   
-        type:"POST",
-        url:"8tracks.php",
-        data:{fileid:pickthisid},
-        cache:false,
-      });
-    });​
-
-    </script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -48,28 +37,79 @@
       </div>
       <div class="span9">
         <h1>8Tracks API</h1>
+        
+
         <?php
-          $purl = $etbase . "/sets/new.xml" . $etkey . "&api_version=2";
-          echo "<p class='lead'>" . $purl . "</p>";
-
-          $play = get_page($purl);
-          $pxml = new SimpleXMLElement($play);
-          if ($pxml->status != "200 OK") {
-            echo "<div class='alert'>";
-            echo "<button type='button' class='close' data-dismiss='alert'>×</button>";
-            echo "<strong>" . $pxml->status . "</strong> We done messed up...</div>";
+          if (!isset($_REQUEST["tag"]) || ($_REQUEST["tag"] == "")) {
+            echo "<form class='form-search' method='post' action='8tracks.php'>" .
+                 "<input type='text' class='input-medium search-query' name='tag' placeholder='tag' autofocus='autofocus'/>" .
+                 "<button type='submit' class='btn'>Search</button></form>";
           } else {
-            $token = $pxml->{'play-token'};
-            echo "<p>" . $token . "</p>";
-            echo "<p>" . $_REQUEST['pickthis'] . "</p>";
+            $tag = $_REQUEST["tag"];
+            echo $tag;
 
-            $purl = $etbase . "/sets/" . $token . "/play.xml" . $etkey;
+            $etmethod = "/mixes.xml";
+            $etsearch = "&tag=" . $tag . "&sort=popular";
+            $mix      = $etbase . $etmethod . $etkey . $etsearch;
+            $ret      = "<p class='lead'>" . $mix . "</p>";
+                     
+            $response = get_page($mix);
+            $xml = new SimpleXMLElement($response);
+
+            if ($xml->status != "200 OK") {
+              $ret .= "<div class='alert'>";
+              $ret .= "<button type='button' class='close' data-dismiss='alert'>×</button>";
+              $ret .= "<strong>" . $xml->status . "</strong> We done messed up...</div>";
+            } else {
+              $data = $xml->mixes->mix;
+              $name = (string) $data[0]->name;
+              $desc = (string) $data[0]->description;
+              $img  = (string) $data[0]->{'cover-urls'}->sq250;
+              $link = (string) $data[0]->path;
+              $tags = (string) $data[0]->{'tag-list-cache'};
+              $mid  = (string) $data[0]->id;
+
+              $ret .= "<div class='media'>";
+              $ret .= "<a href='" . $etbase . $link . "' class='pull-left' target='_blank'>";
+              $ret .= "<img src='" . $img . "' alt='" . $name . "' class='media-object thumbnail'/></a>";
+              $ret .= "<div class='media-body'>";
+              $ret .= "<h2 class='media-heading'>" . $name . "</h2>";
+              $ret .= "<p>" . $desc . "</p><p>" . $tags . "</p>";
+              $ret .= "</div></div>";
+            }
+
+            echo $ret;
+            
+            $purl = $etbase . "/sets/new.xml" . $etkey . "&api_version=2";
+            echo "<p class='lead'>" . $purl . "</p>";
+
             $play = get_page($purl);
+            $pxml = new SimpleXMLElement($play);
+            if ($pxml->status != "200 OK") {
+              echo "<div class='alert'>".
+                   "<button type='button' class='close' data-dismiss='alert'>×</button>".
+                   "<strong>" . $pxml->status . "</strong> We done messed up...</div>";
+            } else {
+              $token = $pxml->{'play-token'};
+              echo "<p>" . $token . "</p>".
+                   "<p>" . $purl . "</p>";
+
+              $purl = $etbase . "/sets/" . $token . "/play.xml" . $etkey . "&api_version=2&mix_id=" . $mid;
+              $play = get_page($purl);
+	      $pxml = new SimpleXMLElement($play);
+              echo "<pre>" . $pxml . "</pre>";
+
+	      $song = $pxml->set->year->url;
+              echo "<pre>" . $song . "</pre>";
+            }
           }
 
-          echo grab_mixes($etbase, $etkey);
+          #echo grab_mixes($etbase, $etkey);
 
-          ?>
+	  
+
+	  ?>
+
       </div>
     </div>
   </div>

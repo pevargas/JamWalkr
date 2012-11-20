@@ -10,6 +10,7 @@
   <script>
     var map;
     function initialize() {
+      // Init map options
       var mapOptions = {
         zoom: 14,
         center: new google.maps.LatLng(40.0150, -105.2700),
@@ -17,19 +18,39 @@
       };
       map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 
-      // On right click
+      // Markers
+      var id;
+      var markers = {};
+      // Add markers
+      var addMarker = function (alatLng) {
+          marker = new google.maps.Marker({ 
+              position: alatLng,
+              map: map,
+              draggable: true,
+              animation: google.maps.Animation.DROP
+          });
+          //map.panTo(alatLng);
+          id = marker.__gm_id
+          markers[id] = marker; 
+
+          google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });
+      }
+
+      // Delete marker on right click
+      var delMarker = function (id) {
+          marker = markers[id]; 
+          marker.setMap(null);
+      }
+
+      // Right click handler
       google.maps.event.addListener(map, "rightclick", function(event) {
         var lat = event.latLng.lat();
         var lng = event.latLng.lng();
         var myLatlng = new google.maps.LatLng(lat, lng);
-
-        // Create a marker at coords
-        var marker = new google.maps.Marker({
-          position: myLatlng,
-          map: map,
-          title:"ME AM MARKER. OOG OOG."
-        });
+        addMarker(myLatlng);
       });
+
+
     }
     google.maps.event.addDomListener(window, 'load', initialize);
   </script>

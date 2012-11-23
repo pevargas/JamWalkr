@@ -43,7 +43,7 @@
   
   <div class="container-fluid" style="margin-top: 50px;">
     <div class="row-fluid">
-      <div class="span3">
+      <div class="span3 visible-desktop">
         <ul class="nav nav-pills nav-stacked">
           <li><a href="./index.php"><i class="icon-home"></i> Home</a></li>
           <li><a href="./lfm.php"><i class="icon-music"></i> Last.fm API</a></li>

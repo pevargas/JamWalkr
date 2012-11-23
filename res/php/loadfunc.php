@@ -62,4 +62,48 @@ function grab_mixes ($etbase, $etkey) {
   return $ret;
 }
 
+function report_back($url) { $response = get_page($url); }
+
+function haz_errors ($url) {
+  $xml = new SimpleXMLElement($url);
+
+  if ($xml->status != "200 OK") {
+    $ret  = "<div class='alert'>";
+    $ret .= "<button type='button' class='close' data-dismiss='alert'>×</button>";
+    $ret .= "<strong>" . $xml->status . "</strong> We done messed up...</div>";
+    echo $ret;
+    return true;
+  }
+
+  return false;
+}
+
+function most_pop_mix ($tags) {
+  
+}
+
+function display_mix_info ($mix_id) {
+  $curl = $etbase . "/mixes/" . $mix_id . ".xml" . $etkey;
+  $response = get_page($curl);
+  if (!haz_errors($response)) {
+    $xml = new SimpleXMLElement($response);
+    $data = $xml->mix;
+    $name = (string) $data->name;
+    $desc = (string) $data->description;
+    $img  = (string) $data->{'cover-urls'}->sq250;
+    $link = (string) $data->path;
+    $tags = (string) $data->{'tag-list-cache'};
+    $mid  = (string) $data->id;
+
+    $ret .= "<div class='media'>";
+    $ret .= "<a href='" . $etbase . $link . "' class='pull-left' target='_blank'>";
+    $ret .= "<img src='" . $img . "' alt='" . $name . "' class='media-object thumbnail'/></a>";
+    $ret .= "<div class='media-body'>";
+    $ret .= "<h2 class='media-heading'>" . $name . "</h2>";
+    $ret .= "<p>" . $desc . "</p><p>" . $tags . "</p>";
+    $ret .= "</div></div>";
+    echo $ret;
+  }
+}
+
 ?>

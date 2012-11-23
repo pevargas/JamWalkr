@@ -7,8 +7,25 @@
     include("res/php/links.php");
   ?>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+  <script type="text/javascript">
+    function listen() {
+      var myplayer = document.getElementById('player');
+      var timepast = myplayer.currentTime;
+      var duration = myplayer.duration;
+      var width    = String(100*(timepast / duration));
+      document.getElementById('time').setAttribute("style", "width:" + width + "%");
+      if (30 < timepast && timepast < 31) {
+        var url = document.getElementById('back').innerHTML;
+        document.getElementById('report').innerHTML = "<?= report_back(" + url + ");?>";
+        document.getElementById('sent').setAttribute("class", "muted");
+      }
+      window.setTimeout (function() { listen(); }, 1000);
+
+    }
+  </script>
 </head>
-<body>
+<body onload="listen()">
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container-fluid">
@@ -38,78 +55,52 @@
       <div class="span9">
         <h1>8Tracks API</h1>
         
-
         <?php
           if (!isset($_REQUEST["tag"]) || ($_REQUEST["tag"] == "")) {
             echo "<form class='form-search' method='post' action='8tracks.php'>" .
                  "<input type='text' class='input-medium search-query' name='tag' placeholder='tag' autofocus='autofocus'/>" .
                  "<button type='submit' class='btn'>Search</button></form>";
           } else {
-            $tag = $_REQUEST["tag"];
-            echo $tag;
-
+            echo "<p class='lead'>You're listening to the \"" . $_REQUEST["tag"] . "\" tag.</p>";
+            $tags = urlencode($_REQUEST["tag"]);
             $etmethod = "/mixes.xml";
-            $etsearch = "&tag=" . $tag . "&sort=popular";
+            $etsearch = "&tag=" . $tags . "&sort=popular";
             $mix      = $etbase . $etmethod . $etkey . $etsearch;
-            $ret      = "<p class='lead'>" . $mix . "</p>";
-                     
             $response = get_page($mix);
-            $xml = new SimpleXMLElement($response);
-
-            if ($xml->status != "200 OK") {
-              $ret .= "<div class='alert'>";
-              $ret .= "<button type='button' class='close' data-dismiss='alert'>×</button>";
-              $ret .= "<strong>" . $xml->status . "</strong> We done messed up...</div>";
-            } else {
-              $data = $xml->mixes->mix;
-              $name = (string) $data[0]->name;
-              $desc = (string) $data[0]->description;
-              $img  = (string) $data[0]->{'cover-urls'}->sq250;
-              $link = (string) $data[0]->path;
-              $tags = (string) $data[0]->{'tag-list-cache'};
-              $mid  = (string) $data[0]->id;
-
-              $ret .= "<div class='media'>";
-              $ret .= "<a href='" . $etbase . $link . "' class='pull-left' target='_blank'>";
-              $ret .= "<img src='" . $img . "' alt='" . $name . "' class='media-object thumbnail'/></a>";
-              $ret .= "<div class='media-body'>";
-              $ret .= "<h2 class='media-heading'>" . $name . "</h2>";
-              $ret .= "<p>" . $desc . "</p><p>" . $tags . "</p>";
-              $ret .= "</div></div>";
-            }
-
-            echo $ret;
-            
-            $purl = $etbase . "/sets/new.xml" . $etkey . "&api_version=2";
-            echo "<p class='lead'>" . $purl . "</p>";
-
-            $play = get_page($purl);
-            $pxml = new SimpleXMLElement($play);
-            if ($pxml->status != "200 OK") {
-              echo "<div class='alert'>".
-                   "<button type='button' class='close' data-dismiss='alert'>×</button>".
-                   "<strong>" . $pxml->status . "</strong> We done messed up...</div>";
-            } else {
-              $token = $pxml->{'play-token'};
-              echo "<p>" . $token . "</p>".
-                   "<p>" . $purl . "</p>";
-
-              $purl = $etbase . "/sets/" . $token . "/play.xml" . $etkey . "&api_version=2&mix_id=" . $mid;
+            if (!haz_errors($response)) {
+              $xml = new SimpleXMLElement($response);
+              $mid = (string) $xml->mixes->mix[0]->id;
+              //display_mix_info($mid);
+              $purl = $etbase . "/sets/new.xml" . $etkey . "&api_version=2";
               $play = get_page($purl);
-	      $pxml = new SimpleXMLElement($play);
-              echo "<pre>" . $pxml . "</pre>";
+              if (!haz_errors($play)) {
+                $pxml   = new SimpleXMLElement($play);
+                $ptok   = $pxml->{'play-token'};
+                $purl   = $etbase."/sets/".$ptok."/play.xml".$etkey."&api_version=2&mix_id=".$mid;
+                $play   = get_page($purl);
+                $pxml   = new SimpleXMLElement($play);
+                $track  = $pxml->set->track;
+                $url    = $track->url;
+                $tid    = $track->id;
+                $artist = $track->performer;
+                $title  = $track->name;
 
-	      $song = $pxml->set->year->url;
-              echo "<pre>" . $song . "</pre>";
-            }
+                $back = $etbase."/sets/".$ptok."/report.xml".$etkey."&track_id=".$tid."&mix_id=".$mid; ?>
+                <video src="<?=$url;?>" autoplay="autoplay" controls="controls" id="player">
+                  Your browser does not support the video tag. Boo.
+                </video>
+
+                <div class="progress progress-striped active">
+                  <div class="bar" id="time"></div>
+                </div>
+                <p id="sent"><strong><?=$artist?></strong> <?=$title?></p>
+
+                <span id="back" style="display: none;"><?=$back;?></span>
+                <span id="report" style="display:none;"></span>
+      <?php }
           }
-
-          #echo grab_mixes($etbase, $etkey);
-
-	  
-
-	  ?>
-
+        }
+      ?>
       </div>
     </div>
   </div>

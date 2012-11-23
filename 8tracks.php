@@ -6,24 +6,39 @@
     include("res/php/loadfunc.php"); 
     include("res/php/links.php");
   ?>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
   <script type="text/javascript">
-    function listen() {
-      var myplayer = document.getElementById('player');
-      var timepast = myplayer.currentTime;
-      var duration = myplayer.duration;
-      var width    = String(100*(timepast / duration));
-      document.getElementById('time').setAttribute("style", "width:" + width + "%");
-      if (30 < timepast && timepast < 31) {
-        var url = document.getElementById('back').innerHTML;
-        document.getElementById('report').innerHTML = "<?= report_back(" + url + ");?>";
-        document.getElementById('sent').setAttribute("class", "muted");
-      }
-      window.setTimeout (function() { listen(); }, 1000);
-
+  function listen() {
+    var myplayer = document.getElementById('player');
+    var timepast = myplayer.currentTime;
+    var duration = myplayer.duration;
+    var width    = String(100*(timepast / duration));
+    document.getElementById('time').setAttribute("style", "width:" + width + "%");
+    if (timepast <= 0) {
+      var url = document.getElementById("src").innerHTML;
+      myplayer.setAttribute("src", url);
+      myplayer.play();
     }
+    if (30 < timepast && timepast < 31) {
+      var url = document.getElementById('back').innerHTML;
+      document.getElementById('report').innerHTML = "<?= report_back(" + url + ");?>";
+      document.getElementById('sent').setAttribute("class", "muted");
+    }
+    window.setTimeout (function() { listen(); }, 1000);
+  }
+  function toggleMusic() {
+    var player = document.getElementById('player');
+    var button = document.getElementById('control');
+    if (player.paused) { player.play(); button.setAttribute("class", "icon-pause icon-white"); }
+    else { player.pause(); button.setAttribute("class", "icon-play icon-white"); }
+  }
   </script>
+
+  <style type="text/css">
+  .control-conatiner { height: 20px; width: 20px; padding: 0px; }
+  #control { margin: 0px; }
+  .data { display: none; }
+  </style>
 </head>
 <body onload="listen()">
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -55,52 +70,45 @@
       <div class="span9">
         <h1>8Tracks API</h1>
         
-        <?php
-          if (!isset($_REQUEST["tag"]) || ($_REQUEST["tag"] == "")) {
-            echo "<form class='form-search' method='post' action='8tracks.php'>" .
-                 "<input type='text' class='input-medium search-query' name='tag' placeholder='tag' autofocus='autofocus'/>" .
-                 "<button type='submit' class='btn'>Search</button></form>";
-          } else {
-            echo "<p class='lead'>You're listening to the \"" . $_REQUEST["tag"] . "\" tag.</p>";
-            $tags = urlencode($_REQUEST["tag"]);
-            $etmethod = "/mixes.xml";
-            $etsearch = "&tag=" . $tags . "&sort=popular";
-            $mix      = $etbase . $etmethod . $etkey . $etsearch;
-            $response = get_page($mix);
-            if (!haz_errors($response)) {
-              $xml = new SimpleXMLElement($response);
-              $mid = (string) $xml->mixes->mix[0]->id;
-              //display_mix_info($mid);
-              $purl = $etbase . "/sets/new.xml" . $etkey . "&api_version=2";
-              $play = get_page($purl);
-              if (!haz_errors($play)) {
-                $pxml   = new SimpleXMLElement($play);
-                $ptok   = $pxml->{'play-token'};
-                $purl   = $etbase."/sets/".$ptok."/play.xml".$etkey."&api_version=2&mix_id=".$mid;
-                $play   = get_page($purl);
-                $pxml   = new SimpleXMLElement($play);
-                $track  = $pxml->set->track;
-                $url    = $track->url;
-                $tid    = $track->id;
-                $artist = $track->performer;
-                $title  = $track->name;
+  <?php if (!isset($_REQUEST["tag"]) || ($_REQUEST["tag"] == "")) { ?>
+          <form class="form-search" method="post" action="8tracks.php">
+            <div class="input-append">
+              <input type="text" class="input-medium search-query" name="tag" placeholder="tag or mood" autofocus="autofocus"/>
+              <button type="submit" class="btn">Search</button>
+            </div>
+          </form>
+  <?php } else { 
+          $tags = urlencode($_REQUEST["tag"]);
+          if ((($mid = most_pop_mix ($tags)) != false) && (($ptok = play_token ()) != false)) {
+            $purl   = $etbase."/sets/".$ptok."/play.xml".$etkey."&mix_id=".$mid;
+              
+            $song = play_track ($mid, $ptok, $purl);
+            ?>
+          <p class="lead">You're listening to the "<?=$_REQUEST["tag"];?>" tag.</p>
+          <div class="data">
+            <span id="music"></span>
+            <span id="src"><?=$song['url'];?></span>
+            <span id="back"><?=$song['back'];?></span>
+            <span id="next"><?=$song['next'];?></span>
+            <span id="report"></span>
+          </div>
+          <video id="player" class="data"></video>
 
-                $back = $etbase."/sets/".$ptok."/report.xml".$etkey."&track_id=".$tid."&mix_id=".$mid; ?>
-                <video src="<?=$url;?>" autoplay="autoplay" controls="controls" id="player">
-                  Your browser does not support the video tag. Boo.
-                </video>
+            <div>
+              <button class="btn btn-primary control-conatiner pull-left">
+                  <i onclick="toggleMusic()" id="control" class="icon-pause icon-white"></i>
+                </button> 
+              <div class="progress progress-striped active">
+                <div class="bar" id="time"></div>
+              </div>         
+            </div>
 
-                <div class="progress progress-striped active">
-                  <div class="bar" id="time"></div>
-                </div>
-                <p id="sent"><strong><?=$artist?></strong> <?=$title?></p>
+            <div><?= display_mix_info ($mid);?></div>
 
-                <span id="back" style="display: none;"><?=$back;?></span>
-                <span id="report" style="display:none;"></span>
-      <?php }
-          }
-        }
-      ?>
+            <ul id="sent">
+              <li><strong><?=$song['artist']?></strong> <?=$song['title']?></li>
+            </ul>
+      <?php } } ?>
       </div>
     </div>
   </div>

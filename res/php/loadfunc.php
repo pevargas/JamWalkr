@@ -23,7 +23,8 @@
   return $response;
 }
 
-function grab_mixes ($etbase, $etkey) {
+function grab_mixes () {
+  include("res/php/auth.php");
   $etmethod = "/mixes.xml";
   $etsort   = "&sort=popular";
   $mix      = $etbase . $etmethod . $etkey . $etsort;
@@ -62,8 +63,6 @@ function grab_mixes ($etbase, $etkey) {
   return $ret;
 }
 
-function report_back($url) { $response = get_page($url); }
-
 function haz_errors ($url) {
   $xml = new SimpleXMLElement($url);
 
@@ -78,11 +77,36 @@ function haz_errors ($url) {
   return false;
 }
 
+function report_back($url) { $response = get_page($url); }
+
 function most_pop_mix ($tags) {
-  
+  include("res/php/auth.php");
+  $etmethod = "/mixes.xml";
+  $etsearch = "&tag=" . $tags . "&sort=popular";
+  $mix      = $etbase . $etmethod . $etkey . $etsearch;
+  $response = get_page($mix);
+  if (!haz_errors($response)) {
+    $xml = new SimpleXMLElement($response);
+    $mid = (string) $xml->mixes->mix[0]->id;
+    return $mid;
+  }
+  return false;
+}
+
+function play_token () {
+  include("res/php/auth.php");
+  $purl = $etbase . "/sets/new.xml" . $etkey;
+  $play = get_page($purl);
+  if (!haz_errors($play)) {
+    $pxml = new SimpleXMLElement($play);
+    $ptok = $pxml->{'play-token'};
+    return $ptok;
+  }
+  return false;
 }
 
 function display_mix_info ($mix_id) {
+  include("res/php/auth.php");
   $curl = $etbase . "/mixes/" . $mix_id . ".xml" . $etkey;
   $response = get_page($curl);
   if (!haz_errors($response)) {
@@ -90,7 +114,7 @@ function display_mix_info ($mix_id) {
     $data = $xml->mix;
     $name = (string) $data->name;
     $desc = (string) $data->description;
-    $img  = (string) $data->{'cover-urls'}->sq250;
+    $img  = (string) $data->{'cover-urls'}->sq56;
     $link = (string) $data->path;
     $tags = (string) $data->{'tag-list-cache'};
     $mid  = (string) $data->id;
@@ -104,6 +128,27 @@ function display_mix_info ($mix_id) {
     $ret .= "</div></div>";
     echo $ret;
   }
+}
+
+function play_track ($mid, $ptok, $url) {
+  include("res/php/auth.php");  
+  $play   = get_page($url);
+  $pxml   = new SimpleXMLElement($play);
+  $track  = $pxml->set->track;               
+  $back   = (string) $etbase."/sets/".$ptok."/report.xml".$etkey."&track_id=".$track->id."&mix_id=".$mid; 
+  $next   = (string) $etbase."/sets/".$ptok."/next.xml".$etkey."&mix_id=".$mid;
+  $url    = (string) $track->url;
+  $artist = (string) $track->performer;
+  $title  = (string) $track->name;
+
+  $ret = array(
+    "url"    => $url,
+    "back"   => $back, 
+    "next"   => $next,
+    "title"  => $title,
+    "artist" => $artist,
+  );
+  return $ret;
 }
 
 ?>

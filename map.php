@@ -46,8 +46,8 @@
             "<input type='text' name='tag1' placeholder='Tag 1'/>" +
             "<input type='text' name='tag2' placeholder='Tag 2'/>" +
             "<input type='text' name='tag3' placeholder='Tag 3'/>" +
-            "<input type='text' name='lat' value='"+alatlng.lat()+"'/>" +
-            "<input type='text' name='lng' value='"+alatlng.lng()+"'/>" +
+            "<input type='text' name='lat' value='"+alatlng.lat()+"' style='display:none;'/>" +
+            "<input type='text' name='lng' value='"+alatlng.lng()+"' style='display:none;'/>" +
             "<button type='submit' class='btn btn-primary'>Save</button></form>";
           
           makeInfoWindowEvent(map, infowindow, contentString, marker);

@@ -17,8 +17,8 @@
 	    $result = mysql_query($query);
 
 	    if (!$result) {
-   			die('Invalid query: ' . mysql_error());
-		}else{
+   			die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>");
+   		}else{
 			echo "Success! Added " . $building_name . " at (" . $lat . ", " . $lon . ")";
 		}
 

@@ -41,7 +41,7 @@
               animation: google.maps.Animation.DROP
           });
 
-          var contentString = "<form class='form-search' method='post' action='res/add.php'>" + 
+          var contentString = "<form class='form-search' method='get' action='res/php/add.php'>" + 
             "<input type='text' name='name' placeholder='Name of Building' autofocus='autofocus'/>" +
             "<input type='text' name='tag1' placeholder='Tag 1'/>" +
             "<input type='text' name='tag2' placeholder='Tag 2'/>" +

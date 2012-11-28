@@ -7,12 +7,20 @@
     include("res/php/links.php");
   ?>   
 
-<!--<?php
-/*  mysql_connect($mysql_host,$username,$password);
-  $con = mysql_connect($mysql_host,$username,$password);      
+<?php 
+  mysql_connect($mysql_host,$username,$password);
+  $con = mysql_connect($mysql_host,$username,$password);       
   if (!$con) {
     die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>");
-  } */?>-->
+  }
+  $db = mysql_select_db($database);
+  ?>
+
+<?php 
+  $sql = 'SELECT * FROM `Buildings` LIMIT 0, 30 ';
+  $rs = mysql_query($sql);
+    
+  if (!$rs) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
 
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
   <script type="text/javascript">
@@ -32,6 +40,27 @@
 
       var infowindow = new google.maps.InfoWindow();
 
+      // Add Init markers
+      var addInitMarker = function (alatlng, name, id, tag1, tag2, tag3) {
+          marker = new google.maps.Marker({ 
+              position: alatlng,
+              map: map,
+              draggable: true,
+              animation: google.maps.Animation.DROP
+          });
+
+          var contentString = "<h2>" + name + "</h2>";          
+          makeInfoWindowEvent(map, infowindow, contentString, marker);
+
+          //id = marker.__gm_id
+          markers[id] = marker; 
+
+          google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+          });
+      }
+
       // Add markers
       var addMarker = function (alatlng) {
           marker = new google.maps.Marker({ 
@@ -41,12 +70,12 @@
               animation: google.maps.Animation.DROP
           });
 
-          var contentString = "<form class='form-search' method='get' action='res/php/add.php'>" + 
-            "<input type='text' name='name' placeholder='Name of Building' autofocus='autofocus'/>" +
-            "<input type='text' name='tag1' placeholder='Tag 1'/>" +
-            "<input type='text' name='tag2' placeholder='Tag 2'/>" +
-            "<input type='text' name='tag3' placeholder='Tag 3'/>" +
-            "<input type='text' name='lat' value='"+alatlng.lat()+"' style='display:none;'/>" +
+          var contentString = "<form class='addPlace' method='get' action='res/php/add.php'>" + 
+            "<input type='text' name='name' placeholder='Name of Building' autofocus='autofocus'/><br/>" +
+            "<input type='text' name='tag1' placeholder='Tag 1'/><br/>" +
+            "<input type='text' name='tag2' placeholder='Tag 2'/><br/>" +
+            "<input type='text' name='tag3' placeholder='Tag 3'/><br/>" +
+            "<input type='text' name='lat' value='"+alatlng.lat()+"' style='display:none;'/><br/>" +
             "<input type='text' name='lng' value='"+alatlng.lng()+"' style='display:none;'/>" +
             "<button type='submit' class='btn btn-primary'>Save</button></form>";
           
@@ -56,11 +85,9 @@
           id = marker.__gm_id
           markers[id] = marker; 
 
-
           google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });
           google.maps.event.addListener(marker, 'click', function() {
             infowindow.open(map, marker);
-
           });
       }
 
@@ -85,9 +112,15 @@
         addMarker(myLatlng);
       });
 
+
+<?php while($row = mysql_fetch_array($rs)) { ?>
+        addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, "tag1", "tag2", "tag3");
+<?php } ?>
     }
+
     google.maps.event.addDomListener(window, 'load', initialize);
   </script>
+
   <style type="text/css">
     #map_canvas {
       margin: 0;
@@ -96,6 +129,7 @@
       width: 100%;
     }
   </style>
+
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -125,13 +159,7 @@
     	  <div id="map_canvas"></div>
       </div>
       <div class="span3">
-        <?php 
-        mysql_connect($mysql_host,$username,$password);
-        $con = mysql_connect($mysql_host,$username,$password);       
-        if (!$con) {
-          die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>");
-        }
-        $db = mysql_select_db($database);
+      <?php 
         $sql = 'SELECT * FROM `Buildings` LIMIT 0, 30 ';
         $rs = mysql_query($sql);
         

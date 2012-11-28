@@ -1,7 +1,7 @@
 <?php
 	include("res/php/auth.php");
 
-	if ( (isset($_REQUEST["sql"]) || !($_REQUEST["sql"] == "")) && (isset($_REQUEST["lat"]) || !($_REQUEST["lat"] == "")) && (isset($_REQUEST["lon"]) || !($_REQUEST["lon"] == "")) ) { 
+	if ( (isset($_REQUEST["lat"]) || !($_REQUEST["lat"] == "")) && (isset($_REQUEST["lon"]) || !($_REQUEST["lon"] == "")) ) { 
 			
 		$building_name = $_REQUEST['name'];
 		$lat		   = $_REQUEST['lat'];

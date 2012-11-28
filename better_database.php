@@ -31,20 +31,22 @@
 	  <li><a href="./map.php"><i class="icon-map-marker"></i> Google Maps API</a></li>
 	  <li class="active"><a href="./database.php"><i class="icon-hdd"></i> MySQL Database</a></li>
 	</ul>
-      </div>      <div class="span9">
+      </div>
+      <div class="span9">
 	<h1>MySQL Database</h1>
-	  <!-- CHANGE USERNAME AND PASSWORD FOR NOW FOR LOCALHOST USE -->
+	  <!-- Connect to host -->
 	  <?php
-	     $username="root";
-	     $password="guest";
-	     $database="JamWalkr";
-	     ?> 	  
+				  	 $mysql_host = "mysql13.000webhost.com";
+				     $username="a9185905_smucker";
+				     $password="ProfessorWhite3308";
+				     $database="a9185905_jar";
+				     ?> 	  
 
 	  <?php
 	     
 	     //Set up database, if necessary
-	     mysql_connect(localhost,$username,$password);
-	     $con = mysql_connect(localhost,$username,$password);	     
+	     mysql_connect($mysql_host,$username,$password);
+	     $con = mysql_connect($mysql_host,$username,$password);	     
 	     if (!$con) {
 	       die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>");
 	     }
@@ -88,7 +90,7 @@
 	    
 	    
 	    // run initializer to set $username, $password, $database
-	    mysql_connect(localhost,$username,$password);
+	    mysql_connect($mysql_host,$username,$password);
 		@mysql_select_db($database) or die( "Unable to select database");
 	    $query="SELECT * FROM Buildings";
 	    $result=mysql_query($query);
@@ -131,7 +133,7 @@
 	    mysql_close(); 
 	    
 	    // run initializer to set $username, $password, $database
-	    mysql_connect(localhost,$username,$password);
+	    mysql_connect($mysql_host,$username,$password);
 	    @mysql_select_db($database) or die( "Unable to select database");
 	    $query="SELECT * FROM Buildings";
 	    $result=mysql_query($query);

@@ -56,14 +56,14 @@
   
   <div class="container-fluid" style="margin-top: 50px;">
     <div class="row-fluid">
-      <div class="span3 visible-desktop">
+      <div class="span2 visible-desktop">
         <ul class="nav nav-pills nav-stacked">
           <li><a href="./index.php"><i class="icon-home"></i> Home</a></li>
           <li class="active"><a href="./8tracks.php"><i class="icon-headphones"></i> 8Tracks API</a></li>
           <li><a href="./map.php"><i class="icon-map-marker"></i> Google Maps API</a></li>
         </ul>
       </div>
-      <div class="span9">
+      <div class="span10">
         <h1>8Tracks API</h1>
         
   <?php if (!isset($_REQUEST["tag"]) || ($_REQUEST["tag"] == "")) { ?>

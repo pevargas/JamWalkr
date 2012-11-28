@@ -88,12 +88,12 @@
     }
     google.maps.event.addDomListener(window, 'load', initialize);
   </script>
-  <style>
+  <style type="text/css">
     #map_canvas {
       margin: 0;
       padding: 0;
       height: 400px;
-      width: 500px;
+      width: 100%;
     }
   </style>
 </head>
@@ -113,16 +113,16 @@
   
   <div class="container-fluid" style="margin-top: 50px;">
     <div class="row-fluid">
-      <div class="span3 visible-desktop">
+      <div class="span2 visible-desktop">
       	<ul class="nav nav-pills nav-stacked">
       	  <li><a href="./index.php"><i class="icon-home"></i> Home</a></li>
       	  <li><a href="./8tracks.php"><i class="icon-headphones"></i> 8Tracks API</a></li>
       	  <li class="active"><a href="./map.php"><i class="icon-map-marker"></i> Google Maps API</a></li>
       	</ul>
       </div>
-      <div class="span6">
+      <div class="span7">
     	  <h1>Google Maps API</h1>
-    	  <div id="map_canvas" width="500" height="500"></div>
+    	  <div id="map_canvas"></div>
       </div>
       <div class="span3">
         <?php 
@@ -138,21 +138,19 @@
         if (!$rs) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
 
         <ul>
-
-        <?php while($row = mysql_fetch_array($rs)) { ?>
-          <li>
-            <strong><?=$row['name'];?></strong> (<?=$row['lat']?>,<?=$row['lng']?>)
-            <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
-              $rs2 = mysql_query($sql2);
-              if (!$rs2) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
-              <ul>
-              <?php while($row2 = mysql_fetch_array($rs2)) { ?>
-                <li><?=$row2['tag'];?></li>
-              <?php } ?>
-              </ul>
-          </li>
-        <?php } ?>
-
+          <?php while($row = mysql_fetch_array($rs)) { ?>
+            <li>
+              <strong><?=$row['name'];?></strong> (<?=$row['lat']?>,<?=$row['lng']?>)
+              <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
+                $rs2 = mysql_query($sql2);
+                if (!$rs2) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
+                <ul>
+                <?php while($row2 = mysql_fetch_array($rs2)) { ?>
+                  <li><?=$row2['tag'];?></li>
+                <?php } ?>
+                </ul>
+            </li>
+          <?php } ?>
         </ul>
       </div>
     </div>

@@ -33,6 +33,7 @@
           id = marker.__gm_id
           markers[id] = marker; 
 
+
           google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });
       }
 
@@ -49,7 +50,6 @@
         var myLatlng = new google.maps.LatLng(lat, lng);
         addMarker(myLatlng);
       });
-
 
     }
     google.maps.event.addDomListener(window, 'load', initialize);

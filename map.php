@@ -42,8 +42,7 @@
           });
 
           var sql = "INSERT INTO Buildings (`lat`, `lon`) VALUES ('"+alatlng.lat()+"', '"+alatlng.lng()+"')";
-          var php = "if (!mysql_query(" + sql + ",$con)) { mysql_error() }";
-          document.getElementById("sql").setAttribute("value", php);
+          document.getElementById("sql").setAttribute("value", sql);
 
           var contentString = "<form class='form-search' method='post' action='ajax.php'>" + 
             "<div class='input-append'>" + "<input type='text' class='input-medium search-query' name='tag' placeholder='tag or mood' autofocus='autofocus'/>" +
@@ -60,6 +59,7 @@
           google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });
           google.maps.event.addListener(marker, 'click', function() {
             infowindow.open(map, marker);
+
           });
       }
 
@@ -126,7 +126,10 @@
       <div class="span9">
     	  <h1>Google Maps API</h1>
     	  <div id="map_canvas" width="500" height="500"></div>
-        <input name="sql" id="sql"/>
+          <form method="get" action="res/php/query.php">
+            <input name="sql" id="sql"/>
+            <button type="submit" class="btn">Search</button>
+          </form>
       </div>
     </div>
   </div>

@@ -18,7 +18,9 @@
 
 	    if (!$result) {
    			die('Invalid query: ' . mysql_error());
-		}		
+		}else{
+			echo "Success! Added " . $building_name . " at (" . $lat . ", " . $lon . ")";
+		}
 
 	}
 ?>

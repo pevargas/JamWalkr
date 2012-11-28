@@ -21,6 +21,9 @@
       // Markers
       var id;
       var markers = {};
+
+      var infowindow = new google.maps.InfoWindow();
+
       // Add markers
       var addMarker = function (alatLng) {
           marker = new google.maps.Marker({ 
@@ -29,18 +32,31 @@
               draggable: true,
               animation: google.maps.Animation.DROP
           });
+
+          makeInfoWindowEvent(map, infowindow, "mitchmitchmitch", marker);
+
           //map.panTo(alatLng);
           id = marker.__gm_id
           markers[id] = marker; 
 
 
           google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+          });
       }
 
       // Delete marker on right click
       var delMarker = function (id) {
           marker = markers[id]; 
           marker.setMap(null);
+      }
+
+      function makeInfoWindowEvent(map, infowindow, contentString, marker) {
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(contentString);
+          infowindow.open(map, marker);
+        });
       }
 
       // Right click handler

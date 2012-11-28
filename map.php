@@ -55,9 +55,13 @@
           id = marker.__gm_id
           markers[id] = marker; 
 
-          google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });
-          google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(map, marker);
+          google.maps.event.addListener(marker, "rightclick", function (point) { 
+            id = this.__gm_id; 
+            delMarker(id);
+          });
+          google.maps.event.addListener(marker, 'click', function(point) {
+            id = this.__gm_id;
+            infowindow.open(map, markers[id]);
           });
       }
 
@@ -86,8 +90,9 @@
           markers[id] = marker; 
 
           google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });
-          google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(map, marker);
+          google.maps.event.addListener(marker, 'click', function(point) {
+            id = this.__gm_id;
+            infowindow.open(map, markers[id]);
           });
       }
 

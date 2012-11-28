@@ -5,9 +5,17 @@
     include("res/php/auth.php");
     include("res/php/loadfunc.php"); 
     include("res/php/links.php");
-  ?>
+  ?>   
+
+<!--<?php
+/*  mysql_connect($mysql_host,$username,$password);
+  $con = mysql_connect($mysql_host,$username,$password);      
+  if (!$con) {
+    die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>");
+  } */?>-->
+
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-  <script>
+  <script type="text/javascript">
     var map;
     function initialize() {
       // Init map options
@@ -25,15 +33,24 @@
       var infowindow = new google.maps.InfoWindow();
 
       // Add markers
-      var addMarker = function (alatLng) {
+      var addMarker = function (alatlng) {
           marker = new google.maps.Marker({ 
-              position: alatLng,
+              position: alatlng,
               map: map,
               draggable: true,
               animation: google.maps.Animation.DROP
           });
 
-          makeInfoWindowEvent(map, infowindow, "mitchmitchmitch", marker);
+          var sql = "INSERT INTO Buildings (`lat`, `lon`) VALUES ('"+alatlng.lat()+"', '"+alatlng.lng()+"')";
+          //var php = "<?php if (!mysql_query(" + sql + ",$con)) { mysql_error() } ?>";
+          document.getElementById("sql").innerHTML = "fd";//php;
+
+          var contentString = "<form class='form-search' method='post' action='ajax.php'>" + 
+            "<div class='input-append'>" + "<input type='text' class='input-medium search-query' name='tag' placeholder='tag or mood' autofocus='autofocus'/>" +
+            "<button type='submit' class='btn'>Search</button></div></form>";
+
+          
+          makeInfoWindowEvent(map, infowindow, sql, marker);
 
           //map.panTo(alatLng);
           id = marker.__gm_id
@@ -109,6 +126,7 @@
       <div class="span9">
     	  <h1>Google Maps API</h1>
     	  <div id="map_canvas" width="500" height="500"></div>
+        <p id="sql"></p>
       </div>
     </div>
   </div>

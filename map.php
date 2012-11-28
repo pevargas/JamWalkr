@@ -183,7 +183,7 @@
                 <?php if ($first) { ?>
                 <li><form class="form-search" method="post" action="8tracks.php">
                 <input type="text" name="tag" value="<?=$tags?>" style="display:none;"/>
-                <button type="submit" class="btn btn-primary"><i class="icon-play"></i></button></form></li>
+                <button type="submit" class="btn btn-primary btn-mini"><i class="icon-white icon-play"></i></button></form></li>
                 <?php } ?>
               </ul>
             </li>

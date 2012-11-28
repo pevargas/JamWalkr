@@ -52,7 +52,7 @@
           var contentString = "<h2>" + name + "</h2>";          
           makeInfoWindowEvent(map, infowindow, contentString, marker);
 
-          //id = marker.__gm_id
+          id = marker.__gm_id
           markers[id] = marker; 
 
           google.maps.event.addListener(marker, "rightclick", function (point) { id = this.__gm_id; delMarker(id) });

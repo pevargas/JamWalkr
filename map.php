@@ -42,8 +42,8 @@
           });
 
           var sql = "INSERT INTO Buildings (`lat`, `lon`) VALUES ('"+alatlng.lat()+"', '"+alatlng.lng()+"')";
-          //var php = "<?php if (!mysql_query(" + sql + ",$con)) { mysql_error() } ?>";
-          document.getElementById("sql").innerHTML = "fd";//php;
+          var php = "if (!mysql_query(" + sql + ",$con)) { mysql_error() }";
+          document.getElementById("sql").setAttribute("value", php);
 
           var contentString = "<form class='form-search' method='post' action='ajax.php'>" + 
             "<div class='input-append'>" + "<input type='text' class='input-medium search-query' name='tag' placeholder='tag or mood' autofocus='autofocus'/>" +
@@ -126,7 +126,7 @@
       <div class="span9">
     	  <h1>Google Maps API</h1>
     	  <div id="map_canvas" width="500" height="500"></div>
-        <p id="sql"></p>
+        <input name="sql" id="sql"/>
       </div>
     </div>
   </div>

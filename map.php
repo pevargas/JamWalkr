@@ -41,15 +41,16 @@
               animation: google.maps.Animation.DROP
           });
 
-          var sql = "INSERT INTO Buildings (`lat`, `lon`) VALUES ('"+alatlng.lat()+"', '"+alatlng.lng()+"')";
-          document.getElementById("sql").setAttribute("value", sql);
-
-          var contentString = "<form class='form-search' method='post' action='ajax.php'>" + 
-            "<div class='input-append'>" + "<input type='text' class='input-medium search-query' name='tag' placeholder='tag or mood' autofocus='autofocus'/>" +
-            "<button type='submit' class='btn'>Search</button></div></form>";
-
+          var contentString = "<form class='form-search' method='post' action='add.php'>" + 
+            "<input type='text' name='name' placeholder='Name of Building' autofocus='autofocus'/>" +
+            "<input type='text' name='tag1' placeholder='Tag 1'/>" +
+            "<input type='text' name='tag2' placeholder='Tag 2'/>" +
+            "<input type='text' name='tag3' placeholder='Tag 3'/>" +
+            "<input type='text' name='lat' value='"+alatlng.lat()+"'/>" +
+            "<input type='text' name='lng' value='"+alatlng.lng()+"'/>" +
+            "<button type='submit' class='btn btn-primary'>Save</button></form>";
           
-          makeInfoWindowEvent(map, infowindow, sql, marker);
+          makeInfoWindowEvent(map, infowindow, contentString, marker);
 
           //map.panTo(alatLng);
           id = marker.__gm_id
@@ -126,10 +127,6 @@
       <div class="span9">
     	  <h1>Google Maps API</h1>
     	  <div id="map_canvas" width="500" height="500"></div>
-          <form method="get" action="res/php/query.php">
-            <input name="sql" id="sql"/>
-            <button type="submit" class="btn">Search</button>
-          </form>
       </div>
     </div>
   </div>

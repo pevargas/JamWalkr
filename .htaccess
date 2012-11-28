@@ -1,3 +1,5 @@
+ErrorDocument 404 /404.php
+
 php_flag log_errors on 
 php_flag display_errors off 
 php_value error_log /var/www/JamWalkr/errors/php_error.log

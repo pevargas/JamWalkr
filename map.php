@@ -41,7 +41,7 @@
               animation: google.maps.Animation.DROP
           });
 
-          var contentString = "<form class='form-search' method='post' action='res/add.php'>" + 
+          var contentString = "<form class='form-search' method='get' action='res/php/add.php'>" + 
             "<input type='text' name='name' placeholder='Name of Building' autofocus='autofocus'/>" +
             "<input type='text' name='tag1' placeholder='Tag 1'/>" +
             "<input type='text' name='tag2' placeholder='Tag 2'/>" +
@@ -104,10 +104,8 @@
       	<a class="brand" href="./index.php">JamWalkr</a>
       	<ul class="nav">
       	  <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
-      	  <li><a href="./lfm.php"><i class="icon-music icon-white"></i></a></li>
       	  <li><a href="./8tracks.php"><i class="icon-headphones icon-white"></i></a></li>
       	  <li class="active"><a href="./map.php"><i class="icon-map-marker icon-white"></i></a></li>
-      	  <li><a href="./database.php"><i class="icon-hdd icon-white"></i></a></li>
       	</ul>
       </div>
     </div>
@@ -118,15 +116,44 @@
       <div class="span3 visible-desktop">
       	<ul class="nav nav-pills nav-stacked">
       	  <li><a href="./index.php"><i class="icon-home"></i> Home</a></li>
-      	  <li><a href="./lfm.php"><i class="icon-music"></i> Last.fm API</a></li>
       	  <li><a href="./8tracks.php"><i class="icon-headphones"></i> 8Tracks API</a></li>
       	  <li class="active"><a href="./map.php"><i class="icon-map-marker"></i> Google Maps API</a></li>
-      	  <li><a href="./database.php"><i class="icon-hdd"></i> MySQL Database</a></li>
       	</ul>
       </div>
-      <div class="span9">
+      <div class="span6">
     	  <h1>Google Maps API</h1>
     	  <div id="map_canvas" width="500" height="500"></div>
+      </div>
+      <div class="span3">
+        <?php 
+        mysql_connect($mysql_host,$username,$password);
+        $con = mysql_connect($mysql_host,$username,$password);       
+        if (!$con) {
+          die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>");
+        }
+        $db = mysql_select_db($database);
+        $sql = 'SELECT * FROM `Buildings` LIMIT 0, 30 ';
+        $rs = mysql_query($sql);
+        
+        if (!$rs) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
+
+        <ul>
+
+        <?php while($row = mysql_fetch_array($rs)) { ?>
+          <li>
+            <strong><?=$row['name'];?></strong> (<?=$row['lat']?>,<?=$row['lng']?>)
+            <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
+              $rs2 = mysql_query($sql2);
+              if (!$rs2) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
+              <ul>
+              <?php while($row2 = mysql_fetch_array($rs2)) { ?>
+                <li><?=$row2['tag'];?></li>
+              <?php } ?>
+              </ul>
+          </li>
+        <?php } ?>
+
+        </ul>
       </div>
     </div>
   </div>

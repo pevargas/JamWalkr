@@ -171,12 +171,17 @@
               <strong><?=$row['name'];?></strong> (<?=$row['lat']?>,<?=$row['lng']?>)
               <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
                 $rs2 = mysql_query($sql2);
-                if (!$rs2) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
+                if (!$rs2) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } 
+                $tags = '';  ?>
                 <ul>
-                <?php while($row2 = mysql_fetch_array($rs2)) { ?>
+                <?php while($row2 = mysql_fetch_array($rs2)) { $tags += $row2['tag']; ?>
                   <li><?=$row2['tag'];?></li>
                 <?php } ?>
                 </ul>
+                <form class="form-search" method="post" action="8tracks.php">
+                <input type="text" name="tag" value=/>
+                <button type="submit" class="btn">Music!</button></div>
+          </form>
             </li>
           <?php } ?>
         </ul>

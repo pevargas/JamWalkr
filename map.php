@@ -63,6 +63,19 @@
             id = this.__gm_id;
             infowindow.open(map, markers[id]);
           });
+
+          var circleOptions = {
+              strokeColor: "#FF0000",
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: "#FF0000",
+              fillOpacity: 0.35,
+              map: map,
+              center: alatlng,
+              radius: 20
+            };
+            musicCircle = new google.maps.Circle(circleOptions);
+
       }
 
       // Add markers

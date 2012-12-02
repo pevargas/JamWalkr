@@ -49,7 +49,10 @@
               animation: google.maps.Animation.DROP
           });
 
-          var contentString = "<h2>" + name + "</h2>";          
+          var contentString = "<h3>" + name + "</h3>";
+          //if (tag1 != '') { contentString += "<span class='label label-info'>"+tag1+"</span>"; }
+          //if (tag2 != '') { contentString += "<span class='label label-info'>"+tag2+"</span>"; }
+          //if (tag3 != '') { contentString += "<span class='label label-info'>"+tag3+"</span>"; }
           makeInfoWindowEvent(map, infowindow, contentString, marker);
 
           id = marker.__gm_id

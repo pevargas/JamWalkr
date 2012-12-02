@@ -8,7 +8,6 @@
   ?>
 
   <script type="text/javascript">
-  
 
   function bla() {}
     var myplayer = document.getElementById('player');
@@ -49,6 +48,7 @@
       var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
       var etbase  = "http://8tracks.com";
       var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
+      var xhr;
 
       document.getElementById('test').innerHTML = tags;
       // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -60,11 +60,10 @@
       var sear = "&tag=" + tags + "&sort=popular";
       var mix  = etbase + meth + etkey + sear;
 
-      xhr.open("GET", mix);
+      xhr.open('GET', mix, false);
       xhr.send();
-      xmlDoc = xhr.responseXML;
-      alert(xmlDoc); 
-      stat = xmlDoc.getElementsByTagName("id");
+      var xmlDoc = xhr.responseXML;
+      var stat = xmlDoc.getElementsByTagName("id").innerHTML;
       alert(stat);
     }
     /*if (tags != '') {

@@ -4,8 +4,8 @@
 	if ((isset($_REQUEST["lat"]) && ($_REQUEST["lat"] != "")) && 
 		  (isset($_REQUEST["lng"]) && ($_REQUEST["lng"] != ""))) { 
 			
-		$build = $_REQUEST['name'];
-		$lat	 = $_REQUEST['lat'];
+		$build =($_REQUEST['name']);
+		$lat	 = ($_REQUEST['lat'];
 		$lng	 = $_REQUEST['lng'];
  		
  		$con   = mysql_connect($mysql_host, $username, $password);
@@ -28,19 +28,19 @@
 	  $tags = "<p>With the tags: ";
 
 	  if (isset($_REQUEST["tag1"]) && ($_REQUEST["tag1"] != "")) { 
-	  	$sql = "INSERT INTO Tags VALUES ('', '".$_REQUEST['tag1']."', '".$row['id']."', '1');";
+	  	$sql = "INSERT INTO Tags VALUES ('', '".strtolower($_REQUEST['tag1'])."', '".$row['id']."', '1');";
 	  	$rs = mysql_query($sql);
 	  	if (!$rs) { die(mysql_error()); }
 	  	$tags += $_REQUEST['tag1'];
 	  }
 	  if (isset($_REQUEST["tag2"]) && ($_REQUEST["tag2"] != "")) { 
-	  	$sql = "INSERT INTO Tags VALUES ('', '".$_REQUEST['tag2']."', '".$row['id']."', '1');";
+	  	$sql = "INSERT INTO Tags VALUES ('', '".strtolower($_REQUEST['tag2'])."', '".$row['id']."', '1');";
 	  	$rs = mysql_query($sql);
 	  	if (!$rs) { die(mysql_error()); }
 	  	$tags += ", " . $_REQUEST['tag2'];
 	  }
 	  if (isset($_REQUEST["tag3"]) && ($_REQUEST["tag3"] != "")) { 
-	  	$sql = "INSERT INTO Tags VALUES ('', '".$_REQUEST['tag3']."', '".$row['id']."', '1');";
+	  	$sql = "INSERT INTO Tags VALUES ('', '".strtolower($_REQUEST['tag3'])."', '".$row['id']."', '1');";
 	  	$rs = mysql_query($sql);
 	  	if (!$rs) { die(mysql_error()); }
 	  	$tags += ", " . $_REQUEST['tag3'];

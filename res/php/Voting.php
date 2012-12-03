@@ -13,6 +13,8 @@ if ($_POST["action"] = 'UpVote')
 	  $rs = mysql_query($sql);
 	  $votecount = 'SELECT rating FROM `Tags` LIMIT 0,30' + 1; 
 	  
+	  $sql = mysql_query("UPDATE Tags  SET rating = rating + 1 WHERE id = '{$saved_row[id]}'");
+	  
     $sql="INSERT INTO Tag (rating) VALUES ('$votecount');"
         if (!mysql_query($sql,$con));
         {
@@ -33,7 +35,8 @@ if ($_POST["action"] = 'DownVote')
 	  $sql = 'SELECT * FROM `Tags` LIMIT 0, 30 ';
 	  $rs = mysql_query($sql);
 	  $votecount = 'SELECT rating FROM `Tags` LIMIT 0,30' - 1; 
-	  
+	  $sql = mysql_query("UPDATE Tags  SET rating = rating + 1 WHERE id = '{$saved_row[id]}'");
+
     $sql="INSERT INTO Tag (rating) VALUES ('$votecount');"
         if (!mysql_query($sql,$con));
         {

@@ -91,10 +91,10 @@
           <video id="player" class="data"></video>
 
             <div>
-              <button class="btn btn-primary control-conatiner pull-left">
+              <button class="btn btn-jam control-conatiner pull-left">
                   <i onclick="toggleMusic()" id="control" class="icon-pause icon-white"></i>
                 </button> 
-              <div class="progress progress-striped active">
+              <div class="progress progress-jam progress-striped active">
                 <div class="bar" id="time"></div>
               </div>         
             </div>

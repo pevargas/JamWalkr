@@ -41,7 +41,7 @@
       var infowindow = new google.maps.InfoWindow();
 
       // Add Init markers
-      var addInitMarker = function (alatlng, name, id, tag1, tag2, tag3) {
+      var addInitMarker = function (alatlng, name, id, tagarr[]) {
           marker = new google.maps.Marker({ 
               position: alatlng,
               map: map,
@@ -50,6 +50,9 @@
           });
 
           var contentString = "<h3>" + name + "</h3>";
+          for(var tag in tagarr){
+            contentString .= "<span class='label label-info'>" + tagarr[tag] + "</span>";
+          }          
           //if (tag1 != '') { contentString += "<span class='label label-info'>"+tag1+"</span>"; }
           //if (tag2 != '') { contentString += "<span class='label label-info'>"+tag2+"</span>"; }
           //if (tag3 != '') { contentString += "<span class='label label-info'>"+tag3+"</span>"; }
@@ -135,6 +138,18 @@
 
 
 <?php while($row = mysql_fetch_array($rs)) { ?>
+        <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
+          $rs2 = mysql_query($sql2);
+          if (!$rs2) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } 
+          var tagarr = {};
+          var i = 0;
+        ?>
+        <?php while($row2 = mysql_fetch_array($rs2)) { 
+            tagarr[i] = $row2;
+            i++;
+           ?>
+          
+        <?php } ?>
         addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, "tag1", "tag2", "tag3");
 <?php } ?>
     }

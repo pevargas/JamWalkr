@@ -4,8 +4,8 @@
 	if ((isset($_REQUEST["lat"]) && ($_REQUEST["lat"] != "")) && 
 		  (isset($_REQUEST["lng"]) && ($_REQUEST["lng"] != ""))) { 
 			
-		$build =($_REQUEST['name']);
-		$lat	 = ($_REQUEST['lat'];
+		$build = $_REQUEST['name'];
+		$lat	 = $_REQUEST['lat'];
 		$lng	 = $_REQUEST['lng'];
  		
  		$con   = mysql_connect($mysql_host, $username, $password);

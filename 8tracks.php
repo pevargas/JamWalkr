@@ -8,6 +8,11 @@
   ?>
 
   <script type="text/javascript">
+  var lfmbase = "http://ws.audioscrobbler.com/2.0/";
+  var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
+  var etbase  = "http://8tracks.com";
+  var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
+
   function listen() {
     var myplayer = document.getElementById('player');
     var timepast = myplayer.currentTime;
@@ -32,6 +37,26 @@
     if (player.paused) { player.play(); button.setAttribute("class", "icon-pause icon-white"); }
     else { player.pause(); button.setAttribute("class", "icon-play icon-white"); }
   }
+  // Autocomplete BEGIN
+  $(function() {
+    $("input#tag").autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: etbase + "/tags.jsonp" + etkey + "&q=" + request.term,
+          dataType: "jsonp",
+          success: function(data) {
+            response($.map(data.tags, function(item) {
+              return { label: item.name, value: item.name }
+            }));
+          }
+        });
+      },
+      minLength: 2,
+      open: function() { $(this).addClass( "ui-autocomplete-loading" ); },
+      close: function() { $(this).removeClass( "ui-autocomplete-loading" ); }
+    });
+  });
+  // Autocomplete END
   </script>
 
   <style type="text/css">
@@ -69,7 +94,7 @@
   <?php if (!isset($_REQUEST["tag"]) || ($_REQUEST["tag"] == "")) { ?>
           <form class="form-search" method="post" action="8tracks.php">
             <div class="input-append">
-              <input type="text" class="input-medium search-query" name="tag" placeholder="tag or mood" autofocus="autofocus"/>
+              <input type="text" class="input-medium search-query" name="tag" id="tag" placeholder="mood, genre, or artist" autofocus="autofocus" />
               <button type="submit" class="btn">Search</button>
             </div>
           </form>

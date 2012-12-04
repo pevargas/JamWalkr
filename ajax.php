@@ -7,96 +7,97 @@
     include("res/php/links.php");
   ?>
 
-  <script type="text/javascript">
-
-  function bla() {}
-    var myplayer = document.getElementById('player');
-    var timepast = myplayer.currentTime;
-    var duration = myplayer.duration;
-    var width    = String(100*(timepast / duration));
-    document.getElementById('time').setAttribute("style", "width:" + width + "%");
-    /*if (timepast <= 0) {
-      var url = document.getElementById("src").innerHTML;
-      myplayer.setAttribute("src", url);
-      myplayer.play();
-    }*/
-    if (30 < timepast && timepast < 31) {
-      var url = document.getElementById('back').innerHTML;
-      //document.getElementById('report').innerHTML = "<?= report_back(" + url + ");?>";
-      //document.getElementById('sent').setAttribute("class", "muted");
-    }
-    window.setTimeout (function() { listen(); }, 1000);
-  }
-  function toggleMusic() {
-    var player = document.getElementById('player');
-    var button = document.getElementById('control');
-    if (player.paused) { player.play(); button.setAttribute("class", "icon-pause icon-white"); }
-    else { player.pause(); button.setAttribute("class", "icon-play icon-white"); }
-  }
-  </script>
-
   <style type="text/css">
   .control-conatiner { height: 20px; width: 20px; padding: 0px; }
   #control { margin: 0px; }
   .data { display: none; }
-  </style>
-  <script type="text/javascript">
-  function initial() {
-    var tags = document.getElementById('tags').innerHTML;
-    if (tags != '') { 
-      var lfmbase = "http://ws.audioscrobbler.com/2.0/";
-      var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
-      var etbase  = "http://8tracks.com";
-      var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
-      var xhr;
-
-      document.getElementById('test').innerHTML = tags;
-      // code for IE7+, Firefox, Chrome, Opera, Safari
-      if (window.XMLHttpRequest) { xhr = new XMLHttpRequest(); }
-      // code for IE6, IE5
-      else { xhr = new ActiveXObject("Microsoft.XMLHTTP"); }
-
-      var meth = "/mixes.xml";
-      var sear = "&tag=" + tags + "&sort=popular";
-      var mix  = etbase + meth + etkey + sear;
-
-      xhr.open('GET', mix, false);
-      xhr.send();
-      var xmlDoc = xhr.responseXML;
-      var stat = xmlDoc.getElementsByTagName("id").innerHTML;
-      alert(stat);
-    }
-    /*if (tags != '') {
-      
-    
-      alert(tags);
 
   
-        //$xml = new SimpleXMLElement($response);
-        //$mid = (string) $xml->mixes->mix[0]->id;
-        //return $mid;
-        7}
-      return false;
-    }
-      
-      var purl  = etbase+"/sets/"+ptok+"/play.xml"+etkey+"&mix_id="+mid;
+  </style>
+  <script type="text/javascript">
+  var lfmbase = "http://ws.audioscrobbler.com/2.0/";
+  var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
+  var etbase  = "http://8tracks.com";
+  var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
 
+  $(window).load(function() {
+    var tags = $('#tags').html();
+    if (tags != null) { 
+      var sear    = "&tag=" + tags + "&sort=popular";
+      var mix     = etbase + "/mixes.jsonp" + etkey + sear;
+      var purl    = etbase + "/sets/new.jsonp" + etkey;
+      var mid     = '';
+      var ptok    = '';
+
+
+      // Grab Mix ID
+      $.getJSON(mix, function(data) {
+        $("#msg").append("<div class='alert alert-success'><strong>Success!</strong> AJAX went through for mix id.</div>");
+
+        if (data.status === '200 OK') { $("#mid").append(mid = data.mixes[0].id); }
+        else { $(this).append("<div class='alert alert-error'><strong>Failure</strong> 8Tracks rejected the request for a mix id.</div>"); }
+      });
+
+      // Grab Play Token
+      $.getJSON(purl, function(data) {
+        $("#msg").append("<div class='alert alert-success'><strong>Success!</strong> AJAX went through for play token.</div>");
+
+        if (data.status === '200 OK') { $("#ptok").append(ptok = data.play_token); }
+        else { $(this).append("<div class='alert alert-error'><strong>Failure</strong> 8Tracks rejected the request for a play token.</div>"); }
+      });
+
+      $("#msg").ajaxError(function(evt, request, settings){
+        $(this).append("<div class='alert alert-error'><strong>Error requesting page: </strong>" + settings.url + "</div>");
+      });
+
+      /*$("#msg").ajaxStop({
+        $(this).append("They all completed.");
+      });*/
+
+      //while (mid == '' && ptok == '') { $.delay(1000); }
+      //var play  = etbase+"/sets/"+ptok+"/play.jsonp"+etkey+"&mix_id="+mid;
+      //alert(play);
+
+    /*if (tags != '') {
+      
       //$song = play_track ($mid, $ptok, $purl);
     }*/
-  }
+    }
+  });
+
+  // Autocomplete BEGIN
+  $(function() {
+    $("input#tag").autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: etbase + "/tags.jsonp" + etkey + "&q=" + request.term,
+          dataType: "jsonp",
+          success: function(data) {
+            response($.map(data.tags, function(item) {
+              return { label: item.name, value: item.name }
+            }));
+          }
+        });
+      },
+      minLength: 2,
+      open: function() { $(this).addClass( "ui-autocomplete-loading" ); },
+      close: function() { $(this).removeClass( "ui-autocomplete-loading" ); }
+    });
+  });
+  // Autocomplete END
+
   </script>
 </head>
-<body onload="initial()">
+<body>
     <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container-fluid">
         <a class="brand" href="./index.php">JamWalkr</a>
         <ul class="nav">
           <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
-          <li><a href="./lfm.php"><i class="icon-music icon-white"></i></a></li>
-          <li class="active"><a href="./8tracks.php"><i class="icon-headphones icon-white"></i></a></li>
+          <li class="active"><a href="./ajax.php"><i class="icon-music icon-white"></i></a></li>
+          <li><a href="./8tracks.php"><i class="icon-headphones icon-white"></i></a></li>
           <li><a href="./map.php"><i class="icon-map-marker icon-white"></i></a></li>
-          <li><a href="./database.php"><i class="icon-hdd icon-white"></i></a></li>
         </ul>
       </div>
     </div>
@@ -107,10 +108,9 @@
       <div class="span3 visible-desktop">
         <ul class="nav nav-pills nav-stacked">
           <li><a href="./index.php"><i class="icon-home"></i> Home</a></li>
-          <li><a href="./lfm.php"><i class="icon-music"></i> Last.fm API</a></li>
-          <li class="active"><a href="./8tracks.php"><i class="icon-headphones"></i> 8Tracks API</a></li>
+          <li class="active"><a href="./ajax.php"><i class="icon-music"></i> AJAX</a></li>
+          <li><a href="./8tracks.php"><i class="icon-headphones"></i> 8Tracks API</a></li>
           <li><a href="./map.php"><i class="icon-map-marker"></i> Google Maps API</a></li>
-          <li><a href="./database.php"><i class="icon-hdd"></i> MySQL Database</a></li>
         </ul>
       </div>
       <div class="span9">
@@ -119,21 +119,27 @@
   <?php if (!isset($_REQUEST["tag"]) || ($_REQUEST["tag"] == "")) { ?>
           <form class="form-search" method="post" action="ajax.php">
             <div class="input-append">
-              <input type="text" class="input-medium search-query" name="tag" placeholder="tag or mood" autofocus="autofocus"/>
+              <input type="text" class="input-medium search-query" name="tag" id="tag" placeholder="mood, genre, or artist" autofocus="autofocus" />
               <button type="submit" class="btn">Search</button>
             </div>
           </form>
+          <div id="test"></div>
+
   <?php } else { 
           $tags = urlencode($_REQUEST["tag"]);
           if ((($mid = most_pop_mix ($tags)) != false) && (($ptok = play_token ()) != false)) { ?>
           <p class="lead">You're listening to the "<?=$_REQUEST["tag"];?>" tag.</p>
 
-          <p id="test"></p>
-
           <div class="data">
             <span id="tags"><?=$tags?></span>
             <span id="report"></span>
           </div>
+
+          <span id="msg"></span>
+          <span id="mid">Mid:</span>
+          <span id="ptok">Ptok:</span>
+
+          <p class="result"></p>
 
           <video id="player" class="data" onload="init()"></video>
 

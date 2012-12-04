@@ -19,8 +19,10 @@
 <script type="test/javascript" src="res/js/bootstrap-transition.js"></script>
 <script type="test/javascript" src="res/js/bootstrap-typeahead.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
 <!-- Le styles -->
+<link href="res/css/jamwalkr.css" rel="stylesheet"/>
 <link href="res/css/bootstrap.css" rel="stylesheet"/>
 <link href="res/css/bootstrap-responsive.css" rel="stylesheet"/>
 

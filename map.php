@@ -174,6 +174,7 @@
       	<a class="brand" href="./index.php">JamWalkr</a>
       	<ul class="nav">
       	  <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
+          <li><a href="./ajax.php"><i class="icon-music icon-white"></i></a></li>
       	  <li><a href="./8tracks.php"><i class="icon-headphones icon-white"></i></a></li>
       	  <li class="active"><a href="./map.php"><i class="icon-map-marker icon-white"></i></a></li>
       	</ul>
@@ -186,6 +187,7 @@
       <div class="span2 visible-desktop">
       	<ul class="nav nav-pills nav-stacked">
       	  <li><a href="./index.php"><i class="icon-home"></i> Home</a></li>
+          <li><a href="./ajax.php"><i class="icon-music"></i> AJAX</a></li>
       	  <li><a href="./8tracks.php"><i class="icon-headphones"></i> 8Tracks API</a></li>
       	  <li class="active"><a href="./map.php"><i class="icon-map-marker"></i> Google Maps API</a></li>
       	</ul>

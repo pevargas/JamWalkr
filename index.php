@@ -25,12 +25,12 @@
   <div class="container-fluid" style="margin-top: 50px;">
     <div class="row-fluid">
       <div class="span2">
-	<ul class="nav nav-pills nav-stacked">
-	  <li class="active"><a href="./index.php"><i class="icon-home"></i> Home</a></li>
-    <li><a href="./ajax.php"><i class="icon-music"></i> AJAX</a></li>
-	  <li><a href="./8tracks.php"><i class="icon-headphones"></i> 8Tracks API</a></li>
-	  <li><a href="./map.php"><i class="icon-map-marker"></i> Google Maps API</a></li>
-	</ul>
+      	<ul class="nav nav-pills nav-stacked">
+      	  <li class="active"><a href="./index.php"><i class="icon-home"></i> Home</a></li>
+          <li><a href="./ajax.php"><i class="icon-music"></i> AJAX</a></li>
+      	  <li><a href="./8tracks.php"><i class="icon-headphones"></i> 8Tracks API</a></li>
+      	  <li><a href="./map.php"><i class="icon-map-marker"></i> Google Maps API</a></li>
+      	</ul>
       </div>
       <div class="span10">
       	<h1>JamWalkr</h1>

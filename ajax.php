@@ -20,6 +20,39 @@
   var etbase  = "http://8tracks.com";
   var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
 
+  function listen(data, mid, ptok) {
+    var myplayer = document.getElementById('player');
+    var timepast = myplayer.currentTime;
+    var duration = myplayer.duration;
+    var width    = String(100*(timepast / duration));
+    $("#current").html(timepast);
+    $("#duration").html(duration);
+    document.getElementById('time').setAttribute("style", "width:" + width + "%");
+    if (30 < timepast && timepast < 31) {
+      var report = etbase+"/sets/"+ptok+"/report.jsonp"+etkey+"&mix_id="+mid+"&track_id="+data.set.track.id;
+      $.ajax({
+        url: report,
+        dataType: "jsonp",
+        success: function(data) {
+          $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Success!</strong> AJAX went through for play token.</div>");
+        }
+      });
+    } else if (width == 100) {
+        var next = etbase+"/sets/"+ptok+"/next.jsonp"+etkey+"&mix_id="+mid;
+        $.ajax({
+          url: next,
+          dataType: "jsonp",
+          success: function(data) { 
+            $("#player").attr("src", data.set.track.url);
+            $("#player").get(0).play();
+            $("#info").append("<li><strong>"+data.set.track.name+"</strong> "+data.set.track.performer+"</li>");            
+            listen(data, mid, ptok);
+          }
+        });
+    }
+    window.setTimeout (function() { listen(data, mid, ptok); }, 1000);
+  }
+
   $(window).load(function() {
     var tags = $('#tags').html();
     if (tags != null) { 
@@ -29,28 +62,7 @@
       var mid     = '';
       var ptok    = '';
 
-
-      // Grab Mix ID
-      $.getJSON(mix, function(data) {
-        $("#msg").append("<div class='alert alert-success'><strong>Success!</strong> AJAX went through for mix id.</div>");
-
-        if (data.status === '200 OK') { $("#mid").append(mid = data.mixes[0].id); }
-        else { $(this).append("<div class='alert alert-error'><strong>Failure</strong> 8Tracks rejected the request for a mix id.</div>"); }
-      });
-
-      // Grab Play Token
-      $.getJSON(purl, function(data) {
-        $("#msg").append("<div class='alert alert-success'><strong>Success!</strong> AJAX went through for play token.</div>");
-
-        if (data.status === '200 OK') { $("#ptok").append(ptok = data.play_token); }
-        else { $(this).append("<div class='alert alert-error'><strong>Failure</strong> 8Tracks rejected the request for a play token.</div>"); }
-      });
-
-      $("#msg").ajaxError(function(evt, request, settings){
-        $(this).append("<div class='alert alert-error'><strong>Error requesting page: </strong>" + settings.url + "</div>");
-      });
-
-      /*$("#msg").ajaxStop({
+/*$("#msg").ajaxStop({
         $(this).append("They all completed.");
       });*/
 
@@ -61,7 +73,51 @@
     /*if (tags != '') {
       
       //$song = play_track ($mid, $ptok, $purl);
-    }*/
+    }
+// Grab Mix ID
+      $.getJSON(mix, function(data) {
+        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Success!</strong> AJAX went through for mix id.</div>");
+
+        if (data.status === '200 OK') { $("#mid").append(mid = data.mixes[0].id); }
+        else { $(this).append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Failure</strong> 8Tracks rejected the request for a mix id.</div>"); }
+      });
+
+      // Grab Play Token
+      $.getJSON(purl, function(data) {
+        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Success!</strong> AJAX went through for play token.</div>");
+
+        if (data.status === '200 OK') { $("#ptok").append(ptok = data.play_token); }
+        else { $(this).append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Failure</strong> 8Tracks rejected the request for a play token.</div>"); }
+      });
+
+      $("#msg").ajaxError(function(evt, request, settings){
+        $(this).append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error requesting page: </strong>" + settings.url + "</div>");
+      });
+    */
+
+      $.when(
+        $.ajax({
+          url: mix,
+          dataType: "jsonp",
+          success: function(data) { $("#mid").append(mid = data.mixes[0].id); }
+        }), $.ajax({
+          url: purl,
+          dataType: "jsonp",
+          success: function(data) { $("#ptok").append(ptok = data.play_token); }
+        })
+      ).done(function(a1, a2){
+        var play  = etbase+"/sets/"+ptok+"/play.jsonp"+etkey+"&mix_id="+mid;
+        $.ajax({
+          url: play,
+          dataType: "jsonp",
+          success: function(data) {
+            $("#player").attr("src", data.set.track.url);
+            $("#player").get(0).play();
+            $("#info").append("<li><strong>"+data.set.track.name+"</strong> "+data.set.track.performer+"</li>");            
+            listen(data, mid, ptok);
+          }
+        });
+      });
     }
   });
 
@@ -86,6 +142,12 @@
   });
   // Autocomplete END
 
+  function toggleMusic() {
+    var player = document.getElementById('player');
+    var button = document.getElementById('control');
+    if (player.paused) { player.play(); button.setAttribute("class", "icon-pause icon-white"); }
+    else { player.pause(); button.setAttribute("class", "icon-play icon-white"); }
+  }
   </script>
 </head>
 <body>
@@ -105,16 +167,8 @@
   
   <div class="container-fluid" style="margin-top: 50px;">
     <div class="row-fluid">
-      <div class="span2 visible-desktop">
-        <ul class="nav nav-pills nav-stacked">
-          <li><a href="./index.php"><i class="icon-home"></i> Home</a></li>
-          <li class="active"><a href="./ajax.php"><i class="icon-music"></i> AJAX</a></li>
-          <li><a href="./8tracks.php"><i class="icon-headphones"></i> 8Tracks API</a></li>
-          <li><a href="./map.php"><i class="icon-map-marker"></i> Google Maps API</a></li>
-        </ul>
-      </div>
-      <div class="span10">
-        <h1>8Tracks API</h1>
+      <div class="span12">
+        <h1>AJAX</h1>
         
   <?php if (!isset($_REQUEST["tag"]) || ($_REQUEST["tag"] == "")) { ?>
           <form class="form-search" method="post" action="ajax.php">
@@ -138,15 +192,17 @@
           <span id="msg"></span>
           <span id="mid">Mid:</span>
           <span id="ptok">Ptok:</span>
+          <span id="current"></span>
+          <span id="duration"></span>
 
           <p class="result"></p>
 
-          <video id="player" class="data" onload="init()"></video>
+          <video id="player" class="data"></video>
 
             <div>
               <button class="btn btn-jam control-conatiner pull-left">
-                  <i onclick="toggleMusic()" id="control" class="icon-pause icon-white"></i>
-                </button> 
+                <i onclick="toggleMusic()" id="control" class="icon-pause icon-white"></i>
+              </button> 
               <div class="progress progress-jam progress-striped active">
                 <div class="bar" id="time"></div>
               </div>         
@@ -154,8 +210,7 @@
 
             <div><?= display_mix_info ($mid);?></div>
 
-            <ul id="sent">
-              <li><strong><?=$song['artist']?></strong> <?=$song['title']?></li>
+            <ul id="info">
             </ul>
       <?php } } ?>
       </div>

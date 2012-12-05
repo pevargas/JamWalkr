@@ -3,8 +3,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="A Kickass geolocational music tagging app!"/>
 <meta name="author" content="JamWalkr Team: Casey Chevalier, Ivona Andrzejewski, Mitch Goudy, Patrick Vargas"/>
-<script type="test/javascript" src="res/js/jamwalkr.js"></script>
-<script type="test/javascript" src="res/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
 <script type="test/javascript" src="res/js/bootstrap-affix.js"></script>
 <script type="test/javascript" src="res/js/bootstrap-alert.js"></script>
 <script type="test/javascript" src="res/js/bootstrap-button.js"></script>
@@ -18,9 +20,6 @@
 <script type="test/javascript" src="res/js/bootstrap-tooltip.js"></script>
 <script type="test/javascript" src="res/js/bootstrap-transition.js"></script>
 <script type="test/javascript" src="res/js/bootstrap-typeahead.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-
 <!-- Le styles -->
 <link href="res/css/jamwalkr.css" rel="stylesheet"/>
 <link href="res/css/bootstrap.css" rel="stylesheet"/>

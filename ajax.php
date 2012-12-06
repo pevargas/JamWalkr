@@ -10,9 +10,7 @@
   <style type="text/css">
   .control-conatiner { height: 20px; width: 20px; padding: 0px; }
   #control { margin: 0px; }
-  .data { display: none; }
-
-  
+  .data { display: none; }  
   </style>
   <script type="text/javascript">
   var lfmbase = "http://ws.audioscrobbler.com/2.0/";
@@ -25,16 +23,18 @@
     var timepast = myplayer.currentTime;
     var duration = myplayer.duration;
     var width    = String(100*(timepast / duration));
-    $("#current").html(timepast);
-    $("#duration").html(duration);
+
+    var minutes  = parseInt(timepast / 60)%60;
+    var seconds  = parseInt(timepast)%60;
+    $("#current").html(minutes +":"+(seconds < 10 ? "0" + seconds : seconds));
     document.getElementById('time').setAttribute("style", "width:" + width + "%");
     if (30 < timepast && timepast < 31) {
       var report = etbase+"/sets/"+ptok+"/report.jsonp"+etkey+"&mix_id="+mid+"&track_id="+data.set.track.id;
       $.ajax({
         url: report,
         dataType: "jsonp",
-        success: function(data) {
-          $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Success!</strong> AJAX went through for play token.</div>");
+        error: function(jqXHR, textStatus, errorThrown) {
+          $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
         }
       });
     } else if (width == 100) {
@@ -45,8 +45,12 @@
           success: function(data) { 
             $("#player").attr("src", data.set.track.url);
             $("#player").get(0).play();
-            $("#info").append("<li><strong>"+data.set.track.name+"</strong> "+data.set.track.performer+"</li>");            
+            $(".current").addClass("muted").removeClass("current");
+            $("#info").prepend("<li class='current'><strong>"+data.set.track.name+"</strong> "+data.set.track.performer+"</li>");            
             listen(data, mid, ptok);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
           }
         });
     }
@@ -62,48 +66,21 @@
       var mid     = '';
       var ptok    = '';
 
-/*$("#msg").ajaxStop({
-        $(this).append("They all completed.");
-      });*/
-
-      //while (mid == '' && ptok == '') { $.delay(1000); }
-      //var play  = etbase+"/sets/"+ptok+"/play.jsonp"+etkey+"&mix_id="+mid;
-      //alert(play);
-
-    /*if (tags != '') {
-      
-      //$song = play_track ($mid, $ptok, $purl);
-    }
-// Grab Mix ID
-      $.getJSON(mix, function(data) {
-        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Success!</strong> AJAX went through for mix id.</div>");
-
-        if (data.status === '200 OK') { $("#mid").append(mid = data.mixes[0].id); }
-        else { $(this).append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Failure</strong> 8Tracks rejected the request for a mix id.</div>"); }
-      });
-
-      // Grab Play Token
-      $.getJSON(purl, function(data) {
-        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Success!</strong> AJAX went through for play token.</div>");
-
-        if (data.status === '200 OK') { $("#ptok").append(ptok = data.play_token); }
-        else { $(this).append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Failure</strong> 8Tracks rejected the request for a play token.</div>"); }
-      });
-
-      $("#msg").ajaxError(function(evt, request, settings){
-        $(this).append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error requesting page: </strong>" + settings.url + "</div>");
-      });
-    */
-
       $.when(
         $.ajax({
           url: mix,
           dataType: "jsonp",
-          success: function(data) { $("#mid").append(mid = data.mixes[0].id); }
+          success: function(data) { mid = data.mixes[0].id; },
+          error: function(jqXHR, textStatus, errorThrown) {
+            $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+          }
         }), $.ajax({
           url: purl,
           dataType: "jsonp",
-          success: function(data) { $("#ptok").append(ptok = data.play_token); }
+          success: function(data) { ptok = data.play_token; },
+          error: function(jqXHR, textStatus, errorThrown) {
+            $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+          }
         })
       ).done(function(a1, a2){
         var play  = etbase+"/sets/"+ptok+"/play.jsonp"+etkey+"&mix_id="+mid;
@@ -113,8 +90,11 @@
           success: function(data) {
             $("#player").attr("src", data.set.track.url);
             $("#player").get(0).play();
-            $("#info").append("<li><strong>"+data.set.track.name+"</strong> "+data.set.track.performer+"</li>");            
+            $("#info").prepend("<li class='current'><strong>"+data.set.track.name+"</strong> "+data.set.track.performer+"</li>");            
             listen(data, mid, ptok);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
           }
         });
       });
@@ -132,6 +112,9 @@
             response($.map(data.tags, function(item) {
               return { label: item.name, value: item.name }
             }));
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
           }
         });
       },
@@ -178,7 +161,6 @@
             </div>
           </form>
           <div id="test"></div>
-
   <?php } else { 
           $tags = urlencode($_REQUEST["tag"]);
           if ((($mid = most_pop_mix ($tags)) != false) && (($ptok = play_token ()) != false)) { ?>
@@ -190,13 +172,6 @@
           </div>
 
           <span id="msg"></span>
-          <span id="mid">Mid:</span>
-          <span id="ptok">Ptok:</span>
-          <span id="current"></span>
-          <span id="duration"></span>
-
-          <p class="result"></p>
-
           <video id="player" class="data"></video>
 
             <div>
@@ -204,7 +179,7 @@
                 <i onclick="toggleMusic()" id="control" class="icon-pause icon-white"></i>
               </button> 
               <div class="progress progress-jam progress-striped active">
-                <div class="bar" id="time"></div>
+                <div class="bar" id="time"><span id="current" class="badge badge-jam"></span></div>
               </div>         
             </div>
 

@@ -41,7 +41,7 @@
       var infowindow = new google.maps.InfoWindow();
 
       // Add Init markers
-      var addInitMarker = function (alatlng, name, id, tagarr) {
+      var addInitMarker = function (alatlng, name, id, tagarr, ratingarr) {
           marker = new google.maps.Marker({ 
               position: alatlng,
               map: map,
@@ -55,7 +55,7 @@
           for(var tag in tagarr){
             if (first) { playTags = tagarr[tag]; first = false; }
             else { playTags += "+" + tagarr[tag]; }
-            contentString += "<span class='badge badge-jam'>" + tagarr[tag] + "</span>&nbsp;";
+            contentString += "<span class='badge badge-jam'>" + tagarr[tag] + "&nbsp;" + ratingarr[tag] + "</span>&nbsp;";
           }
           contentString += "<p>"+playTags+"</p>";
           makeInfoWindowEvent(map, infowindow, contentString, marker);
@@ -145,12 +145,14 @@
           if (!$rs2) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } 
           ?>
           var tagarr = [];
+          var ratingarr = [];
           var i = 0;
         <?php while($row2 = mysql_fetch_array($rs2)) { ?>
             tagarr[i] = "<?=$row2['tag']?>";
+            ratingarr[i] = "<?=$row2['rating']?>";
             i++;
         <?php } ?>
-        addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr);
+        addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr, ratingarr);
 <?php } ?>
     }
 

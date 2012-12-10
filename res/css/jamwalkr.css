@@ -1,3 +1,7 @@
+.control-conatiner { height: 20px; width: 20px; padding: 0px; }
+  #control { margin: 0px; }
+  .data { display: none; }  
+
 /* Autocomplete Style BEGIN */
   .ui-autocomplete-loading {
         background: transparent url('/res/img/load-jam.gif') right center no-repeat;

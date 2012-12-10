@@ -58,6 +58,15 @@
             contentString += "<span class='badge badge-jam'>" + tagarr[tag] + "</span>&nbsp;";
           }
           contentString += "<p>"+playTags+"</p>";
+
+          contentString += "<div>" +
+              "<button class='btn btn-jam control-conatiner pull-left'>" +
+                "<i onclick='toggleMusic()' id='control' class='icon-pause icon-white'></i>" +
+              "</button>" + 
+              "<div class='progress progress-jam progress-striped active'>" +
+                "<div class='bar' id='time'><span id='current' class='badge badge-jam'></span></div>" +
+              "</div></div>";
+
           makeInfoWindowEvent(map, infowindow, contentString, marker);
 
           id = marker.__gm_id
@@ -97,12 +106,12 @@
 
           var contentString = "<form class='addPlace' method='get' action='res/php/add.php'>" + 
             "<input type='text' name='name' placeholder='Name of Building' autofocus='autofocus'/><br/>" +
-            "<input type='text' name='tag1' class='tag' placeholder='mood, genre, or artist'/><br/>" +
-            "<input type='text' name='tag2' class='tag' placeholder='mood, genre, or artist'/><br/>" +
-            "<input type='text' name='tag3' class='tag' placeholder='mood, genre, or artist'/><br/>" +
+            "<input type='text' name='tag1' id='tag' placeholder='mood, genre, or artist'/><br/>" +
+            "<input type='text' name='tag2' id='tag' placeholder='mood, genre, or artist'/><br/>" +
+            "<input type='text' name='tag3' id='tag' placeholder='mood, genre, or artist'/><br/>" +
             "<input type='text' name='lat' value='"+alatlng.lat()+"' style='display:none;'/><br/>" +
             "<input type='text' name='lng' value='"+alatlng.lng()+"' style='display:none;'/>" +
-            "<button type='submit' class='btn btn-primary'>Save</button></form>";
+            "<button type='submit' class='btn btn-jam'>Save</button></form>";
           
           makeInfoWindowEvent(map, infowindow, contentString, marker);
 
@@ -156,29 +165,7 @@
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
-  // Autocomplete BEGIN
-  $(function() {
-    $("input.tag").autocomplete({
-      source: function(request, response) {
-        $.ajax({
-          url: etbase + "/tags.jsonp" + etkey + "&q=" + request.term,
-          dataType: "jsonp",
-          success: function(data) {
-            response($.map(data.tags, function(item) {
-              return { label: item.name, value: item.name }
-            }));
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-          }
-        });
-      },
-      minLength: 2,
-      open: function() { $(this).addClass( "ui-autocomplete-loading" ); },
-      close: function() { $(this).removeClass( "ui-autocomplete-loading" ); }
-    });
-  });
-  // Autocomplete END
+  
   </script>
 
   <style type="text/css">
@@ -207,6 +194,10 @@
   </div>
   
   <div class="container-fluid" style="margin-top: 50px;">
+
+    <span id="msg"></span>
+    <video id="player" class="data"></video>
+
     <div class="row-fluid">
       <div class="span9">
     	  <h1>Google Maps API</h1>

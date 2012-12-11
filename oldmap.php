@@ -7,15 +7,6 @@
     include("res/php/links.php");
   ?>   
 
-   <style type="text/css">
-    #map_canvas {
-      margin: 0;
-      margin-top: 40px;
-      padding: 0;
-      width: 100%;
-    }
-  </style>
-
 <?php 
   mysql_connect($mysql_host,$username,$password);
   $con = mysql_connect($mysql_host,$username,$password);       
@@ -172,14 +163,21 @@
         <?php } ?>
         addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr, ratingarr);
 <?php } ?>
-    
-    $("#map_canvas").css("height", window.innerHeight - 40);
-  
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
+  
   </script>
+
+  <style type="text/css">
+    #map_canvas {
+      margin: 0;
+      padding: 0;
+      height: 400px;
+      width: 100%;
+    }
+  </style>
 
 </head>
 <body>
@@ -197,8 +195,49 @@
     </div>
   </div>
   
-  <span id="msg"></span>
-  <video id="player" class="data"></video>
-  <div id="map_canvas"></div>
+  <div class="container-fluid" style="margin-top: 50px;">
+
+    <span id="msg"></span>
+    <video id="player" class="data"></video>
+
+    <div class="row-fluid">
+      <div class="span9">
+    	  <h1>Google Maps API</h1>
+    	  <div id="map_canvas"></div>
+      </div>
+      <div class="span3">
+      <?php 
+        $sql = 'SELECT * FROM `Buildings` LIMIT 0, 30 ';
+        $rs = mysql_query($sql);
+        
+        if (!$rs) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
+
+        <ul>
+          <?php while($row = mysql_fetch_array($rs)) { ?>
+            <li>
+              <strong><?=$row['name'];?></strong> (<?=$row['lat']?>,<?=$row['lng']?>)
+              <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
+                $rs2 = mysql_query($sql2);
+                if (!$rs2) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } 
+                $first = false; ?>
+                <ul>
+                <?php while($row2 = mysql_fetch_array($rs2)) { 
+                  if (!$first) { $tags = $row2['tag']; $first = true; } 
+                  else { $tags .= "+".$row2['tag']; } ?>
+                  <li><?=$row2['tag'];?></li>
+                <?php } ?>
+                
+                <?php if ($first) { ?>
+                <li><form class="form-search" method="post" action="ajax.php">
+                <input type="text" name="tag" value="<?=$tags?>" style="display:none;"/>
+                <button type="submit" class="btn btn-jam btn-mini"><i class="icon-white icon-play"></i></button></form></li>
+                <?php } ?>
+              </ul>
+            </li>
+          <?php } ?>
+        </ul>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

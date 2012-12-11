@@ -186,13 +186,9 @@
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container-fluid">
-      	<a class="brand" href="./index.php">JamWalkr</a>
-      	<ul class="nav">
-      	  <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
-          <li><a href="./ajax.php"><i class="icon-music icon-white"></i></a></li>
-      	  <li><a href="./8tracks.php"><i class="icon-headphones icon-white"></i></a></li>
-      	  <li class="active"><a href="./map.php"><i class="icon-map-marker icon-white"></i></a></li>
-      	</ul>
+        <!-- Button to trigger modal -->
+        <a href="#help" role="button" class="btn btn-jam" data-toggle="modal">Need Help?</a>
+        <div class="pull-right"><a class="brand" href="./index.php">JamWalkr</a></div>
       </div>
     </div>
   </div>
@@ -200,5 +196,25 @@
   <span id="msg"></span>
   <video id="player" class="data"></video>
   <div id="map_canvas"></div>
+ 
+  <!-- Modal -->
+  <div id="help" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Welcome to JamWalkr</h3>
+    </div>
+    <div class="modal-body">
+      <p class="lead">What is JamWalkr?</p>
+      <p>JamWalkr is a music tagging application. Users are encouraged to tag buildings with moods, genres or artists. As the number of tagged buildings grow, we can see the citezens of a city thinks their city sounds.</p>
+
+      <p class="lead">How do I participate?</p>
+      <p>To add a point, simiply right click and fill out the form. You can view already tagged buildings by clicking on their markers. Please also vote on whether you agree with the tags buy voting up or down the specific tags.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-jam" data-dismiss="modal" aria-hidden="true">Start Jammin'</button>
+    </div>
+  </div>
+
+  <a href="http://www.000webhost.com/" target="_blank" class="host"><img src="http://www.000webhost.com/images/80x15_powered.gif" alt="Web Hosting" width="80" height="15" border="0" /></a>
 </body>
 </html>

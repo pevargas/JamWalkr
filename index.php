@@ -136,10 +136,13 @@ function loadMix(tags) {
 
       // Add Init markers
       var addInitMarker = function (alatlng, name, id, tagarr, ratingarr) {
+
+          var image = "jam.png";
           marker = new google.maps.Marker({ 
               position: alatlng,
               map: map,
               draggable: true,
+              icon: image,
               animation: google.maps.Animation.DROP
           });
 
@@ -196,10 +199,12 @@ function loadMix(tags) {
 
       // Add markers
       var addMarker = function (alatlng) {
+          var image = "jam.png";
           marker = new google.maps.Marker({ 
               position: alatlng,
               map: map,
               draggable: true,
+              icon: image,
               animation: google.maps.Animation.DROP
           });
 

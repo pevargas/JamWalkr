@@ -2,20 +2,22 @@
   margin: 0;
   margin-top: 40px;
   padding: 0;
-  width: 100%;
 }
-
-.host {
-  position: fixed;
-  left: 70px;
-  bottom: 5px;
-}
-.control-conatiner { height: 20px; width: 20px; padding: 0px; }
+.navbar { max-height: 40px; }
+#progress { margin: 10px; width: 20%; display: inline-block; }
+#progress .btn { margin:0px;}
+#progress .progress { margin:0!important;}
+#info { margin: 10px; overflow: hidden; width: 50%; display: inline-block; max-height: 20px; }
+#helpBtn { margin-right: 40px; }
+.host { position: fixed; left: 70px; bottom: 5px; }
+#msg { position: fixed; left: 0; bottom: 25%;}
+.control-conatiner { height: 20px; width: 20px; padding: 0px!important; }
+h3 .icon-chevron-right { margin-top: 8px;}
 #control { margin: 0px; }
 .data { display: none; }  
 
 /* Autocomplete Style BEGIN */
-  .ui-autocomplete-loading {
+  .ui-autocomplete-loading, .loading {
         background: transparent url('/res/img/load-jam.gif') right center no-repeat;
     }
   .ui-menu { 

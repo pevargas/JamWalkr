@@ -23,7 +23,9 @@ $(window).load(function() {
         dataType: "jsonp",
         error: function(jqXHR, textStatus, errorThrown) {
           $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-        }
+        },
+        open: function() { $(".brand").addClass( "ui-autocomplete-loading" ); },
+        close: function() { $(".brand").removeClass( "ui-autocomplete-loading" ); }
       });
     } else if (width == 100) {
         var next = etbase+"/sets/"+ptok+"/next.jsonp"+etkey+"&mix_id="+mid;
@@ -39,7 +41,9 @@ $(window).load(function() {
           },
           error: function(jqXHR, textStatus, errorThrown) {
             $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-          }
+          },
+          open: function() { $(".brand").addClass( "ui-autocomplete-loading" ); },
+          close: function() { $(".brand").removeClass( "ui-autocomplete-loading" ); }
         });
     }
     window.setTimeout (function() { listen(data, mid, ptok); }, 1000);

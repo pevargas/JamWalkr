@@ -29,12 +29,11 @@
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
   <script type="text/javascript">
 $(window).load(function() {
-    
 
     // Music BEGIN
   });
 
-function listen(data, mid, ptok) {
+function listen(data, mid, ptok, name) {
   var lfmbase = "http://ws.audioscrobbler.com/2.0/";
     var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
     var etbase  = "http://8tracks.com";
@@ -49,8 +48,8 @@ function listen(data, mid, ptok) {
       $("#current").html(minutes +":"+(seconds < 10 ? "0" + seconds : seconds));
       document.getElementById('time').setAttribute("style", "width:" + width + "%");
 
-      if (timepast < 2) {
-        $("#info").html("<strong>"+data.set.track.name+"</strong> "+data.set.track.performer);            
+      if (timepast < 1) {
+        $("#info").html("<i class='icon-music icon-white'></i> "+data.set.track.name+" <i class='icon-user icon-white'></i> "+data.set.track.performer + " <i class='icon-volume-up icon-white'></i> You\'re listening to the sounds of <strong>"+name+"</strong>");            
       } else if (30 < timepast && timepast < 31) {
         var report = etbase+"/sets/"+ptok+"/report.jsonp"+etkey+"&mix_id="+mid+"&track_id="+data.set.track.id;
         $.ajax({
@@ -58,7 +57,9 @@ function listen(data, mid, ptok) {
           dataType: "jsonp",
           error: function(jqXHR, textStatus, errorThrown) {
             $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-          }
+          },
+          open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+          close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
         });
       } else if (width == 100) {
           var next = etbase+"/sets/"+ptok+"/next.jsonp"+etkey+"&mix_id="+mid;
@@ -70,17 +71,19 @@ function listen(data, mid, ptok) {
               $("#player").get(0).play();
               $(".current").addClass("muted").removeClass("current");
               $("#info").prepend("<li class='current'><strong>"+data.set.track.performer+"</strong> "+data.set.track.name+"</li>");            
-              listen(data, mid, ptok);
+              listen(data, mid, ptok, name);
             },
             error: function(jqXHR, textStatus, errorThrown) {
               $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-            }
+            },
+            open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+            close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
           });
       }
-      window.setTimeout (function() { listen(data, mid, ptok); }, 1000);
+      window.setTimeout (function() { listen(data, mid, ptok, name); }, 1000);
     }
 
-  function loadMix(tag) {
+  function loadMix(tag, name) {
   var tags = encodeURIComponent(tag);
   var lfmbase = "http://ws.audioscrobbler.com/2.0/";
     var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
@@ -97,14 +100,12 @@ function listen(data, mid, ptok) {
           $.ajax({
             url: mix,
             dataType: "jsonp",
-            success: function(data) { 
-              $("#test").append("Entered success for mix id." + data + "<br/>" + mix + "<br/>");
-              $("#test").append("<p>" + data.mixes[0].name + "</p>");
-              console.log(data);
-              mid = data.mixes[0].id; },
+            success: function(data) { mid = data.mixes[0].id; },
             error: function(jqXHR, textStatus, errorThrown) {
               $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-            }
+            },
+            open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+            close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
           }), $.ajax({
             url: purl,
             dataType: "jsonp",
@@ -113,7 +114,9 @@ function listen(data, mid, ptok) {
               ptok = data.play_token; },
             error: function(jqXHR, textStatus, errorThrown) {
               $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-            }
+            },
+            open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+            close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
           })
         ).done(function(a1, a2){
           var play  = etbase+"/sets/"+ptok+"/play.jsonp"+etkey+"&mix_id="+mid;
@@ -123,11 +126,15 @@ function listen(data, mid, ptok) {
             success: function(data) {
               $("#player").attr("src", data.set.track.url);
               $("#player").get(0).play();
-              listen(data, mid, ptok);
+              var button = document.getElementById('control');
+              button.setAttribute("class", "icon-pause icon-white");
+              listen(data, mid, ptok, name);
             },
             error: function(jqXHR, textStatus, errorThrown) {
               $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-            }
+            },
+            open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+            close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
           });
         });
       }
@@ -161,23 +168,19 @@ function listen(data, mid, ptok) {
               animation: google.maps.Animation.DROP
           });
 
-          var contentString = "<h3>" + name + "</h3>";
           var first = true;
           var playTags;
+          var dispTags = "";
           for(var tag in tagarr){
             if (first) { playTags = tagarr[tag]; first = false; }
             else { playTags += "+" + tagarr[tag]; }
-            contentString += "<span class='badge badge-jam'>" + tagarr[tag] + " ( " + ratingarr[tag] + " )</span> ";
+            dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + " ( " + ratingarr[tag] + " )</span> ";
           }
-          contentString += "<p>"+playTags+"</p>";
-
-          contentString += "<div>" +
-              "<button class='btn btn-jam control-conatiner pull-left'>" +
-                "<i onclick='loadMix(\""+playTags+"\")' id='control' class='icon-play icon-white'></i>" +
-              "</button>" + 
-              "<div class='progress progress-jam progress-striped active'>" +
-                "<div class='bar' id='time'><span id='current' class='badge badge-jam'></span></div>" +
-              "</div></div>";
+          var contentString = "<div>" +
+            "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \""+name+"\")'>" +
+              "<h3>" + name + "<i class='icon-white icon-chevron-right'></i></h3>" +
+            "</button></div>";
+          contentString += dispTags;
 
           makeInfoWindowEvent(map, infowindow, contentString, marker);
 
@@ -225,7 +228,7 @@ function listen(data, mid, ptok) {
 
           var contentString = "<form class='addPlace' method='get' action='res/php/add.php'>" + 
             "<input type='text' name='name' placeholder='Name of Building' autofocus='autofocus'/><br/>" +
-            "<input type='text' name='tag1' id='tag' placeholder='mood, genre, or artist'/><br/>" +
+            "<input type='text' name='tag1' id='tag' placeholder='mood, genre, or artist' required='required'/><br/>" +
             "<input type='text' name='tag2' id='tag' placeholder='mood, genre, or artist'/><br/>" +
             "<input type='text' name='tag3' id='tag' placeholder='mood, genre, or artist'/><br/>" +
             "<input type='text' name='lat' value='"+alatlng.lat()+"' style='display:none;'/><br/>" +
@@ -283,11 +286,24 @@ function listen(data, mid, ptok) {
         addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr, ratingarr);
 <?php } ?>
     
-    $("#map_canvas").css("height", window.innerHeight);
+    $("#map_canvas").css("height", window.innerHeight - 40);
+    $("#map_canvas").css("width", window.innerWidth);
   
     }
 
+    window.onresize = function() {
+      $("#map_canvas").css("height", window.innerHeight - 40);
+      $("#map_canvas").css("width", window.innerWidth);    
+    }
+
     google.maps.event.addDomListener(window, 'load', initialize);
+
+  function toggleMusic() {
+    var player = document.getElementById('player');
+    var button = document.getElementById('control');
+    if (player.paused) { player.play(); button.setAttribute("class", "icon-pause icon-white"); }
+    else { player.pause(); button.setAttribute("class", "icon-play icon-white"); }
+  }
 
   </script>
 
@@ -297,18 +313,21 @@ function listen(data, mid, ptok) {
     <div class="navbar-inner">
       <div class="container-fluid">
         <!-- Button to trigger modal -->
-        <a href="#help" role="button" class="btn btn-jam" data-toggle="modal">Need Help?</a>
-
+        <div id="progress">
+          <button class="btn btn-jam control-conatiner pull-left">
+            <i onclick="toggleMusic()" id="control" class="icon-white"></i>
+          </button>
+          <div class="progress progress-jam progress-striped active">
+            <div class="bar" id="time"><span id="current" class="badge badge-jam"></span></div>
+          </div>
+        </div> 
         <span id="info"></span>
-
-        <div class="pull-right"><a class="brand" href="./index.php">JamWalkr</a></div>
+        <div class="pull-right"><a class="brand" id="brand" href="./index.php">JamWalkr</a></div>
+        <a href="#help" role="button" class="btn btn-jam pull-right" data-toggle="modal" id="helpBtn">Need Help?</a></li>
       </div>
     </div>
   </div>
   
-
-<div class="well" id="test" style="margin-top: 40px;"></div>
-
   <span id="msg"></span>
   <video id="player" class="data"></video>
   <div id="map_canvas"></div>

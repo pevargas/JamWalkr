@@ -4,10 +4,9 @@
   padding: 0;
 }
 .navbar { max-height: 40px; }
-#progress { margin: 10px; width: 20%; display: inline-block; }
-#progress .btn { margin:0px;}
-#progress .progress { margin:0!important;}
-#info { margin: 10px; overflow: hidden; width: 50%; display: inline-block; max-height: 20px; }
+.info { overflow: hidden; display: inline-block; max-height: 20px; }
+.track, .info { padding: 10px; }
+.track .progress, .track .btn { margin: 0px!important; }
 #helpBtn { margin-right: 40px; }
 .host { position: fixed; left: 70px; bottom: 5px; }
 #msg { position: fixed; left: 0; bottom: 25%;}
@@ -17,7 +16,7 @@ h3 .icon-chevron-right { margin-top: 8px;}
 .data { display: none; }  
 
 /* Autocomplete Style BEGIN */
-  .ui-autocomplete-loading, .loading {
+  .ui-autocomplete-loading {
         background: transparent url('/res/img/load-jam.gif') right center no-repeat;
     }
   .ui-menu { 

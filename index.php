@@ -26,7 +26,7 @@
     
   if (!$rs) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
 
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
   <script type="text/javascript">
 $(window).load(function() {
 
@@ -313,17 +313,23 @@ function listen(data, mid, ptok, name) {
     <div class="navbar-inner">
       <div class="container-fluid">
         <!-- Button to trigger modal -->
-        <div id="progress">
-          <button class="btn btn-jam control-conatiner pull-left">
-            <i onclick="toggleMusic()" id="control" class="icon-white"></i>
-          </button>
-          <div class="progress progress-jam progress-striped active">
-            <div class="bar" id="time"><span id="current" class="badge badge-jam"></span></div>
+        <div class="row-fluid">
+          <div class="span3 track">
+            <button class="btn btn-jam control-conatiner pull-left">
+              <i onclick="toggleMusic()" id="control" class="icon-white"></i>
+            </button>
+            <div class="progress progress-jam progress-striped active">
+              <div class="bar" id="time"><span id="current" class="badge badge-jam"></span></div>
+            </div>
           </div>
-        </div> 
-        <span id="info"></span>
-        <div class="pull-right"><a class="brand" id="brand" href="./index.php">JamWalkr</a></div>
-        <a href="#help" role="button" class="btn btn-jam pull-right" data-toggle="modal" id="helpBtn">Need Help?</a></li>
+          <div class="span6 info" id="info">
+            <i class="icon-music icon-white"></i> Track Name <i class="icon-user icon-white"></i> Artist <i class="icon-volume-up icon-white"></i> You're listening to the sounds of <strong>Building Name</strong>
+          </div>
+          <div class="span3">
+            <a href="#help" role="button" class="btn btn-jam" data-toggle="modal" id="helpBtn">Need Help?</a>
+            <div class="pull-right"><a class="brand" id="brand" href="./index.php">JamWalkr</a></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

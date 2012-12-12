@@ -155,7 +155,7 @@ function loadMix(tags) {
 
           contentString += "<div>" +
               "<button class='btn btn-jam control-conatiner pull-left'>" +
-                "<i onclick='loadMix("+playTags+")' id='control' class='icon-play icon-white'></i>" +
+                "<i onclick='loadMix(String("+playTags+"))' id='control' class='icon-play icon-white'></i>" +
               "</button>" + 
               "<div class='progress progress-jam progress-striped active'>" +
                 "<div class='bar' id='time'><span id='current' class='badge badge-jam'></span></div>" +

@@ -246,7 +246,7 @@ function loadMix(tags) {
         addMarker(myLatlng);
       });
 
-
+      // Retrieve information to be displayed in infopane from database. Gets lat, long, name, id, and the related tags (and their ratings)
 <?php while($row = mysql_fetch_array($rs)) { ?>
         <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
           $rs2 = mysql_query($sql2);

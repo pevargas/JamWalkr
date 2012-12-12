@@ -90,6 +90,11 @@
             infowindow.open(map, markers[id]);
           });
 
+          var circleSize = 1;
+          for(var tag in tagarr){
+             circleSize += Number(ratingarr[tag]);
+          }
+          console.log(circleSize);
           var circleOptions = {
               strokeColor: "#8800CC",
               strokeOpacity: 0.8,
@@ -98,7 +103,7 @@
               fillOpacity: 0.35,
               map: map,
               center: alatlng,
-              radius: 150
+              radius: circleSize * 50
             };
             musicCircle = new google.maps.Circle(circleOptions);
 

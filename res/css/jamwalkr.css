@@ -1,9 +1,15 @@
+#map_canvas {
+  margin: 0;
+  margin-top: 40px;
+  padding: 0;
+  width: 100%;
+}
+
 .host {
   position: fixed;
   left: 70px;
   bottom: 5px;
 }
-
 .control-conatiner { height: 20px; width: 20px; padding: 0px; }
 #control { margin: 0px; }
 .data { display: none; }  

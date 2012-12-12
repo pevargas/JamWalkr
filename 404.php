@@ -7,13 +7,7 @@
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container-fluid">
-      	<a class="brand" href="./index.php">JamWalkr</a>
-      	<ul class="nav">
-      	  <li><a href="./index.php"><i class="icon-home icon-white"></i></a></li>
-          <li><a href="./ajax.php"><i class="icon-music icon-white"></i></a></li>
-      	  <li><a href="./8tracks.php"><i class="icon-headphones icon-white"></i></a></li>
-      	  <li><a href="./map.php"><i class="icon-map-marker icon-white"></i></a></li>
-      	</ul>
+      	<div class=="pull-right"><a class="brand" href="./index.php">JamWalkr</a></div>
       </div>
     </div>
   </div>
@@ -23,6 +17,7 @@
       <div class="span12">
       	<h1>404</h1>
       	<p class="lead">OH SNAP!</p>
+        <p><a href="./index.php" class="btn btn-jam">Return to the Jamz!</a></p>
       </div>
     </div>
   </div>

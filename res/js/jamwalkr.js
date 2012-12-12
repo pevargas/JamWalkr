@@ -1,5 +1,11 @@
 $(window).load(function() { 
 
+  var lfmbase = "http://ws.audioscrobbler.com/2.0/";
+  var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
+  var etbase  = "http://8tracks.com";
+  var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
+
+  // Music BEGIN
   function listen(data, mid, ptok) {
     var myplayer = document.getElementById('player');
     var timepast = myplayer.currentTime;
@@ -39,6 +45,28 @@ $(window).load(function() {
     window.setTimeout (function() { listen(data, mid, ptok); }, 1000);
   }
 
+  function getArt(mid) {
+    var mix = etbase + "/mixes/" + mid + ".jsonp" + etkey;
+    $.ajax({
+      url: mix,
+      dataType: "jsonp",
+      success: function(data) {
+        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Success!</strong></div>");
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+      }
+    });
+  }
+
+  function toggleMusic() {
+    var player = document.getElementById('player');
+    var button = document.getElementById('control');
+    if (player.paused) { player.play(); button.setAttribute("class", "icon-pause icon-white"); }
+    else { player.pause(); button.setAttribute("class", "icon-play icon-white"); }
+  }
+  // Music END
+
   // Autocomplete BEGIN
   $(function() {
     $("#tag").autocomplete({
@@ -62,5 +90,4 @@ $(window).load(function() {
     });
   });
   // Autocomplete END
-
- } );
+});

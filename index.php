@@ -226,16 +226,30 @@ function listen(data, mid, ptok, name) {
               animation: google.maps.Animation.DROP
           });
 
-          var contentString = "<form class='addPlace' method='get' action='res/php/add.php'>" + 
-            "<input type='text' name='name' placeholder='Name of Building' autofocus='autofocus'/><br/>" +
-            "<input type='text' name='tag1' id='tag' placeholder='mood, genre, or artist' required='required'/><br/>" +
-            "<input type='text' name='tag2' id='tag' placeholder='mood, genre, or artist'/><br/>" +
-            "<input type='text' name='tag3' id='tag' placeholder='mood, genre, or artist'/><br/>" +
-            "<input type='text' name='lat' value='"+alatlng.lat()+"' style='display:none;'/><br/>" +
-            "<input type='text' name='lng' value='"+alatlng.lng()+"' style='display:none;'/>" +
-            "<button type='submit' class='btn btn-jam'>Save</button></form>";
+          var geocoder = new google.maps.Geocoder();
+          var geoAddress;
+          geocoder.geocode({'latLng': alatlng}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              if (results[1]) {
+                geoAddress = results[0].formatted_address;
+                var contentString = "<form class='addPlace' method='get' action='res/php/add.php'>" + 
+                "<input type='text' name='name' value='"+ geoAddress + "' autofocus='autofocus'/><br/>" +
+                "<input type='text' name='tag1' id='tag' placeholder='mood, genre, or artist' required='required'/><br/>" +
+                "<input type='text' name='tag2' id='tag' placeholder='mood, genre, or artist'/><br/>" +
+                "<input type='text' name='tag3' id='tag' placeholder='mood, genre, or artist'/><br/>" +
+                "<input type='text' name='lat' value='"+alatlng.lat()+"' style='display:none;'/><br/>" +
+                "<input type='text' name='lng' value='"+alatlng.lng()+"' style='display:none;'/>" +
+                "<button type='submit' class='btn btn-jam'>Save</button></form>";
+              
+                makeInfoWindowEvent(map, infowindow, contentString, marker);
+
+              }
+            } else {
+              alert("Geocoder failed due to: " + status);
+            }
+          });
+
           
-          makeInfoWindowEvent(map, infowindow, contentString, marker);
 
           //map.panTo(alatLng);
           id = marker.__gm_id

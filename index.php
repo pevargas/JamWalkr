@@ -15,7 +15,7 @@
   mysql_connect($mysql_host,$username,$password);
   $con = mysql_connect($mysql_host,$username,$password);       
   if (!$con) {
-    die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>");
+    die("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>");
   }
   $db = mysql_select_db($database);
   ?>
@@ -24,7 +24,7 @@
   $sql = 'SELECT * FROM `Buildings` LIMIT 0, 30 ';
   $rs = mysql_query($sql);
     
-  if (!$rs) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
+  if (!$rs) { die("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
 
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
   <script type="text/javascript">
@@ -56,7 +56,7 @@ function listen(data, mid, ptok, name) {
           url: report,
           dataType: "jsonp",
           error: function(jqXHR, textStatus, errorThrown) {
-            $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+            $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
           },
           open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
           close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
@@ -74,7 +74,7 @@ function listen(data, mid, ptok, name) {
               listen(data, mid, ptok, name);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-              $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+              $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
             },
             open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
             close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
@@ -100,9 +100,12 @@ function listen(data, mid, ptok, name) {
           $.ajax({
             url: mix,
             dataType: "jsonp",
-            success: function(data) { mid = data.mixes[0].id; },
+            success: function(data) { 
+              mid = data.mixes[0].id;
+              $("#msg").append("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Success!</strong> Mix ID Found.</div>");
+            },
             error: function(jqXHR, textStatus, errorThrown) {
-              $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+              $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
             },
             open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
             close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
@@ -113,7 +116,7 @@ function listen(data, mid, ptok, name) {
               $("#test").append("Entered success for play token." + data + "<br/>" + purl + "<br/>");
               ptok = data.play_token; },
             error: function(jqXHR, textStatus, errorThrown) {
-              $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+              $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
             },
             open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
             close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
@@ -131,7 +134,7 @@ function listen(data, mid, ptok, name) {
               listen(data, mid, ptok, name);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-              $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+              $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
             },
             open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
             close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
@@ -287,7 +290,7 @@ function listen(data, mid, ptok, name) {
 <?php while($row = mysql_fetch_array($rs)) { ?>
         <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
           $rs2 = mysql_query($sql2);
-          if (!$rs2) { die("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } 
+          if (!$rs2) { die("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } 
           ?>
           var tagarr = [];
           var ratingarr = [];
@@ -333,7 +336,7 @@ function listen(data, mid, ptok, name) {
               <i onclick="toggleMusic()" id="control" class="icon-white"></i>
             </button>
             <div class="progress progress-jam progress-striped active">
-              <div class="bar" id="time"><span id="current" class="badge badge-jam"></span></div>
+              <div class="bar" id="time"><span id="current" class="badge badge-jam">0:00</span></div>
             </div>
           </div>
           <div class="span6 info" id="info">

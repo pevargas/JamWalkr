@@ -1,15 +1,27 @@
+/* Google Map BEGIN */
 #map_canvas {
   margin: 0;
   margin-top: 40px;
   padding: 0;
 }
+/* Google Map END */
+
+/* Dash BEGIN */
 .navbar { max-height: 40px; }
 .info { overflow: hidden; display: inline-block; max-height: 20px; }
 .track, .info { padding: 10px; }
 .track .progress, .track .btn { margin: 0px!important; }
 #helpBtn { margin-right: 40px; }
+/* Dash END */
+
+/* Footer BEGIN */
 .host { position: fixed; left: 70px; bottom: 5px; }
-#msg { position: fixed; left: 0; bottom: 25%;}
+/* Footer END */
+
+/* Error Handling BEGIN */
+#msg { position: fixed; left: 0; bottom: 25%; z-index: 5; }
+/* Error Handling END */
+
 .control-conatiner { height: 20px; width: 20px; padding: 0px!important; }
 h3 .icon-chevron-right { margin-top: 8px;}
 #control { margin: 0px; }

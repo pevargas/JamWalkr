@@ -158,7 +158,7 @@ function loadMix(tags) {
 
           contentString += "<div>" +
               "<button class='btn btn-jam control-conatiner pull-left'>" +
-                "<i onclick='loadMix("+playTags+")' id='control' class='icon-play icon-white'></i>" +
+                "<i onclick='loadMix(String("+playTags+"))' id='control' class='icon-play icon-white'></i>" +
               "</button>" + 
               "<div class='progress progress-jam progress-striped active'>" +
                 "<div class='bar' id='time'><span id='current' class='badge badge-jam'></span></div>" +
@@ -251,7 +251,7 @@ function loadMix(tags) {
         addMarker(myLatlng);
       });
 
-
+      // Retrieve information to be displayed in infopane from database. Gets lat, long, name, id, and the related tags (and their ratings)
 <?php while($row = mysql_fetch_array($rs)) { ?>
         <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
           $rs2 = mysql_query($sql2);

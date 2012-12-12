@@ -1,4 +1,3 @@
-<!-- Add function: checks for validity, then connects to database and adds in the new building and its tags -->
 <?php
 	include("auth.php");
 
@@ -24,21 +23,34 @@
 	  if (!$rs) { die(mysql_error()); }
 	  $row = mysql_fetch_array($rs);
 
+	  echo "<h1>Success!</h1>";
+	  echo "<p>Added ".$row['name']."</p>";
+	  $tags = "<p>With the tags: ";
+
 	  if (isset($_REQUEST["tag1"]) && ($_REQUEST["tag1"] != "")) { 
 	  	$sql = "INSERT INTO Tags VALUES ('', '".strtolower($_REQUEST['tag1'])."', '".$row['id']."', '1');";
 	  	$rs = mysql_query($sql);
 	  	if (!$rs) { die(mysql_error()); }
+	  	$tags += $_REQUEST['tag1'];
 	  }
 	  if (isset($_REQUEST["tag2"]) && ($_REQUEST["tag2"] != "")) { 
 	  	$sql = "INSERT INTO Tags VALUES ('', '".strtolower($_REQUEST['tag2'])."', '".$row['id']."', '1');";
 	  	$rs = mysql_query($sql);
 	  	if (!$rs) { die(mysql_error()); }
+	  	$tags += ", " . $_REQUEST['tag2'];
 	  }
 	  if (isset($_REQUEST["tag3"]) && ($_REQUEST["tag3"] != "")) { 
 	  	$sql = "INSERT INTO Tags VALUES ('', '".strtolower($_REQUEST['tag3'])."', '".$row['id']."', '1');";
 	  	$rs = mysql_query($sql);
 	  	if (!$rs) { die(mysql_error()); }
+	  	$tags += ", " . $_REQUEST['tag3'];
 	  }
+	  $tags += "</p>";
+
+	  echo $tags;
+
+	 	sleep(5);
+	 	header( 'Location: /map.php' ) ;
 
 	}
 ?>

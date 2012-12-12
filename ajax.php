@@ -26,7 +26,9 @@
         $.ajax({
           url: mix,
           dataType: "jsonp",
-          success: function(data) { mid = data.mixes[0].id; },
+          success: function(data) { 
+            $("#msg").append(mix);
+            mid = data.mixes[0].id; },
           error: function(jqXHR, textStatus, errorThrown) {
             $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
           }

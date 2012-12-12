@@ -29,13 +29,16 @@
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
   <script type="text/javascript">
 $(window).load(function() {
-    var lfmbase = "http://ws.audioscrobbler.com/2.0/";
+    
+
+    // Music BEGIN
+  });
+
+function listen(data, mid, ptok) {
+  var lfmbase = "http://ws.audioscrobbler.com/2.0/";
     var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
     var etbase  = "http://8tracks.com";
     var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
-
-    // Music BEGIN
-    function listen(data, mid, ptok) {
       var myplayer = document.getElementById('player');
       var timepast = myplayer.currentTime;
       var duration = myplayer.duration;
@@ -45,7 +48,10 @@ $(window).load(function() {
       var seconds  = parseInt(timepast)%60;
       $("#current").html(minutes +":"+(seconds < 10 ? "0" + seconds : seconds));
       document.getElementById('time').setAttribute("style", "width:" + width + "%");
-      if (30 < timepast && timepast < 31) {
+
+      if (timepast < 2) {
+        $("#info").html("<strong>"+data.set.track.name+"</strong> "+data.set.track.performer);            
+      } else if (30 < timepast && timepast < 31) {
         var report = etbase+"/sets/"+ptok+"/report.jsonp"+etkey+"&mix_id="+mid+"&track_id="+data.set.track.id;
         $.ajax({
           url: report,
@@ -63,7 +69,7 @@ $(window).load(function() {
               $("#player").attr("src", data.set.track.url);
               $("#player").get(0).play();
               $(".current").addClass("muted").removeClass("current");
-              $("#info").prepend("<li class='current'><strong>"+data.set.track.name+"</strong> "+data.set.track.performer+"</li>");            
+              $("#info").prepend("<li class='current'><strong>"+data.set.track.performer+"</strong> "+data.set.track.name+"</li>");            
               listen(data, mid, ptok);
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -73,9 +79,9 @@ $(window).load(function() {
       }
       window.setTimeout (function() { listen(data, mid, ptok); }, 1000);
     }
-  });
 
-function loadMix(tags) {
+  function loadMix(tag) {
+  var tags = encodeURIComponent(tag);
   var lfmbase = "http://ws.audioscrobbler.com/2.0/";
     var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
     var etbase  = "http://8tracks.com";
@@ -94,6 +100,7 @@ function loadMix(tags) {
             success: function(data) { 
               $("#test").append("Entered success for mix id." + data + "<br/>" + mix + "<br/>");
               $("#test").append("<p>" + data.mixes[0].name + "</p>");
+              console.log(data);
               mid = data.mixes[0].id; },
             error: function(jqXHR, textStatus, errorThrown) {
               $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
@@ -116,7 +123,6 @@ function loadMix(tags) {
             success: function(data) {
               $("#player").attr("src", data.set.track.url);
               $("#player").get(0).play();
-              $("#info").prepend("<li class='current'><strong>"+data.set.track.name+"</strong> "+data.set.track.performer+"</li>");            
               listen(data, mid, ptok);
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -292,6 +298,9 @@ function loadMix(tags) {
       <div class="container-fluid">
         <!-- Button to trigger modal -->
         <a href="#help" role="button" class="btn btn-jam" data-toggle="modal">Need Help?</a>
+
+        <span id="info"></span>
+
         <div class="pull-right"><a class="brand" href="./index.php">JamWalkr</a></div>
       </div>
     </div>

@@ -76,6 +76,10 @@ $(window).load(function() {
   });
 
 function loadMix(tags) {
+  var lfmbase = "http://ws.audioscrobbler.com/2.0/";
+    var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
+    var etbase  = "http://8tracks.com";
+    var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
       if (tags != null) { 
         var sear    = "&tag=" + tags + "&sort=popular";
         var mix     = etbase + "/mixes.jsonp" + etkey + sear;
@@ -87,14 +91,19 @@ function loadMix(tags) {
           $.ajax({
             url: mix,
             dataType: "jsonp",
-            success: function(data) { mid = data.mixes[0].id; },
+            success: function(data) { 
+              $("#test").append("Entered success for mix id." + data + "<br/>" + mix + "<br/>");
+              $("#test").append("<p>" + data.mixes[0].name + "</p>");
+              mid = data.mixes[0].id; },
             error: function(jqXHR, textStatus, errorThrown) {
               $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
             }
           }), $.ajax({
             url: purl,
             dataType: "jsonp",
-            success: function(data) { ptok = data.play_token; },
+            success: function(data) { 
+              $("#test").append("Entered success for play token." + data + "<br/>" + purl + "<br/>");
+              ptok = data.play_token; },
             error: function(jqXHR, textStatus, errorThrown) {
               $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
             }
@@ -158,7 +167,7 @@ function loadMix(tags) {
 
           contentString += "<div>" +
               "<button class='btn btn-jam control-conatiner pull-left'>" +
-                "<i onclick='loadMix(String("+playTags+"))' id='control' class='icon-play icon-white'></i>" +
+                "<i onclick='loadMix(\""+playTags+"\")' id='control' class='icon-play icon-white'></i>" +
               "</button>" + 
               "<div class='progress progress-jam progress-striped active'>" +
                 "<div class='bar' id='time'><span id='current' class='badge badge-jam'></span></div>" +
@@ -268,7 +277,7 @@ function loadMix(tags) {
         addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr, ratingarr);
 <?php } ?>
     
-    $("#map_canvas").css("height", window.innerHeight - 40);
+    $("#map_canvas").css("height", window.innerHeight);
   
     }
 
@@ -288,6 +297,9 @@ function loadMix(tags) {
     </div>
   </div>
   
+
+<div class="well" id="test" style="margin-top: 40px;"></div>
+
   <span id="msg"></span>
   <video id="player" class="data"></video>
   <div id="map_canvas"></div>
@@ -309,7 +321,6 @@ function loadMix(tags) {
       <button class="btn btn-jam" data-dismiss="modal" aria-hidden="true">Start Jammin'</button>
     </div>
   </div>
-
   <a href="http://www.000webhost.com/" target="_blank" class="host"><img src="http://www.000webhost.com/images/80x15_powered.gif" alt="Web Hosting" width="80" height="15" border="0" /></a>
 </body>
 </html>

@@ -398,10 +398,10 @@
     </div>
     <div class="modal-body">
       <p class="lead">What is JamWalkr?</p>
-      <p>JamWalkr is a music tagging application. Users are encouraged to tag buildings with moods, genres or artists. As the number of tagged buildings grow, we can see how the citezens of a city thinks their city sounds.</p>
+      <p>JamWalkr is a music tagging application. Users are encouraged to tag buildings with moods, genres or artists. As the number of tagged buildings grow, we can see how the citizens of a city thinks their city sounds.</p>
 
       <p class="lead">How do I participate?</p>
-      <p>To add a point, simiply right click and fill out the form. You can view already tagged buildings by clicking on their markers. Please also vote on whether you agree with the tags buy voting up or down the specific tags.</p>
+      <p>To add a point, simiply right click and fill out the form. You can view already tagged buildings by clicking on their markers. Please also vote on whether you agree with the tags by voting up or down the specific tags.</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-jam" data-dismiss="modal" aria-hidden="true">Start Jammin'</button>

@@ -5,11 +5,7 @@
     include("res/php/auth.php");
     include("res/php/loadfunc.php"); 
     include("res/php/links.php");
-  ?>   
-
-   <style type="text/css">
-    
-  </style>
+  ?> 
 
 <?php 
   mysql_connect($mysql_host,$username,$password);
@@ -28,120 +24,138 @@
 
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
   <script type="text/javascript">
-$(window).load(function() {
 
-    // Music BEGIN
-  });
+  /* Functions involved with music BEGIN */
 
-function listen(data, mid, ptok, name) {
-  var lfmbase = "http://ws.audioscrobbler.com/2.0/";
+  function listen(data, mid, ptok, name) {
+    // API keys and information
+    var lfmbase = "http://ws.audioscrobbler.com/2.0/";
     var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
     var etbase  = "http://8tracks.com";
     var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
-      var myplayer = document.getElementById('player');
-      var timepast = myplayer.currentTime;
-      var duration = myplayer.duration;
-      var width    = String(100*(timepast / duration));
 
-      var minutes  = parseInt(timepast / 60)%60;
-      var seconds  = parseInt(timepast)%60;
-      $("#current").html(minutes +":"+(seconds < 10 ? "0" + seconds : seconds));
-      document.getElementById('time').setAttribute("style", "width:" + width + "%");
+    // Grab the player, and get the current time and duration of song
+    var myplayer = document.getElementById('player');
+    var timepast = myplayer.currentTime;
+    var duration = myplayer.duration;
+    // Width as a percentage for the visual aspect
+    var width    = String(100*(timepast / duration));
+    // Display time in human time
+    var minutes  = parseInt(timepast / 60)%60;
+    var seconds  = parseInt(timepast)%60;
+    $("#current").html(minutes +":"+(seconds < 10 ? "0" + seconds : seconds));
+    document.getElementById('time').setAttribute("style", "width:" + width + "%");
 
-      if (timepast < 1) {
-        $("#info").html("<i class='icon-music icon-white'></i> "+data.set.track.name+" <i class='icon-user icon-white'></i> "+data.set.track.performer + " <i class='icon-volume-up icon-white'></i> You\'re listening to the sounds of <strong>"+name+"</strong>");            
-      } else if (30 < timepast && timepast < 31) {
-        var report = etbase+"/sets/"+ptok+"/report.jsonp"+etkey+"&mix_id="+mid+"&track_id="+data.set.track.id;
+    // Throw track info in navbar
+    if (timepast < 1) {
+      $("#info").html("<i class='icon-music icon-white'></i> "+data.set.track.name+" <i class='icon-user icon-white'></i> "+data.set.track.performer + " <i class='icon-volume-up icon-white'></i> You\'re listening to the sounds of <strong>"+name+"</strong>");
+    }
+    // Report song has been played to SoundExchange
+    else if (30 < timepast && timepast < 31) {
+      var report = etbase+"/sets/"+ptok+"/report.jsonp"+etkey+"&mix_id="+mid+"&track_id="+data.set.track.id;
+      $.ajax({
+        url: report,
+        dataType: "jsonp",
+        error: function(jqXHR, textStatus, errorThrown) {
+          $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+        },
+        open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+        close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
+      });
+    }
+    // Play next song if reached end of song
+    else if (width == 100) {
+        var next = etbase+"/sets/"+ptok+"/next.jsonp"+etkey+"&mix_id="+mid;
         $.ajax({
-          url: report,
+          url: next,
           dataType: "jsonp",
+          success: function(data) { 
+            $("#player").attr("src", data.set.track.url);
+            $("#player").get(0).play();
+            $(".current").addClass("muted").removeClass("current");
+            $("#info").prepend("<li class='current'><strong>"+data.set.track.performer+"</strong> "+data.set.track.name+"</li>");            
+            listen(data, mid, ptok, name);
+          },
           error: function(jqXHR, textStatus, errorThrown) {
             $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
           },
           open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
           close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
         });
-      } else if (width == 100) {
-          var next = etbase+"/sets/"+ptok+"/next.jsonp"+etkey+"&mix_id="+mid;
-          $.ajax({
-            url: next,
-            dataType: "jsonp",
-            success: function(data) { 
-              $("#player").attr("src", data.set.track.url);
-              $("#player").get(0).play();
-              $(".current").addClass("muted").removeClass("current");
-              $("#info").prepend("<li class='current'><strong>"+data.set.track.performer+"</strong> "+data.set.track.name+"</li>");            
-              listen(data, mid, ptok, name);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-              $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-            },
-            open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
-            close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
-          });
-      }
-      window.setTimeout (function() { listen(data, mid, ptok, name); }, 1000);
     }
+    window.setTimeout (function() { listen(data, mid, ptok, name); }, 1000);
+  } // listen()
 
   function loadMix(tag, name) {
-  var tags = encodeURIComponent(tag);
-  var lfmbase = "http://ws.audioscrobbler.com/2.0/";
+    // API dev information
+    var lfmbase = "http://ws.audioscrobbler.com/2.0/";
     var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
     var etbase  = "http://8tracks.com";
     var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
-      if (tags != null) { 
-        var sear    = "&tag=" + tags + "&sort=popular";
-        var mix     = etbase + "/mixes.jsonp" + etkey + sear;
-        var purl    = etbase + "/sets/new.jsonp" + etkey;
-        var mid     = '';
-        var ptok    = '';
+    // encode tags in URL formating
+    var tags = encodeURIComponent(tag);
 
-        $.when(
-          $.ajax({
-            url: mix,
-            dataType: "jsonp",
-            success: function(data) { 
-              mid = data.mixes[0].id;
-              $("#msg").append("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Success!</strong> Mix ID Found.</div>");
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-              $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-            },
-            open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
-            close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
-          }), $.ajax({
-            url: purl,
-            dataType: "jsonp",
-            success: function(data) { 
-              $("#test").append("Entered success for play token." + data + "<br/>" + purl + "<br/>");
-              ptok = data.play_token; },
-            error: function(jqXHR, textStatus, errorThrown) {
-              $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-            },
-            open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
-            close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
-          })
-        ).done(function(a1, a2){
-          var play  = etbase+"/sets/"+ptok+"/play.jsonp"+etkey+"&mix_id="+mid;
-          $.ajax({
-            url: play,
-            dataType: "jsonp",
-            success: function(data) {
-              $("#player").attr("src", data.set.track.url);
-              $("#player").get(0).play();
-              var button = document.getElementById('control');
-              button.setAttribute("class", "icon-pause icon-white");
-              listen(data, mid, ptok, name);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-              $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-            },
-            open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
-            close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
-          });
+    // Make sure there are tags
+    if (tags != null) { 
+      // Build ajax url string
+      var sear    = "&tag=" + tags + "&sort=popular";
+      var mix     = etbase + "/mixes.jsonp" + etkey + sear;
+      var purl    = etbase + "/sets/new.jsonp" + etkey;
+      var mid     = '';
+      var ptok    = '';
+
+      $.when(
+        $.ajax({ // Grab the mix id
+          url: mix,
+          dataType: "jsonp",
+          success: function(data) { mid = data.mixes[0].id; },
+          error: function(jqXHR, textStatus, errorThrown) {
+            $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+          },
+          open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+          close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
+        }), $.ajax({ // Grab the play token
+          url: purl,
+          dataType: "jsonp",
+          success: function(data) { ptok = data.play_token; },
+          error: function(jqXHR, textStatus, errorThrown) {
+            $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+          },
+          open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+          close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
+        })
+      ).done(function(a1, a2){ // Make sure both ajax calls complete successfully
+        // Construct call play url string
+        var play  = etbase+"/sets/"+ptok+"/play.jsonp"+etkey+"&mix_id="+mid;
+        $.ajax({ // Get current track
+          url: play,
+          dataType: "jsonp",
+          success: function(data) {
+            $("#player").attr("src", data.set.track.url);
+            $("#player").get(0).play();
+            var button = document.getElementById('control');
+            button.setAttribute("class", "icon-pause icon-white");
+            listen(data, mid, ptok, name);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+          },
+          open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+          close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
         });
-      }
+      });
     }
+  } // loadMix()
+
+  // Play/Pause Button
+  function toggleMusic() {
+    var player = document.getElementById('player');
+    var button = document.getElementById('control');
+    if (player.paused) { player.play(); button.setAttribute("class", "icon-pause icon-white"); }
+    else { player.pause(); button.setAttribute("class", "icon-play icon-white"); }
+  } // toggleMusic()
+
+  /* Functions involved with music END */
 
     var map;
     function initialize() {
@@ -200,9 +214,8 @@ function listen(data, mid, ptok, name) {
           });
 
           var circleSize = 1;
-          for(var tag in tagarr){
-             circleSize += Number(ratingarr[tag]);
-          }
+          // Circle size porportional to ratings
+          for(var tag in tagarr){ circleSize += Number(ratingarr[tag]); }
 
           var circleOptions = {
               strokeColor: "#8800CC",
@@ -215,8 +228,7 @@ function listen(data, mid, ptok, name) {
               radius: 50 * circleSize
             };
             musicCircle = new google.maps.Circle(circleOptions);
-
-      }
+      } // addInitMarker()
 
       // Add markers
       var addMarker = function (alatlng) {
@@ -245,14 +257,11 @@ function listen(data, mid, ptok, name) {
                 "<button type='submit' class='btn btn-jam'>Save</button></form>";
               
                 makeInfoWindowEvent(map, infowindow, contentString, marker);
-
               }
             } else {
               alert("Geocoder failed due to: " + status);
             }
           });
-
-          
 
           //map.panTo(alatLng);
           id = marker.__gm_id
@@ -263,20 +272,20 @@ function listen(data, mid, ptok, name) {
             id = this.__gm_id;
             infowindow.open(map, markers[id]);
           });
-      }
+      } // addMarker()
 
       // Delete marker on right click
       var delMarker = function (id) {
           marker = markers[id]; 
           marker.setMap(null);
-      }
+      } // delMarker()
 
       function makeInfoWindowEvent(map, infowindow, contentString, marker) {
         google.maps.event.addListener(marker, 'click', function() {
           infowindow.setContent(contentString);
           infowindow.open(map, marker);
         });
-      }
+      } // makeInfoWindowEvent()
 
       // Right click handler
       google.maps.event.addListener(map, "rightclick", function(event) {
@@ -303,24 +312,20 @@ function listen(data, mid, ptok, name) {
         addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr, ratingarr);
 <?php } ?>
     
+    /* Assign map to be entirty of window */
     $("#map_canvas").css("height", window.innerHeight - 40);
     $("#map_canvas").css("width", window.innerWidth);
   
-    }
+    } // initialize()
 
+    /* Assign map to be entirty of window on resize BEGIN */
     window.onresize = function() {
       $("#map_canvas").css("height", window.innerHeight - 40);
       $("#map_canvas").css("width", window.innerWidth);    
     }
+    /* Assign map to be entirty of window on resize END */
 
     google.maps.event.addDomListener(window, 'load', initialize);
-
-  function toggleMusic() {
-    var player = document.getElementById('player');
-    var button = document.getElementById('control');
-    if (player.paused) { player.play(); button.setAttribute("class", "icon-pause icon-white"); }
-    else { player.pause(); button.setAttribute("class", "icon-play icon-white"); }
-  }
 
   </script>
 

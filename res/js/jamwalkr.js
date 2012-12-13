@@ -62,13 +62,6 @@ $(window).load(function() {
       }
     });
   }
-
-  function toggleMusic() {
-    var player = document.getElementById('player');
-    var button = document.getElementById('control');
-    if (player.paused) { player.play(); button.setAttribute("class", "icon-pause icon-white"); }
-    else { player.pause(); button.setAttribute("class", "icon-play icon-white"); }
-  }
   // Music END
 
   // Autocomplete BEGIN

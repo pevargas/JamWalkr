@@ -15,4 +15,15 @@
   $rs = mysql_query($sql);
   if (!$rs) { die(mysql_error()); }
 
+  /* Check is rating is negative. If so, remove. */
+  $sql = "SELECT * FROM `Tags` WHERE `id` = '".$tid."'";
+  $rs = mysql_query($sql);
+  if (!$rs) { die(mysql_error()); }
+  $row = mysql_fetch_array($rs);
+  if ($row['rating'] < 0){
+    $sql = 'DELETE FROM Tags WHERE `id` = '.$tid;
+    $rs = mysql_query($sql);
+    if (!$rs) { die(mysql_error()); }
+  }
+
 ?>

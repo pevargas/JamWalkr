@@ -218,7 +218,7 @@
       url: "res/php/dnvote.php",
       data: "tid="+tid,
       success: function(data) {
-        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> Your vote has been recieved</div>");
+        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> Your vote has been recieved.</div>");
         console.log(data);
       },
       error: function(jqXHR, textStatus, errorThrown) {
@@ -242,8 +242,27 @@
       url: "res/php/add.php",
       data: name+tag1+tag2+tag3+lat+lng,
       success: function(data) {
-        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> Your vote has been recieved</div>");
+        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> The building has been created.</div>");
         console.log(data);
+
+        var first = true;
+        var playTags;
+        var dispTags = "";
+        for(var tag in data.tagarr){
+          if (first) { playTags = data.tagarr[tag]; first = false; }
+          else { playTags += "+" + data.tagarr[tag]; }
+          dispTags += "<p><span class='label label-jam'><a href='#' onclick='upVote("+data.tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
+          dispTags += " [ " + data.ratingarr[tag] + " ] ";
+          dispTags += "<a href='#' onclick='dnVote("+data.tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a></span>";
+          dispTags += "<span class='badge badge-jam'>" + data.tagarr[tag] + "</span></p>";
+        }
+        var contentString = "<div>" +
+          "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \""+data.name+"\")'>" +
+            "<h3>" + data.name + "<i class='icon-white icon-chevron-right'></i></h3>" +
+          "</button></div>";
+        contentString += dispTags;
+
+        $("#output").html(contentString);
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");

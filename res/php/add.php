@@ -42,9 +42,8 @@
 	  	if (!$rs) { die(mysql_error()); }
 	  }
 
-	  // Return inserted information
-	  
-	$sql = "SELECT * FROM `Tags` WHERE `building` = '".$bid."'";
+	  // Return inserted information  
+		$sql = "SELECT * FROM `Tags` WHERE `building` = '".$bid."'";
     $rs = mysql_query($sql);
     if (!$rs) { die("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } 
     $tagarr    = array();
@@ -65,6 +64,6 @@
     	"tidarr" 		=> $tidarr,
     );
 
-	  json_encode($array);
+	  echo json_encode($array);
 	}
 ?>

@@ -428,11 +428,7 @@
           });
       } // addMarker()
 
-      // Delete marker on right click
-      var delMarker = function (id) {
-          marker = markers[id]; 
-          marker.setMap(null);
-      } // delMarker()
+      
 
       function makeInfoWindowEvent(map, infowindow, contentString, marker) {
         google.maps.event.addListener(marker, 'click', function() {

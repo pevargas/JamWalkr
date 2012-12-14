@@ -255,12 +255,45 @@
   
 /* Start of map code */
 
+    /* Find where user is, specifically ask for it */
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success);
+    } else {
+      error('Geo Location is not supported');
+    }
+    var usrLat;
+    var usrLng;
+    var usrLatLng;
+    var geocoder;
+    var geoAddress;
+    function success(position) {
+         usrLat = position.coords.latitude;
+         usrLng = position.coords.longitude;
+         usrLatLng = new google.maps.LatLng(usrLat, usrLng);
+         geocoder = new google.maps.Geocoder();
+        geocoder.geocode({'latLng': usrLatLng}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+              geoAddress = results[0].formatted_address;
+
+            }
+          } else {
+            alert("Geocoder failed due to: " + status);
+          }
+        });
+    }
+    /* End of user geolocation*/
+    
+
+    
+    
+
     var map;
     function initialize() {
       // Init map options
       var mapOptions = {
-        zoom: 14,
-        center: new google.maps.LatLng(40.0150, -105.2700),
+        zoom: 16,
+        center: new google.maps.LatLng(usrLat, usrLng),
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
@@ -278,7 +311,6 @@
           marker = new google.maps.Marker({ 
               position: alatlng,
               map: map,
-              draggable: true,
               icon: image,
               animation: google.maps.Animation.DROP
           });
@@ -329,6 +361,8 @@
               radius: 50 * circleSize
             };
             musicCircle = new google.maps.Circle(circleOptions);
+
+
       } // addInitMarker()
 
       // Add markers
@@ -398,6 +432,8 @@
         addMarker(myLatlng);
       });
 
+      
+
       // Retrieve information to be displayed in infopane from database. Gets lat, long, name, id, and the related tags (and their ratings)
 <?php while($row = mysql_fetch_array($rs)) { ?>
         <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
@@ -416,6 +452,9 @@
         <?php } ?>
         addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr, ratingarr, tidarr);
 <?php } ?>
+
+    // Add user's marker
+      addMarker(usrLatLng);
     
     /* Assign map to be entirty of window */
     $("#map_canvas").css("height", window.innerHeight - 40);

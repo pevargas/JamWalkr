@@ -196,7 +196,7 @@
 
   /* Functions involved with music END */
 
-  /* Functions involved with votiing */
+  /* Functions involved with voting BEGIN */
   function upVote(tid) {
     $.ajax({
       url: "res/php/upvote.php",
@@ -228,6 +228,30 @@
       close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
     });
   } // dnVote()
+  /* Functions involved with voting END */
+
+  // Add a Building
+  function addBuilding() {
+    var name = "name="  + encodeURIComponent($("input#name").val());
+    var tag1 = "&tag1=" + encodeURIComponent($("input#tag1").val());
+    var tag2 = "&tag2=" + encodeURIComponent($("input#tag2").val());
+    var tag3 = "&tag3=" + encodeURIComponent($("input#tag3").val());
+    var lat  = "&lat="  + $("input#lat").val();
+    var lng  = "&lng="  + $("input#lng").val();
+    $.ajax({
+      url: "res/php/add.php",
+      data: name+tag1+tag2+tag3+lat+lng,
+      success: function(data) {
+        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> Your vote has been recieved</div>");
+        console.log(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+      },
+      open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+      close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
+    });
+  } // addBuilding()
   
 /* Start of map code */
 
@@ -324,14 +348,16 @@
             if (status == google.maps.GeocoderStatus.OK) {
               if (results[1]) {
                 geoAddress = results[0].formatted_address;
-                var contentString = "<form class='addPlace' method='get' action='res/php/add.php'>" + 
-                "<input type='text' name='name' value='"+ geoAddress + "' autofocus='autofocus'/><br/>" +
-                "<input type='text' name='tag1' id='tag' placeholder='mood, genre, or artist' required='required'/><br/>" +
-                "<input type='text' name='tag2' id='tag' placeholder='mood, genre, or artist'/><br/>" +
-                "<input type='text' name='tag3' id='tag' placeholder='mood, genre, or artist'/><br/>" +
-                "<input type='text' name='lat' value='"+alatlng.lat()+"' style='display:none;'/><br/>" +
-                "<input type='text' name='lng' value='"+alatlng.lng()+"' style='display:none;'/>" +
-                "<button type='submit' class='btn btn-jam'>Save</button></form>";
+                var contentString = "<div id='output'>" +
+                "<h2>When you're at...</h2>"+ 
+                "<input type='text' name='name' id='name' value='"+ geoAddress + "' autofocus='autofocus'/><br/>" +
+                "<p class='lead'>...what does it remind you of?</p>"+
+                "<input type='text' name='tag1' id='tag1' placeholder='mood, genre, or artist' required='required'/><br/>" +
+                "<input type='text' name='tag2' id='tag2' placeholder='mood, genre, or artist'/><br/>" +
+                "<input type='text' name='tag3' id='tag3' placeholder='mood, genre, or artist'/><br/>" +
+                "<input type='text' name='lat' id='lat' value='"+alatlng.lat()+"' style='display:none;'/><br/>" +
+                "<input type='text' name='lng' id='lng' value='"+alatlng.lng()+"' style='display:none;'/>" +
+                "<button type='submit' onclick='addBuilding()' class='btn btn-jam'>Save</button></div>";
               
                 makeInfoWindowEvent(map, infowindow, contentString, marker);
               }

@@ -275,18 +275,14 @@
           if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
               geoAddress = results[0].formatted_address;
-
+              initialize();
             }
           } else {
-            alert("Geocoder failed due to: " + status);
+            alert("Geocoder failed due to: " + status + "\n usrLat: " + usrLat +"\n usrLng: " + usrLng);
           }
         });
     }
     /* End of user geolocation*/
-    
-
-    
-    
 
     var map;
     function initialize() {
@@ -297,6 +293,8 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+
+
 
       // Markers
       var id;
@@ -347,7 +345,7 @@
           });
 
           var circleSize = 1;
-          // Circle size porportional to ratings
+          // Circle size proportional to ratings
           for(var tag in tagarr){ circleSize += Number(ratingarr[tag]); }
 
           var circleOptions = {
@@ -396,10 +394,10 @@
                 makeInfoWindowEvent(map, infowindow, contentString, marker);
               }
             } else {
-              alert("Geocoder failed due to: " + status);
+              alert("Geocoder failed in addMarker due to: " + status);
             }
           });
-
+          
           //map.panTo(alatLng);
           id = marker.__gm_id
           markers[id] = marker; 
@@ -453,24 +451,31 @@
         addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr, ratingarr, tidarr);
 <?php } ?>
 
-    // Add user's marker
-      addMarker(usrLatLng);
+    
+    
     
     /* Assign map to be entirty of window */
     $("#map_canvas").css("height", window.innerHeight - 40);
     $("#map_canvas").css("width", window.innerWidth);
+
+     $(document).ready(function() {
+        // Add user's marker
+        alert("Adding user location" + usrLatLng);
+        addMarker(usrLatLng);
+      });
   
     } // initialize()
 
     /* Assign map to be entirty of window on resize BEGIN */
     window.onresize = function() {
       $("#map_canvas").css("height", window.innerHeight - 40);
-      $("#map_canvas").css("width", window.innerWidth);    
+      $("#map_canvas").css("width", window.innerWidth);
     }
     /* Assign map to be entirty of window on resize END */
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
+   
 
   </script>
 

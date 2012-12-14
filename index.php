@@ -250,7 +250,7 @@
         var dispTags = "";
         for(var tag in data.tagarr){
           if (first) { playTags = data.tagarr[tag]; first = false; }
-          else { playTags += "+" + data.tagarr[tag]; }
+          else if (tag < 3) { playTags += "+" + data.tagarr[tag]; }
           dispTags += "<p><span class='label label-jam'><a href='#' onclick='upVote("+data.tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
           dispTags += " [ " + data.ratingarr[tag] + " ] ";
           dispTags += "<a href='#' onclick='dnVote("+data.tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a></span>";
@@ -286,20 +286,20 @@
     var geocoder;
     var geoAddress;
     function success(position) {
-         usrLat = position.coords.latitude;
-         usrLng = position.coords.longitude;
-         usrLatLng = new google.maps.LatLng(usrLat, usrLng);
-         geocoder = new google.maps.Geocoder();
-        geocoder.geocode({'latLng': usrLatLng}, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            if (results[1]) {
-              geoAddress = results[0].formatted_address;
-              initialize();
-            }
-          } else {
-            alert("Geocoder failed due to: " + status + "\n usrLat: " + usrLat +"\n usrLng: " + usrLng);
+      usrLat = position.coords.latitude;
+      usrLng = position.coords.longitude;
+      usrLatLng = new google.maps.LatLng(usrLat, usrLng);
+      geocoder = new google.maps.Geocoder();
+      geocoder.geocode({'latLng': usrLatLng}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          if (results[1]) {
+            geoAddress = results[0].formatted_address;
+            initialize();
           }
-        });
+        } else {
+          console.log("Geocoder failed due to: " + status + "\n usrLat: " + usrLat +"\n usrLng: " + usrLng);
+        }
+      });
     }
     /* End of user geolocation*/
 
@@ -312,8 +312,6 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-
-
 
       // Markers
       var id;
@@ -388,7 +386,7 @@
           marker = new google.maps.Marker({ 
               position: alatlng,
               map: map,
-              draggable: true,
+              draggable: false,
               icon: image,
               animation: google.maps.Animation.DROP
           });

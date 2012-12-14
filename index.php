@@ -394,7 +394,7 @@
                 makeInfoWindowEvent(map, infowindow, contentString, marker);
               }
             } else {
-              alert("Geocoder failed in addMarker due to: " + status);
+              console.log("Geocoder failed in addMarker due to: " + status);
             }
           });
           
@@ -460,7 +460,7 @@
 
      $(document).ready(function() {
         // Add user's marker
-        alert("Adding user location" + usrLatLng);
+        console.log("Adding user location" + usrLatLng);
         addMarker(usrLatLng);
       });
   

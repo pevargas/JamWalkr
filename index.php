@@ -53,7 +53,15 @@
         $.ajax({ // Grab the mix id
           url: mix,
           dataType: "jsonp",
-          success: function(data) { mid = data.mixes[0].id; },
+          success: function(data) {
+            console.log(data);
+            if (data.total_entries >= 1) {
+              mid = data.mixes[0].id;
+              console.log("Grabbed Mix ID: " + data.mixes[0].name + " ("+mid+")");
+            } else {
+              $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>8Tracks Error</strong> Unable to find playlist with those tags.</div>");  
+            }
+          },
           error: function(jqXHR, textStatus, errorThrown) {
             $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
           },
@@ -62,7 +70,10 @@
         }), $.ajax({ // Grab the play token
           url: purl,
           dataType: "jsonp",
-          success: function(data) { ptok = data.play_token; },
+          success: function(data) { 
+            ptok = data.play_token; 
+            console.log("Grabbed Play Token: "+ptok);
+          },
           error: function(jqXHR, textStatus, errorThrown) {
             $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
           },
@@ -148,12 +159,12 @@
       reported = false;
       // Autoplay song
       $("video").get(0).play();
-      $("#msg").append("<img src='"+getArt(mid)+"'/>");
+      //$("#msg").append("<img src='"+getArt(mid)+"'/>");
       // Make sure button is correct state
       var button = document.getElementById('control');
       button.setAttribute("class", "icon-pause icon-white");
       // Update track info
-      $("#info").html("<i class='icon-music icon-white'></i> "+gData.set.track.name+" <i class='icon-user icon-white'></i> "+gData.set.track.performer + " <i class='icon-volume-up icon-white'></i> You\'re listening to the sounds of <strong>"+name+"</strong>");
+      $("#info").html("<i class='icon-music icon-white'></i> "+gData.set.track.name+" <i class='icon-user icon-white'></i> "+gData.set.track.performer + " <i class='icon-volume-up icon-white'></i> "+bName);
     }); // Updated track information function
 
   }); // JQuery to handle song playback
@@ -185,23 +196,39 @@
 
   /* Functions involved with music END */
 
-  /*function upVote(bid, tag) {
-    var string = "build_id="+bid+"&amp;tag_name="+tag;
+  /* Functions involved with votiing */
+  function upVote(tid) {
     $.ajax({
       url: "res/php/upvote.php",
-      data: string,
+      data: "tid="+tid,
       success: function(data) {
-        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> Your vote has been recieve</div>");
-      }
+        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> Your vote has been recieved</div>");
+        console.log(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+      },
+      open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+      close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
     });
-  }*/
-   
-  $(function () {
-    $("button#upVote").click(function(){
-      console.log(this.val());
-    });
-  });
+  } // upVote()
 
+  function dnVote(tid) {
+    $.ajax({
+      url: "res/php/dnvote.php",
+      data: "tid="+tid,
+      success: function(data) {
+        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> Your vote has been recieved</div>");
+        console.log(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+      },
+      open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+      close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
+    });
+  } // dnVote()
+  
 /* Start of map code */
 
     var map;
@@ -221,7 +248,7 @@
       var infowindow = new google.maps.InfoWindow();
 
       // Add Init markers
-      var addInitMarker = function (alatlng, name, id, tagarr, ratingarr) {
+      var addInitMarker = function (alatlng, name, id, tagarr, ratingarr, tidarr) {
 
           var image = "jam.png";
           marker = new google.maps.Marker({ 
@@ -238,8 +265,9 @@
           for(var tag in tagarr){
             if (first) { playTags = tagarr[tag]; first = false; }
             else { playTags += "+" + tagarr[tag]; }
-            dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + " ( " + ratingarr[tag] + " )</span> ";
-            dispTags += "<button value='"+id+"' class='btn btn-jam' id='voteUp'><i class='icon-white icon-thumbs-up' value='"+tagarr[tag]+"'></i></button>";
+            dispTags += "<p><a href='#' class='label label-jam' onclick='upVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
+            dispTags += "<a href='#' class='label label-jam'onclick='dnVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a>";
+            dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + " ( " + ratingarr[tag] + " )</span></p>";
           }
           var contentString = "<div>" +
             "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \""+name+"\")'>" +
@@ -349,15 +377,17 @@
           $rs2 = mysql_query($sql2);
           if (!$rs2) { die("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } 
           ?>
-          var tagarr = [];
+          var tagarr    = [];
           var ratingarr = [];
-          var i = 0;
+          var tidarr    = [];
+          var i         = 0;
         <?php while($row2 = mysql_fetch_array($rs2)) { ?>
             tagarr[i] = "<?=$row2['tag']?>";
             ratingarr[i] = "<?=$row2['rating']?>";
+            tidarr[i] = "<?=$row2['id']?>";
             i++;
         <?php } ?>
-        addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr, ratingarr);
+        addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr, ratingarr, tidarr);
 <?php } ?>
     
     /* Assign map to be entirty of window */
@@ -374,6 +404,7 @@
     /* Assign map to be entirty of window on resize END */
 
     google.maps.event.addDomListener(window, 'load', initialize);
+
 
   </script>
 

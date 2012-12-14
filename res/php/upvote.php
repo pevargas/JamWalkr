@@ -1,8 +1,9 @@
-<!-- Increments a rating by one, given the tag name and the building id -->
+
 <?php
+	include("auth.php");
+	// Increments a rating by one, given the tag name and the building id
 	/* Get building id and tag name that was clicked */
-	$build_id = $_REQUEST['build_id'];
-	$tag_name = $_REQUEST['tag_name'];
+	$tid  = $_REQUEST['tid'];
 
 	/* Connect to database */
 	$con = mysql_connect($mysql_host, $username, $password);
@@ -10,8 +11,8 @@
 	$db = mysql_select_db($database);
 
 	/* Find and update corresponding tag */
-	$sql = "UPDATE Tags SET rating = rating + 1 WHERE `building` = '".$building_id."' AND 'tag_name' = '".$tag_name."'";
-    $rs = mysql_query($sql);
-    if (!$rs) { die(mysql_error()); }
+	$sql = 'UPDATE Tags SET `rating` = `rating` + 1 WHERE `id` = '.$tid;
+  $rs = mysql_query($sql);
+  if (!$rs) { die(mysql_error()); }
 
 ?>

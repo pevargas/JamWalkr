@@ -152,9 +152,7 @@
         success: function(data) { 
           gData = data;
           $("video").attr("src", data.set.track.url);
-          // Debugging
-          console.log("AD: First? "+gData.set.beginning+"; Final? "+gData.set.at_last_track+"; Past? "+gData.set.at_end+";");
-      },
+        },
         error: function(jqXHR, textStatus, errorThrown) {
           $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
         },
@@ -206,7 +204,24 @@
 
   /* Functions involved with music END */
 
-  /* Start of map code */
+  /*function upVote(bid, tag) {
+    var string = "build_id="+bid+"&amp;tag_name="+tag;
+    $.ajax({
+      url: "res/php/upvote.php",
+      data: string,
+      success: function(data) {
+        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> Your vote has been recieve</div>");
+      }
+    });
+  }*/
+   
+  $(function () {
+    $("button#upVote").click(function(){
+      console.log(this.val());
+    });
+  });
+
+/* Start of map code */
     var map;
     function initialize() {
       // Init map options
@@ -241,6 +256,7 @@
             if (first) { playTags = tagarr[tag]; first = false; }
             else { playTags += "+" + tagarr[tag]; }
             dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + " ( " + ratingarr[tag] + " )</span> ";
+            dispTags += "<button value='"+id+"' class='btn btn-jam' id='voteUp'><i class='icon-white icon-thumbs-up' value='"+tagarr[tag]+"'></i></button>";
           }
           var contentString = "<div>" +
             "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \""+name+"\")'>" +

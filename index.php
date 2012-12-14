@@ -265,9 +265,10 @@
           for(var tag in tagarr){
             if (first) { playTags = tagarr[tag]; first = false; }
             else { playTags += "+" + tagarr[tag]; }
-            dispTags += "<p><a href='#' class='label label-jam' onclick='upVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
-            dispTags += "<a href='#' class='label label-jam'onclick='dnVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a>";
-            dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + " ( " + ratingarr[tag] + " )</span></p>";
+            dispTags += "<p><span class='label label-jam'><a href='#' onclick='upVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
+            dispTags += " [ " + ratingarr[tag] + " ] ";
+            dispTags += "<a href='#' onclick='dnVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a></span>";
+            dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + "</span></p>";
           }
           var contentString = "<div>" +
             "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \""+name+"\")'>" +

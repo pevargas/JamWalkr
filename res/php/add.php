@@ -43,21 +43,19 @@
 	  }
 
 	  // Return inserted information
-	  /*
-	  $sql = "SELECT * FROM `Tags` WHERE `building` = '".$bid."'";
+	  
+	$sql = "SELECT * FROM `Tags` WHERE `building` = '".$bid."'";
     $rs = mysql_query($sql);
     if (!$rs) { die("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } 
-    $tagarr    = [];
-    $ratingarr = [];
-   	$tidarr    = [];
-    $i         = 0;
+    $tagarr    = array();
+    $ratingarr = array();
+   	$tidarr    = array();
     while($row2 = mysql_fetch_array($rs)) { 
-      $tagarr[$i] = $row2['tag'];
-      $ratingarr[$i] = $row2['rating'];
-      $tidarr[$i] = $row2['id'];
-      $i++;
+      $tagarr[] = $row2['tag'];
+      $ratingarr[] = $row2['rating'];
+      $tidarr[] = $row2['id'];
    	}
-    $array = [
+    $array = array(
     	"lat"  			=> $lat,
     	"lng"  			=> $lng,
     	"name" 			=> $build,
@@ -65,8 +63,8 @@
     	"tagarr" 		=> $tagarr,
     	"ratingarr" => $ratingarr,
     	"tidarr" 		=> $tidarr,
-    ];
+    );
 
-	  json_encode($array);*/
+	  json_encode($array);
 	}
 ?>

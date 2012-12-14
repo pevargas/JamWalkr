@@ -3276,11 +3276,6 @@ input[type="button"].btn-block {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
-.btn-del{
-  color: #ffffff;
-  background-color: #ff0000;
-}
-
 .btn-jam:hover,
 .btn-jam:active,
 .btn-jam.active,

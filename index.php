@@ -90,6 +90,25 @@
     }
   } // loadMix()
 
+  function deleteTag(name){
+    $.ajax({                                      
+      url: '/res/php/delete.php',                //the script to call to get data          
+      type: 'POST',
+      data: "name=" + name,                     //you can insert url argumnets here to pass to api.php
+                                       //for example "id=5&parent=6"
+      dataType: 'json',                //data format    
+      success: function(data)          //on recieve of reply
+      {
+        alert("ole");
+        alert(data);
+      },
+       error: function(jqXHR, textStatus, errorThrown) {
+        alert(textStatus + "\n" + errorThrown);
+      }
+    });
+
+  }// deleteTag()
+
   // Use JQuery to handle the song playback
   $(window).load(function () {
     
@@ -187,6 +206,7 @@
 
   /* Functions involved with music END */
 
+  /* Start of map code */
     var map;
     function initialize() {
       // Init map options
@@ -210,7 +230,6 @@
           marker = new google.maps.Marker({ 
               position: alatlng,
               map: map,
-              draggable: true,
               icon: image,
               animation: google.maps.Animation.DROP
           });
@@ -228,6 +247,7 @@
               "<h3>" + name + "<i class='icon-white icon-chevron-right'></i></h3>" +
             "</button></div>";
           contentString += dispTags;
+          contentString += "</br><button type='button' class='btn-del' onclick='deleteTag(\""+name+"\")'>Delete</button>";
 
           makeInfoWindowEvent(map, infowindow, contentString, marker);
 
@@ -244,7 +264,7 @@
           });
 
           var circleSize = 1;
-          // Circle size porportional to ratings
+          // Circle size proportional to ratings
           for(var tag in tagarr){ circleSize += Number(ratingarr[tag]); }
 
           var circleOptions = {
@@ -293,7 +313,6 @@
             }
           });
 
-          //map.panTo(alatLng);
           id = marker.__gm_id
           markers[id] = marker; 
 
@@ -325,12 +344,13 @@
         addMarker(myLatlng);
       });
 
+
       // Retrieve information to be displayed in infopane from database. Gets lat, long, name, id, and the related tags (and their ratings)
 <?php while($row = mysql_fetch_array($rs)) { ?>
         <?php $sql2 = "SELECT * FROM `Tags` WHERE `building` = '".$row['id']."'";
           $rs2 = mysql_query($sql2);
           if (!$rs2) { die("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } 
-          ?>
+        ?>
           var tagarr = [];
           var ratingarr = [];
           var i = 0;
@@ -346,7 +366,7 @@
     $("#map_canvas").css("height", window.innerHeight - 40);
     $("#map_canvas").css("width", window.innerWidth);
   
-    } // initialize()
+    }
 
     /* Assign map to be entirty of window on resize BEGIN */
     window.onresize = function() {
@@ -401,7 +421,7 @@
       <p>JamWalkr is a music tagging application. Users are encouraged to tag buildings with moods, genres or artists. As the number of tagged buildings grow, we can see how the citizens of a city thinks their city sounds.</p>
 
       <p class="lead">How do I participate?</p>
-      <p>To add a point, simiply right click and fill out the form. You can view already tagged buildings by clicking on their markers. Please also vote on whether you agree with the tags by voting up or down the specific tags.</p>
+      <p>To add a point, simiply right click and fill out the form. You can view already tagged buildings by clicking on their markers. Please also vote on whether you agree with the tags by voting up or down the specific tags. Have fun!</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-jam" data-dismiss="modal" aria-hidden="true">Start Jammin'</button>

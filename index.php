@@ -245,20 +245,28 @@
         $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> The building has been created.</div>");
         console.log(data);
 
+        var lat       = data[0];
+        var lng       = data[1];
+        var name      = data[2];
+        var id        = data[3];
+        var tagarr    = data[4]; 
+        var ratingarr = data[5]; 
+        var tidarr    = data[6];
+
         var first = true;
         var playTags;
         var dispTags = "";
-        for(var tag in data.tagarr){
-          if (first) { playTags = data.tagarr[tag]; first = false; }
-          else if (tag < 3) { playTags += "+" + data.tagarr[tag]; }
-          dispTags += "<p><span class='label label-jam'><a href='#' onclick='upVote("+data.tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
-          dispTags += " [ " + data.ratingarr[tag] + " ] ";
-          dispTags += "<a href='#' onclick='dnVote("+data.tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a></span>";
-          dispTags += "<span class='badge badge-jam'>" + data.tagarr[tag] + "</span></p>";
+        for(var tag in tagarr){
+          if (first) { playTags = tagarr[tag]; first = false; }
+          else if (tag < 3) { playTags += "+" + tagarr[tag]; }
+          dispTags += "<p><span class='label label-jam'><a href='#' onclick='upVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
+          dispTags += " [ " + ratingarr[tag] + " ] ";
+          dispTags += "<a href='#' onclick='dnVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a></span>";
+          dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + "</span></p>";
         }
         var contentString = "<div>" +
-          "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \""+data.name+"\")'>" +
-            "<h3>" + data.name + "<i class='icon-white icon-chevron-right'></i></h3>" +
+          "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \""+name+"\")'>" +
+            "<h3>" + name + "<i class='icon-white icon-chevron-right'></i></h3>" +
           "</button></div>";
         contentString += dispTags;
 

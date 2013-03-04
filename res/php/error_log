@@ -1,0 +1,91 @@
+[27-Nov-2012 23:48:38] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/add.php on line 2
+[27-Nov-2012 23:48:38] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/add.php on line 2
+[27-Nov-2012 23:58:57] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/add.php on line 14
+[27-Nov-2012 23:58:57] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/add.php on line 15
+[28-Nov-2012 00:22:00] PHP Parse error:  syntax error, unexpected T_CLASS in /home/a9185905/public_html/res/php/add.php on line 40
+[28-Nov-2012 00:22:03] PHP Parse error:  syntax error, unexpected T_CLASS in /home/a9185905/public_html/res/php/add.php on line 40
+[28-Nov-2012 00:23:53] PHP Parse error:  syntax error, unexpected T_CLASS in /home/a9185905/public_html/res/php/add.php on line 40
+[28-Nov-2012 00:23:53] PHP Parse error:  syntax error, unexpected T_CLASS in /home/a9185905/public_html/res/php/add.php on line 40
+[28-Nov-2012 00:26:52] PHP Parse error:  syntax error, unexpected T_CLASS in /home/a9185905/public_html/res/php/add.php on line 40
+[28-Nov-2012 00:26:52] PHP Parse error:  syntax error, unexpected T_CLASS in /home/a9185905/public_html/res/php/add.php on line 40
+[28-Nov-2012 00:59:54] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/query.php on line 2
+[28-Nov-2012 00:59:54] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/query.php on line 2
+[28-Nov-2012 00:59:54] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/query.php on line 4
+[28-Nov-2012 00:59:54] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/query.php on line 5
+[28-Nov-2012 01:01:13] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/query.php on line 2
+[28-Nov-2012 01:01:13] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/query.php on line 2
+[28-Nov-2012 01:01:13] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/query.php on line 4
+[28-Nov-2012 01:01:13] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/query.php on line 5
+[28-Nov-2012 01:01:34] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/query.php on line 2
+[28-Nov-2012 01:01:34] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/query.php on line 2
+[28-Nov-2012 01:01:34] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/query.php on line 4
+[28-Nov-2012 01:01:34] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/query.php on line 5
+[28-Nov-2012 01:07:43] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/a9185905/public_html/res/php/query.php on line 12
+[28-Nov-2012 01:07:58] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/a9185905/public_html/res/php/query.php on line 12
+[28-Nov-2012 01:08:08] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/a9185905/public_html/res/php/query.php on line 12
+[28-Nov-2012 01:08:09] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/a9185905/public_html/res/php/query.php on line 12
+[28-Nov-2012 01:08:42] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/a9185905/public_html/res/php/query.php on line 12
+[28-Nov-2012 01:29:47] PHP Warning:  include(./res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:29:47] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening './res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:31:20] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:31:20] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:31:31] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:31:31] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:33:06] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:33:06] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:34:43] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:34:43] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:36:25] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:36:25] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:36:25] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/add.php on line 11
+[28-Nov-2012 01:38:27] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:38:27] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/add.php on line 2
+[28-Nov-2012 01:38:27] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/add.php on line 11
+[28-Nov-2012 01:52:43] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/a9185905/public_html/res/php/add.php on line 26
+[28-Nov-2012 01:56:57] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/a9185905/public_html/res/php/add.php on line 26
+[28-Nov-2012 01:58:33] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/a9185905/public_html/res/php/add.php on line 26
+[02-Dec-2012 19:14:54] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:14:54] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:15:03] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:15:03] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:15:14] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:15:15] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:15:51] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:15:51] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:16:26] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:16:26] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:16:59] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:16:59] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:17:24] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[02-Dec-2012 19:17:24] PHP Parse error:  syntax error, unexpected ';' in /home/a9185905/public_html/res/php/add.php on line 8
+[14-Dec-2012 01:05:13] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/upvote.php on line 7
+[14-Dec-2012 01:05:24] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/upvote.php on line 7
+[14-Dec-2012 01:06:32] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/upvote.php on line 7
+[14-Dec-2012 01:08:42] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/upvote.php on line 7
+[14-Dec-2012 01:11:18] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/upvote.php on line 7
+[14-Dec-2012 01:12:29] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/upvote.php on line 8
+[14-Dec-2012 01:13:21] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/upvote.php on line 3
+[14-Dec-2012 01:13:21] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/upvote.php on line 3
+[14-Dec-2012 01:13:21] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/upvote.php on line 9
+[14-Dec-2012 01:14:42] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/upvote.php on line 3
+[14-Dec-2012 01:14:42] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/upvote.php on line 3
+[14-Dec-2012 01:14:42] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/upvote.php on line 9
+[14-Dec-2012 01:15:28] PHP Warning:  include(res/php/auth.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory in /home/a9185905/public_html/res/php/upvote.php on line 3
+[14-Dec-2012 01:15:28] PHP Warning:  include() [<a href='function.include'>function.include</a>]: Failed opening 'res/php/auth.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/a9185905/public_html/res/php/upvote.php on line 3
+[14-Dec-2012 01:15:28] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'a9185905'@'localhost' (using password: NO) in /home/a9185905/public_html/res/php/upvote.php on line 9
+[14-Dec-2012 09:59:11] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 50
+[14-Dec-2012 10:27:53] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 50
+[14-Dec-2012 10:31:43] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 52
+[14-Dec-2012 10:33:09] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 48
+[14-Dec-2012 10:34:53] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 48
+[14-Dec-2012 11:43:29] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 50
+[14-Dec-2012 11:50:58] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 50
+[14-Dec-2012 11:53:50] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 60
+[14-Dec-2012 13:18:03] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 60
+[14-Dec-2012 13:18:29] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 60
+[14-Dec-2012 13:19:04] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 60
+[14-Dec-2012 13:19:43] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 60
+[14-Dec-2012 13:28:23] PHP Parse error:  syntax error, unexpected '[' in /home/a9185905/public_html/res/php/add.php on line 50
+[14-Dec-2012 14:10:16] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/a9185905/public_html/res/php/dnvote.php on line 17
+[14-Dec-2012 14:10:36] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/a9185905/public_html/res/php/dnvote.php on line 17
+[14-Dec-2012 14:11:50] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in /home/a9185905/public_html/res/php/dnvote.php on line 17

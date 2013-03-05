@@ -7,7 +7,43 @@
     include("res/php/links.php");
   ?>
 
-  <script type="text/javascript" src="./res/js/jquery.mobile-1.3.0.min.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
+
+  <script>
+  $(function () {
+    function dist (lat1, lon1, lat2, lon2) {
+      var R = 6371; // km
+      console.log('('+lat1+', '+lon1+') ('+lat2+', '+lon2+')');
+      lat1 = lat1 * (Math.PI / 180);
+      lon1 = lon1 * (Math.PI / 180);
+      lat2 = lat2 * (Math.PI / 180);
+      lon2 = lon2 * (Math.PI / 180);
+      var d = Math.acos(Math.sin(lat1)*Math.sin(lat2) + 
+                  Math.cos(lat1)*Math.cos(lat2) *
+                  Math.cos(lon2-lon1)) * R;
+
+      return (d * 0.621371).toFixed(2); // Convert to miles
+    }
+
+    $.ajax({
+      url: 'res/php/newquery.php', 
+      data: '',
+      dataType: 'json',
+      success: function(data) {
+        console.log(data);
+        for (var i = 0; i < data.length; ++i) {
+          $('#output').append('<li>' + data[i].name + ' | ' + dist(40.0150, -105.2700, data[i].lat, data[i].lng) + 'mi</li>'); 
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        $(".msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+      }
+    });
+  }); 
+
+  </script>
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -38,7 +74,9 @@
       </div>
       <div class="span9">
       	<h1>Mobile</h1>
-      	<?php ?>
+        <p class="msg"></p>
+        <ul id="output" data-role="listview">
+        </ul>
       </div>
     </div>
   </div>

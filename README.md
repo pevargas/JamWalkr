@@ -1,7 +1,9 @@
 JamWalkr
 ========
 
-Our class project for Software Engineering Methods and Tools.  
+JamWalkr is a music tagging application. Users are encouraged to tag buildings with moods, genres or artists. As the number of tagged buildings grow, we can see how the citizens of a city thinks their city sounds. Originally, it was our class project for Software Engineering Methods and Tools. 
+
+To view JamWalkr in action, please visit [jamwalkr.site11.com] (http://jamwalkr.site11.com).
 
 People Involved
 ---------------

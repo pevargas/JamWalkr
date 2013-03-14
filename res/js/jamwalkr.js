@@ -1,90 +1,95 @@
-$(window).load(function() { 
+$(function() { 
 
-  var lfmbase = "http://ws.audioscrobbler.com/2.0/";
-  var lfmkey  = "&api_key=b15a0b92b58b210280fa88c5ae3bd038"; 
-  var etbase  = "http://8tracks.com";
-  var etkey   = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
-
-  // Music BEGIN
-  function listen(data, mid, ptok) {
-    var myplayer = document.getElementById('player');
-    var timepast = myplayer.currentTime;
-    var duration = myplayer.duration;
+  // Function that updates time; Also reports back to Sound Exchange.
+  $("video").bind("timeupdate", function() {
+    var timepast = this.currentTime;
+    var duration = this.duration;
+    // Width as a percentage for the visual aspect
     var width    = String(100*(timepast / duration));
-
+    // Display time in human time
     var minutes  = parseInt(timepast / 60)%60;
     var seconds  = parseInt(timepast)%60;
     $("#current").html(minutes +":"+(seconds < 10 ? "0" + seconds : seconds));
-    document.getElementById('time').setAttribute("style", "width:" + width + "%");
-    if (30 < timepast && timepast < 31) {
-      var report = etbase+"/sets/"+ptok+"/report.jsonp"+etkey+"&mix_id="+mid+"&track_id="+data.set.track.id;
+    document.getElementById("time").setAttribute("style", "width:" + width + "%");
+
+    if (30.0 < timepast && !reported) {
+      var report = etbase+"/sets/"+ptok+"/report.jsonp"+etkey+"&mix_id="+mid+"&track_id="+gData.set.track.id;
       $.ajax({
         url: report,
         dataType: "jsonp",
-        error: function(jqXHR, textStatus, errorThrown) {
-          $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+        success: function() {
+          console.log("Reported \""+gData.set.track.name+"\" to SoundExchange.");
         },
-        open: function() { $(".brand").addClass( "ui-autocomplete-loading" ); },
-        close: function() { $(".brand").removeClass( "ui-autocomplete-loading" ); }
+        error: function(jqXHR, textStatus, errorThrown) {
+          $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+        },
+        open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+        close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
       });
-    } else if (width == 100) {
-        var next = etbase+"/sets/"+ptok+"/next.jsonp"+etkey+"&mix_id="+mid;
-        $.ajax({
-          url: next,
-          dataType: "jsonp",
-          success: function(data) { 
-            $("#player").attr("src", data.set.track.url);
-            $("#player").get(0).play();
-            $(".current").addClass("muted").removeClass("current");
-            $("#info").prepend("<li class='current'><strong>"+data.set.track.name+"</strong> "+data.set.track.performer+"</li>");            
-            listen(data, mid, ptok);
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-          },
-          open: function() { $(".brand").addClass( "ui-autocomplete-loading" ); },
-          close: function() { $(".brand").removeClass( "ui-autocomplete-loading" ); }
-        });
+      reported = true;
     }
-    window.setTimeout (function() { listen(data, mid, ptok); }, 1000);
-  }
+  }); // time update function
 
-  function getArt(mid) {
-    var mix = etbase + "/mixes/" + mid + ".jsonp" + etkey;
+  // Grabs next song once finished.
+  $("video").bind("ended", function(){
+    // Debugging
+    var next = etbase+"/sets/"+ptok+ (gData.set.at_last_track ? "/next_mix.jsonp" : "/next.jsonp") +etkey+"&mix_id="+mid;
     $.ajax({
-      url: mix,
+      url: next,
       dataType: "jsonp",
-      success: function(data) {
-        $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Success!</strong></div>");
+      success: function(data) { 
+        gData = data;
+        $("video").attr("src", data.set.track.url);
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-      }
+        $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+      },
+      open: function() { $("#brand").addClass( "ui-autocomplete-loading" ); },
+      close: function() { $("#brand").removeClass( "ui-autocomplete-loading" ); }
     });
-  }
+  }); // song ended function
+
+  // Song changed so update information
+  $("video").bind("durationchange", function(){
+    // Reset reported flag
+    reported = false;
+    // Autoplay song
+    $("video").get(0).play();
+    //$("#msg").append("<img src='"+getArt(mid)+"'/>");
+    // Make sure button is correct state
+    var button = document.getElementById('control');
+    button.setAttribute("class", "icon-pause icon-white");
+    // Update track info
+    $("#info").html("<i class='icon-music icon-white'></i> "+gData.set.track.name+" <i class='icon-user icon-white'></i> "+gData.set.track.performer + " <i class='icon-volume-up icon-white'></i> "+bName);
+  }); // Updated track information function
+
+  // Bind the space bar to toggle music
+  $('body').keyup(function(e){
+    if(e.keyCode == 32) { // user has pressed space
+      toggleMusic();
+    }
+  });
   // Music END
 
   // Autocomplete BEGIN
-  $(function() {
-    $("#tag").autocomplete({
-      source: function(request, response) {
-        $.ajax({
-          url: etbase + "/tags.jsonp" + etkey + "&q=" + request.term,
-          dataType: "jsonp",
-          success: function(data) {
-            response($.map(data.tags, function(item) {
-              return { label: item.name, value: item.name }
-            }));
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
-          }
-        });
-      },
-      minLength: 2,
-      open: function() { $(this).addClass( "ui-autocomplete-loading" ); },
-      close: function() { $(this).removeClass( "ui-autocomplete-loading" ); }
-    });
+  $("#tag").autocomplete({
+    source: function(request, response) {
+      $.ajax({
+        url: etbase + "/tags.jsonp" + etkey + "&q=" + request.term,
+        dataType: "jsonp",
+        success: function(data) {
+          response($.map(data.tags, function(item) {
+            return { label: item.name, value: item.name }
+          }));
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          $("#msg").append("<div class='alert alert-error'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
+        }
+      });
+    },
+    minLength: 2,
+    open: function() { $(this).addClass( "ui-autocomplete-loading" ); },
+    close: function() { $(this).removeClass( "ui-autocomplete-loading" ); }
   });
   // Autocomplete END
 });

@@ -54,15 +54,7 @@
       $ratingarr[] = $row2['rating'];
       $tidarr[] = $row2['id'];
    	}
-    $array = array(
-    	"lat"  			=> $lat,
-    	"lng"  			=> $lng,
-    	"name" 			=> $build,
-    	"id"   			=> $bid,
-    	"tagarr" 		=> $tagarr,
-    	"ratingarr" => $ratingarr,
-    	"tidarr" 		=> $tidarr,
-    );
+    $array = array( $lat, $lng, $build, $bid, $tagarr, $ratingarr, $tidarr );
 
 	  echo json_encode($array);
 	}

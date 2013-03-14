@@ -38,7 +38,7 @@
   var etbase   = "http://8tracks.com";
   var etkey    = "?api_key=efaea88b3f74c64c06351f6e76674f65bcc23ea0&api_version=2";
 
-  function loadMix(tag, name) {
+  var loadMix = function (tag, name) {
     // encode tags in URL formating
     var tags = encodeURIComponent(tag);
 
@@ -100,24 +100,15 @@
       });
     }
   } // loadMix()
-
-  // Play/Pause Button
-  function toggleMusic() {
-    var player = document.getElementById('player');
-    var button = document.getElementById('control');
-    if (player.paused) { player.play(); button.setAttribute("class", "icon-pause icon-white"); }
-    else { player.pause(); button.setAttribute("class", "icon-play icon-white"); }
-  } // toggleMusic()
   /* Functions involved with music END */
 
   /* Functions involved with voting BEGIN */
-  function upVote(tid) {
+  var upVote = function (tid) {
     $.ajax({
       url: "res/php/upvote.php",
       data: "tid="+tid,
       success: function(data) {
         $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> Your vote has been recieved</div>");
-        console.log(data);
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
@@ -127,13 +118,12 @@
     });
   } // upVote()
 
-  function dnVote(tid) {
+  var dnVote = function (tid) {
     $.ajax({
       url: "res/php/dnvote.php",
       data: "tid="+tid,
       success: function(data) {
         $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> Your vote has been recieved.</div>");
-        console.log(data);
       },
       error: function(jqXHR, textStatus, errorThrown) {
         $("#msg").append("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>"+textStatus+"</strong> "+errorThrown+"</div>");
@@ -155,17 +145,17 @@
     $.ajax({
       url: "res/php/add.php",
       data: name+tag1+tag2+tag3+lat+lng,
-      success: function(data) {
+      success: function(newdata) {
         $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> The building has been created.</div>");
-        console.log(data);
+        console.log(newdata);
 
-        var lat       = data[0];
-        var lng       = data[1];
-        var name      = data[2];
-        var id        = data[3];
-        var tagarr    = data[4]; 
-        var ratingarr = data[5]; 
-        var tidarr    = data[6];
+        var lat       = newdata[0];
+        var lng       = newdata[1];
+        var name      = newdata[2];
+        var id        = newdata[3];
+        var tagarr    = newdata[4]; 
+        var ratingarr = newdata[5]; 
+        var tidarr    = newdata[6];
 
         var first = true;
         var playTags;
@@ -179,10 +169,9 @@
           dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + "</span></p>";
         }
         var contentString = "<div>" +
-          "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \""+name+"\")'>" +
-            "<h3>" + name + "<i class='icon-white icon-chevron-right'></i></h3>" +
+          "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \"New Building\")'>" +
+            "<h3>Play New Building <i class='icon-white icon-chevron-right'></i></h3>" +
           "</button></div>";
-        contentString += dispTags;
 
         $("#output").html(contentString);
       },
@@ -386,9 +375,6 @@
         addInitMarker(new google.maps.LatLng(<?=$row['lat']?>, <?=$row['lng']?>), "<?=$row['name']?>", <?=$row['id']?>, tagarr, ratingarr, tidarr);
 <?php } ?>
 
-    
-    
-    
     /* Assign map to be entirty of window */
     $("#map_canvas").css("height", window.innerHeight - 40);
     $("#map_canvas").css("width", window.innerWidth);
@@ -409,8 +395,6 @@
     /* Assign map to be entirty of window on resize END */
 
     google.maps.event.addDomListener(window, 'load', initialize);
-
-   
 
   </script>
 

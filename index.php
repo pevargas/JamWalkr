@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
   <?php
     include("res/php/auth.php");
     include("res/php/loadfunc.php"); 
@@ -22,11 +23,15 @@
     
   if (!$rs) { die("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Error: </strong>" . mysql_error() . "</strong></div>"); } ?>
 
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
   <script type="text/javascript">
+
+  window.onkeydown = function(e) { 
+    return !(e.keyCode == 32);
+  };
 
   /* Functions involved with music BEGIN */
   // Global Variables involved in playing music
+  var playing = false;
   var reported = false;
   var mid      = '';
   var ptok     = '';
@@ -89,6 +94,8 @@
           success: function(data) {
             gData = data;
             $("video").attr("src", data.set.track.url);
+            $("#player").get(0).play();
+            playing = true;
             bName = name;
           },
           error: function(jqXHR, textStatus, errorThrown) {
@@ -134,6 +141,10 @@
   } // dnVote()
   /* Functions involved with voting END */
 
+  var refreshSize = function () {
+
+  }
+
   // Add a Building
   function addBuilding() {
     var name = "name="  + encodeURIComponent($("input#name").val());
@@ -153,8 +164,8 @@
         var lng       = newdata[1];
         var name      = newdata[2];
         var id        = newdata[3];
-        var tagarr    = newdata[4]; 
-        var ratingarr = newdata[5]; 
+        var tagarr    = newdata[4];
+        var ratingarr = newdata[5];
         var tidarr    = newdata[6];
 
         var first = true;
@@ -162,16 +173,19 @@
         var dispTags = "";
         for(var tag in tagarr){
           if (first) { playTags = tagarr[tag]; first = false; }
-          else if (tag < 3) { playTags += "+" + tagarr[tag]; }
-          dispTags += "<p><span class='label label-jam'><a href='#' onclick='upVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
-          dispTags += " [ " + ratingarr[tag] + " ] ";
-          dispTags += "<a href='#' onclick='dnVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a></span>";
-          dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + "</span></p>";
+          else if (tag < 3 && ratingarr[tag] > 0) { playTags += "+" + tagarr[tag]; }
+          if (ratingarr[tag] > 0){
+            dispTags += "<p><span class='label label-jam'><a href='#' onclick='upVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
+            dispTags += " [ " + ratingarr[tag] + " ] ";
+            dispTags += "<a href='#' onclick='dnVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a></span>";
+            dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + "</span></p>";
+          }
+          
         }
         var contentString = "<div>" +
           "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \"New Building\")'>" +
             "<h3>Play New Building <i class='icon-white icon-chevron-right'></i></h3>" +
-          "</button></div>";
+          "</button></div>"; 
 
         $("#output").html(contentString);
       },
@@ -233,7 +247,7 @@
       // Add Init markers
       var addInitMarker = function (alatlng, name, id, tagarr, ratingarr, tidarr) {
 
-          var image = "jam.png";
+          var image = "play.png";
           marker = new google.maps.Marker({ 
               position: alatlng,
               map: map,
@@ -246,11 +260,14 @@
           var dispTags = "";
           for(var tag in tagarr){
             if (first) { playTags = tagarr[tag]; first = false; }
-            else { playTags += "+" + tagarr[tag]; }
-            dispTags += "<p><span class='label label-jam'><a href='#' onclick='upVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
-            dispTags += " [ " + ratingarr[tag] + " ] ";
-            dispTags += "<a href='#' onclick='dnVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a></span>";
-            dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + "</span></p>";
+            else if(ratingarr[tag] > 0) { playTags += "+" + tagarr[tag]; }
+
+            if (ratingarr[tag] > 0){
+              dispTags += "<p><span class='label label-jam'><a href='#' onclick='upVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
+              dispTags += " [ " + ratingarr[tag] + " ] ";
+              dispTags += "<a href='#' onclick='dnVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a></span>";
+              dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + "</span></p>";
+            }
           }
           var contentString = "<div>" +
             "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \""+name+"\")'>" +
@@ -263,7 +280,7 @@
           id = marker.__gm_id
           markers[id] = marker; 
 
-          google.maps.event.addListener(marker, "rightclick", function (point) { 
+          google.maps.event.addListener(marker, "dblclick", function (point) { 
             id = this.__gm_id; 
             delMarker(id);
           });
@@ -293,7 +310,7 @@
 
       // Add markers
       var addMarker = function (alatlng) {
-          var image = "jam.png";
+          var image = "play.png";
           marker = new google.maps.Marker({ 
               position: alatlng,
               map: map,
@@ -347,7 +364,7 @@
       } // makeInfoWindowEvent()
 
       // Right click handler
-      google.maps.event.addListener(map, "rightclick", function(event) {
+      google.maps.event.addListener(map, "dblclick", function(event) {
         var lat = event.latLng.lat();
         var lng = event.latLng.lng();
         var myLatlng = new google.maps.LatLng(lat, lng);
@@ -396,6 +413,18 @@
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
+    var toggleMusic = function (){
+      if (playing) {
+        $("#player").get(0).pause();
+        playing = false;
+      }
+      else {
+        $("#player").get(0).play();
+        playing = true;
+      }
+      
+    }
+
   </script>
 
 </head>
@@ -406,10 +435,10 @@
         <!-- Button to trigger modal -->
         <div class="row-fluid">
           <div class="span3 track">
-            <button class="btn btn-jam control-conatiner pull-left">
-              <i onclick="toggleMusic()" id="control" class="icon-white"></i>
+            <button onclick="toggleMusic()" class="btn btn-jam control-conatiner pull-left " style="height:40px;width:40px;">
+              <i  id="control" class="icon-white" ></i>
             </button>
-            <div class="progress progress-jam progress-striped active">
+            <div class="progress progress-jam progress-striped active" style="height:20px;">
               <div class="bar" id="time"><span id="current" class="badge badge-jam">0:00</span></div>
             </div>
           </div>
@@ -417,7 +446,7 @@
             <i class="icon-music icon-white"></i> Track Name <i class="icon-user icon-white"></i> Artist <i class="icon-volume-up icon-white"></i> You're listening to the sounds of <strong>Building Name</strong>
           </div>
           <div class="span3">
-            <a href="#help" role="button" class="btn btn-jam" data-toggle="modal" id="helpBtn">Need Help?</a>
+            <!--a href="#help" role="button" class="btn btn-jam" data-toggle="modal" id="helpBtn">Need Help?</a-->
             <div class="pull-right"><a class="brand" id="brand" href="./index.php">JamWalkr</a></div>
           </div>
         </div>

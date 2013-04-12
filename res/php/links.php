@@ -23,7 +23,7 @@
 
 <script type="text/javascript" src="res/js/jamwalkr.js"></script>
 
-<!-- Le styles -->
+<!--  styles -->
 <link href="res/css/jamwalkr.css" rel="stylesheet"/>
 <link href="res/css/bootstrap.css" rel="stylesheet"/>
 <link href="res/css/bootstrap-responsive.css" rel="stylesheet"/>

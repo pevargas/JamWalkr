@@ -17,7 +17,7 @@
 
       function initialize() {
         var mapOptions = {
-          zoom: 6,
+          zoom: 16,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         map = new google.maps.Map(document.getElementById('map_canvas'),
@@ -32,7 +32,7 @@
             var infowindow = new google.maps.InfoWindow({
               map: map,
               position: pos,
-              content: 'Location found using HTML5.'
+              content: 'This is you!'
             });
 
             map.setCenter(pos);

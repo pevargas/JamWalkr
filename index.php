@@ -158,7 +158,8 @@
       data: name+tag1+tag2+tag3+lat+lng,
       success: function(newdata) {
         $("#msg").append("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'>×</button><strong>Thank you!</strong> The building has been created.</div>");
-        console.log(newdata);
+        console.log("newdata is: " + newdata);
+        console.log("newdata[4] is: " + newdata[4]);
 
         var lat       = newdata[0];
         var lng       = newdata[1];
@@ -173,19 +174,17 @@
         var dispTags = "";
         for(var tag in tagarr){
           if (first) { playTags = tagarr[tag]; first = false; }
-          else if (tag < 3 && ratingarr[tag] > 0) { playTags += "+" + tagarr[tag]; }
-          if (ratingarr[tag] > 0){
+          else if (tag < 3 ) { playTags += "+" + tagarr[tag]; }
             dispTags += "<p><span class='label label-jam'><a href='#' onclick='upVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-up'></i></a>";
             dispTags += " [ " + ratingarr[tag] + " ] ";
             dispTags += "<a href='#' onclick='dnVote("+tidarr[tag]+")'><i class='icon-white icon-thumbs-down'></i></a></span>";
             dispTags += "<span class='badge badge-jam'>" + tagarr[tag] + "</span></p>";
-          }
           
         }
         var contentString = "<div>" +
           "<button class='btn btn-jam' onclick='loadMix(\""+playTags+"\", \"New Building\")'>" +
             "<h3>Play New Building <i class='icon-white icon-chevron-right'></i></h3>" +
-          "</button></div>"; 
+          "</button></div>";
 
         $("#output").html(contentString);
       },
